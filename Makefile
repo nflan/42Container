@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2022/11/10 17:17:52 by nflan            ###   ########.fr        #
+#    Updated: 2022/11/11 14:23:20 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ CXX = c++ $(CXXFLAGS)
 
 RM = rm -fr
 
-CXXFLAGS = -Wall -Wextra -Werror -Wshadow -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -g -std=c++98
 
 .c.o:
 	$(CXX) -c $< -o $(<:.cpp=.o)
