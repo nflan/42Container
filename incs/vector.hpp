@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/12 13:54:42 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/12 16:52:43 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ namespace ft {
 			typedef std::ptrdiff_t							difference_type;
 			typedef value_type &							reference;
 			typedef const value_type &						const_reference;
-			typedef Allocator::pointer						pointer;
-			typedef Allocator::const_pointer				pointer;
+			typedef typename Allocator::pointer				pointer;
+			typedef typename Allocator::const_pointer		const_pointer;
 			typedef value_type *							iterator;
 			typedef const value_type *						const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
@@ -53,7 +53,7 @@ namespace ft {
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(_capacity, 0);
-					for (value_type i = 0; i < _capacity; i++)
+					for (size_type i = 0; i < this->_capacity; i++)
 						this->_tab[i] = v._tab[i];
 				}
 				else
@@ -78,7 +78,7 @@ namespace ft {
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
 					this->_alloc.construct(this->_tab, this->_capacity);
-					for (value_type i = 0; i < _capacity; i++)
+					for (size_type i = 0; i < _capacity; i++)
 					{
 						this->_tab[i] = value;
 					}
@@ -100,9 +100,9 @@ namespace ft {
 
 			vector &	operator=( const vector & );
 			//ITERATORS
-			iterator				begin( void ) { return (*;
+			iterator				begin( void ) { return (this->_tab[0]); };
 			const_iterator			begin( void ) const;
-			iterator				end( void );
+			iterator				end( void ) { return (this->_tab[this->_size]); };
 			const_iterator			end( void ) const;
 			reverse_iterator		rbegin( void );
 			const_reverse_iterator	rbegin( void ) const;
@@ -114,11 +114,11 @@ namespace ft {
 			const_reverse_iterator	crend( void ) const;
 
 			//CAPACITY
-			size_type				size( void ) const;
+			size_type				size( void ) const { return (this->_size); };
 			size_type				max_size( void ) const;
 			void					resize(size_type n, value_type val = value_type());
-			size_type				capacity( void ) const;
-			bool					empty( void ) const;
+			size_type				capacity( void ) const { return (this->_capacity); };
+			bool					empty( void ) const { return (this->_size > 0 ? true : false); } ;
 			void					reserve (size_type n);
 
 			//ELEMENT ACCESS
