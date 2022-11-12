@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2022/11/11 14:23:20 by nflan            ###   ########.fr        #
+#    Updated: 2022/11/12 13:05:52 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ INC_DIR =		incs/
 OBJ_DIR =		obj
 SRC_DIR =		srcs
 
-INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), vector stack))
+INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), vector stack iterator tools))
 SRC =			$(SRC_FT:%=$(SRC_DIR)/%.cpp)
 OBJ =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 

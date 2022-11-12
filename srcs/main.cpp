@@ -6,20 +6,55 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/11 16:08:47 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/12 13:10:08 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "../incs/vector.hpp"
+#include "../incs/vector.hpp"
 #include "../incs/stack.hpp"
+#include "../incs/iterator.hpp"
+#include "../incs/tools.hpp"
 #include <iostream>
 #include <stack>
 #include <string>
 
 using namespace ft;
 
+void	dostack();
+
+int	main( int ac, char **av )
+{
+	int	i = 0;
+	if (ac != 2)
+		return (std::cout << "nb args invalid" << std::endl, 1);
+	std::string	arg = av[1];
+	for (std::string::iterator it = arg.begin(); it != arg.end(); it++)
+		*it = std::tolower(*it);
+	std::string	type[] = { "stack", "vector", "map" };
+	for (i = 0; i < 3; i++)
+		if (type[i] == arg)
+			break;
+	switch (i)
+	{
+		case (0):
+			dostack();
+			break;
+		case (1):
+			std::cout << arg << std::endl;
+			break;
+		case (2):
+			std::cout << arg << std::endl;
+			break;
+		case (3):
+			return (std::cout << "Container '" << arg << "' not found" << std::endl, 1);
+			break;
+	}
+
+	return (0);
+}
+
 //STACK
-int	main( void )
+void	dostack( void )
 {
 	std::cout << "Creation stack<int> c1" << std::endl << std::endl;
 	::stack<int> c1;
@@ -95,6 +130,4 @@ int	main( void )
 	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
 	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
 	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
-
-	return (0);
 }

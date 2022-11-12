@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/08 16:42:16 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/12 13:54:42 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,85 +14,77 @@
 #define VECTOR_HPP
 #include <memory>
 #include <iostream>
+#include "tools.hpp"
 
 namespace ft {
 
 	template < class T, class Allocator = std::allocator<T> >
 	class vector {
 		public:
-			typedef T					value_type;
-			typedef T					size_type;
-			typedef value_type *		pointer;
-			typedef value_type *		iterator;
-			typedef value_type *		reverse_iterator;
-			typedef const value_type *	const_iterator;
-			typedef const value_type *	const_reverse_iterator;
-			typedef value_type &		reference;
-			typedef const value_type &	const_reference;
-			typedef Allocator			allocator_type;
+			typedef T										value_type;
+			typedef Allocator								allocator_type;
+			typedef std::size_t								size_type;
+			typedef std::ptrdiff_t							difference_type;
+			typedef value_type &							reference;
+			typedef const value_type &						const_reference;
+			typedef Allocator::pointer						pointer;
+			typedef Allocator::const_pointer				pointer;
+			typedef value_type *							iterator;
+			typedef const value_type *						const_iterator;
+			typedef std::reverse_iterator<iterator>			reverse_iterator;
+			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Default
 			vector( void )
 			{ 
 				std::cout << "Void constructor" << std::endl;
-				_tab = NULL;
-				_capacity = 1;
-				_size = 0;
+				this->_tab = NULL;
+				this->_capacity = 1;
+				this->_size = 0;
 			}
 			//Copy
 			//pointer allocate( size_type n, const void * hint = 0 );
 			vector( const vector & v )
 			{
 				std::cout << "Const vector & v constructor" << std::endl;
-				_size = v._size;
-				_capacity = v._capacity;
-				_alloc = v._alloc;
-				if (_capacity)
+				this->_size = v._size;
+				this->_capacity = v._capacity;
+				this->_alloc = v._alloc;
+				if (this->_capacity)
 				{
-					try
-					{
-						_tab = Allocator::allocate(_capacity, 0);
-					}
-					catch ( std::exception & e )
-					{
-						std::cerr << e.what() << " in vector( const vector & v )" << std::endl;
-					}
+					this->_tab = this->_alloc.allocate(_capacity, 0);
 					for (value_type i = 0; i < _capacity; i++)
-						_tab[i] = v._tab[i];
+						this->_tab[i] = v._tab[i];
 				}
 				else
-					_tab = NULL;
+					this->_tab = NULL;
 			}
 			//OSCOURRRRRRRRRRR
 			explicit vector( const Allocator & alloc )
 			{
 				std::cout << "const Allocator & alloc constructor" << std::endl;
-				_tab = NULL;
-				_capacity = 1;
-				_size = 0;
-				_alloc = alloc;
+				this->_tab = NULL;
+				this->_capacity = 1;
+				this->_size = 0;
+				this->_alloc = alloc;
 			}
 			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 			{
 				std::cout << "size_type count, const T& value = T(), const Allocator& alloc = Allocator() constructor" << std::endl;
-				_size = count;
-				_capacity = count * 2;
-				_alloc = alloc;
-				if (_capacity)
+				this->_size = count;
+				this->_capacity = count * 2;
+				this->_alloc = alloc;
+				if (this->_capacity)
 				{
-					try
-					{
-						_tab = Allocator::allocate(_capacity, 0);
-					}
-					catch ( std::exception & e )
-					{
-						std::cerr << e.what() << " in vector(size_type countm const T& value = T(), const Allocator& alloc = Allocator())" << std::endl;
-					}
+					this->_tab = this->_alloc.allocate(this->_capacity, 0);
+					this->_alloc.construct(this->_tab, this->_capacity);
 					for (value_type i = 0; i < _capacity; i++)
-						_tab[i] = value;
+					{
+						this->_tab[i] = value;
+					}
 				}
 				else
-					_tab = NULL;
+					this->_tab = NULL;
 			}
 			//Range
 			template< class InputIt >
@@ -102,13 +94,13 @@ namespace ft {
 				}
 			~vector( void )
 			{
-				delete [] _tab;
+				delete [] this->_tab;
 				std::cout << "Destructor called" << std::endl;
 			}
 
 			vector &	operator=( const vector & );
 			//ITERATORS
-			iterator				begin( void );
+			iterator				begin( void ) { return (*;
 			const_iterator			begin( void ) const;
 			iterator				end( void );
 			const_iterator			end( void ) const;
@@ -143,19 +135,26 @@ namespace ft {
 
 			//MODIFIERS
 			template <class InputIterator>
-				void				assign(InputIterator first, InputIterator last);
+			void					assign(InputIterator first, InputIterator last);
 			void					assign(size_type n, const value_type& val);
 			void					push_back(const value_type& val);
 			void					pop_back( void );
 			iterator				insert(iterator position, const value_type& val);
 			void					insert(iterator position, size_type n, const value_type& val);
 			template <class InputIterator>
-				void				insert(iterator position, InputIterator first, InputIterator last);
+			void					insert(iterator position, InputIterator first, InputIterator last);
 			void					swap(vector& x);
 			void					clear( void );
 
 			//ALLOCATOR
-			allocator_type						get_allocator( void ) const;
+			allocator_type			get_allocator( void ) const;
+
+			friend bool	operator==( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+			friend bool	operator!=( const vector< T, Allocator >& lhs, const vector< T,Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+			friend bool	operator<( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+			friend bool	operator<=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+			friend bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+			friend bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 
 		private:
 			value_type *	_tab;
@@ -164,18 +163,18 @@ namespace ft {
 			Allocator		_alloc;
 		};
 
-	template< class T, class Alloc >
-	bool operator==( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
-	template< class T, class Alloc >
-	bool operator!=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
-	template< class T, class Alloc >
-	bool operator<( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
-	template< class T, class Alloc >
-	bool operator<=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
-	template< class T, class Alloc >
-	bool operator>( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
-	template< class T, class Alloc >
-	bool operator>=( const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs );
+	template< class T, class Allocator >
+	bool	operator==( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
+	template< class T, class Allocator >
+	bool	operator!=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
+	template< class T, class Allocator >
+	bool	operator<( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
+	template< class T, class Allocator >
+	bool	operator<=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
+	template< class T, class Allocator >
+	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
+	template< class T, class Allocator >
+	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs );
 };
 
 #endif
