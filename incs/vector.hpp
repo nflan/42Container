@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/12 16:52:43 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/14 18:17:14 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,34 +35,30 @@ namespace ft {
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Default
-			vector( void )
+			vector( void ): _tab(NULL), _capacity(0), _size(0)
 			{ 
-				std::cout << "Void constructor" << std::endl;
-				this->_tab = NULL;
-				this->_capacity = 1;
-				this->_size = 0;
+	//			std::cout << "Void constructor" << std::endl;
 			}
 			//Copy
 			//pointer allocate( size_type n, const void * hint = 0 );
 			vector( const vector & v )
 			{
-				std::cout << "Const vector & v constructor" << std::endl;
+	//			std::cout << "Const vector & v constructor" << std::endl;
 				this->_size = v._size;
 				this->_capacity = v._capacity;
 				this->_alloc = v._alloc;
+				this->_tab = NULL;
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(_capacity, 0);
 					for (size_type i = 0; i < this->_capacity; i++)
-						this->_tab[i] = v._tab[i];
+						this->_alloc.construct(&this->_tab[i], v._tab[i]);
 				}
-				else
-					this->_tab = NULL;
 			}
 			//OSCOURRRRRRRRRRR
 			explicit vector( const Allocator & alloc )
 			{
-				std::cout << "const Allocator & alloc constructor" << std::endl;
+	//			std::cout << "const Allocator & alloc constructor" << std::endl;
 				this->_tab = NULL;
 				this->_capacity = 1;
 				this->_size = 0;
@@ -74,80 +70,179 @@ namespace ft {
 				this->_size = count;
 				this->_capacity = count * 2;
 				this->_alloc = alloc;
+				this->_tab = NULL;
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
-					this->_alloc.construct(this->_tab, this->_capacity);
-					for (size_type i = 0; i < _capacity; i++)
-					{
-						this->_tab[i] = value;
-					}
+					for (size_type i = 0; i < this->_capacity; i++)
+						this->_alloc.construct(&this->_tab[i], value);
 				}
-				else
-					this->_tab = NULL;
 			}
 			//Range
 			template< class InputIt >
-				vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
-				{
-					std::cout << "InputIT first, InputIt last, const Allocator& alloc = Allocator() constructor" << std::endl;
-				}
+			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
+			{
+	//			std::cout << "InputIT first, InputIt last, const Allocator& alloc = Allocator() constructor" << std::endl;
+			}
 			~vector( void )
 			{
-				delete [] this->_tab;
-				std::cout << "Destructor called" << std::endl;
+				for (size_type i = 0; i < this->size(); i++)
+					this->_alloc.destroy(&this->_tab[i]);
+				this->_alloc.destroy(this->_tab);
+				this->_alloc.deallocate(this->_tab, this->_capacity);
+	//			std::cout << "Destructor called" << std::endl;
 			}
 
-			vector &	operator=( const vector & );
+			vector &				operator=( const vector & other )
+			{
+				if (this == &other)
+					return (*this);
+				if (this->_tab)
+				{
+					for (size_type i = this->size(); i != 0; i--)
+						this->_alloc.destroy(&this->_tab[i]);
+					this->_alloc.deallocate(this->_tab, this->capacity());
+				}
+				this->_alloc = other._alloc;
+				this->_size = other._size;
+				this->_capacity = other._capacity;
+				this->_tab = this->_alloc.allocate(other._capacity, 0);
+				for (size_type i = 0; i <= this->size(); i++)
+					this->_alloc.construct(&this->_tab[i], other._tab[i]);
+				return (*this);
+			}
+			void					assign( size_type count, const T& value )
+			{
+				vector<T>	dest(count, value);
+				*this = dest;
+			}
+			template< class InputIt >
+			void					assign( InputIt first, InputIt last );
+			allocator_type			get_allocator( void ) const { return (this->_alloc); }
+
 			//ITERATORS
-			iterator				begin( void ) { return (this->_tab[0]); };
-			const_iterator			begin( void ) const;
-			iterator				end( void ) { return (this->_tab[this->_size]); };
-			const_iterator			end( void ) const;
-			reverse_iterator		rbegin( void );
-			const_reverse_iterator	rbegin( void ) const;
-			reverse_iterator		rend( void );
-			const_reverse_iterator	rend( void ) const;
-			const_iterator			cbegin( void ) const;
-			const_iterator			cend( void ) const;
-			const_reverse_iterator	crbegin( void ) const;
-			const_reverse_iterator	crend( void ) const;
+			iterator				begin( void ) { return (this->_tab[0]); }
+			const_iterator			begin( void ) const { return (const_cast<iterator>(&this->_tab[0])); }
+			iterator				end( void ) { return (&this->_tab[this->_size]); }
+			const_iterator			end( void ) const { return (const_cast<iterator>(&this->_tab[this->_size])); }
+			reverse_iterator		rbegin( void ) { return (this->_tab[this->_size - 1]); }
+			const_reverse_iterator	rbegin( void ) const { return (const_cast<reverse_iterator>(this->_tab[this->_size - 1])); }
+			reverse_iterator		rend( void ) { return (this->begin()); }
+			const_reverse_iterator	rend( void ) const { return (const_cast<reverse_iterator>(this->begin())); }
 
 			//CAPACITY
-			size_type				size( void ) const { return (this->_size); };
-			size_type				max_size( void ) const;
-			void					resize(size_type n, value_type val = value_type());
-			size_type				capacity( void ) const { return (this->_capacity); };
-			bool					empty( void ) const { return (this->_size > 0 ? true : false); } ;
-			void					reserve (size_type n);
+			size_type				size( void ) const { return (this->_size); }
+			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
+			size_type				capacity( void ) const { return (this->_capacity); }
+			bool					empty( void ) const { return (this->_size == 0 ? true : false ); }
+			void					reserve (size_type n)
+			{ 
+				if (n <= this->_capacity)
+					return ;
+				else if (n > this->max_size())
+					throw std::length_error();
+				this->_capacity += n - this->_capacity;
+				this->_alloc.allocate(this->_capacity, this->_tab);
+				this->_alloc.construct(this->_tab, this->_capacity);
+			};
 
 			//ELEMENT ACCESS
-			reference				operator[](size_type n);
-			const_reference			operator[](size_type n) const;
-			reference				at(size_type n);
-			const_reference			at(size_type n) const;
-			reference				front( void );
-			const_reference			front( void ) const;
-			reference				back( void );
-			const_reference			back( void ) const;
+			reference				at(size_type pos)
+			{
+				if (pos = 0 && pos < this->size())
+					return (this->_tab[pos]);
+				throw std::out_of_range();
+			}
+			const_reference			at(size_type pos) const
+			{
+				if (pos >= 0 && pos < this->size())
+					return (this->_tab[pos]);
+				throw std::out_of_range();
+			}
+			reference				operator[](size_type pos)
+			{
+				return (this->_tab[pos]);
+			}
+			const_reference			operator[](size_type pos) const
+			{
+				return (this->_tab[pos]);
+			}
+			reference				front( void )
+			{
+				if (this->size())
+					return (this->_tab[0]);
+				return (NULL);
+			}
+			const_reference			front( void ) const
+			{
+				if (this->size())
+					return (this->_tab[0]);
+				return (NULL);
+			}
+			reference				back( void )
+			{
+				if (this->size())
+					return (this->_tab[this->size()]);
+				return (*this->_tab);
+			}
+			const_reference			back( void ) const
+			{
+				if (this->size())
+					return (this->_tab[this->size()]);
+				return (NULL);
+			}
 			value_type*				data( void );
 			const value_type*		data( void ) const;
 
 			//MODIFIERS
-			template <class InputIterator>
-			void					assign(InputIterator first, InputIterator last);
-			void					assign(size_type n, const value_type& val);
-			void					push_back(const value_type& val);
-			void					pop_back( void );
+			void					clear( void );
 			iterator				insert(iterator position, const value_type& val);
 			void					insert(iterator position, size_type n, const value_type& val);
 			template <class InputIterator>
 			void					insert(iterator position, InputIterator first, InputIterator last);
+			iterator				erase( iterator pos )
+			{
+				iterator	it = pos + 1;
+				pos = NULL;
+				if (pos == this->end() - 1)
+					return (this->end());
+				return (it);
+			}
+			iterator				erase( iterator first, iterator last );
+			void					push_back(const value_type& val)
+			{
+				if (this->_size == this->_capacity)
+				{
+					if (!this->_tab)
+					{
+						this->_capacity++;
+						this->_tab = this->_alloc.allocate(this->capacity(), 0);
+					}
+					else
+					{
+						vector<T>	dest(this->capacity());
+						size_type	i = 0;
+						while (i < this->size())
+						{
+							dest._alloc.construct(&dest._tab[i], this->_tab[i]);
+							i++;
+						}
+						*this = dest;
+					}
+				}
+				this->_alloc.construct(&this->_tab[this->size()], val);
+				this->_size++;
+			}
+			void					pop_back( void )
+			{
+				if (this->_size)
+				{
+					this->_alloc.destroy(&this->_tab[this->size()]);
+					this->_size--;
+				}
+			}
+			void					resize( size_type count, T value = T() );
 			void					swap(vector& x);
-			void					clear( void );
-
-			//ALLOCATOR
-			allocator_type			get_allocator( void ) const;
 
 			friend bool	operator==( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
 			friend bool	operator!=( const vector< T, Allocator >& lhs, const vector< T,Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
