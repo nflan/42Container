@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/14 18:21:39 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/15 21:51:12 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <stack>
 #include <string>
 
-using namespace ft;
+#define	NAMESPACE ft
 
 void	dostack();
 void	dovector();
@@ -58,21 +58,21 @@ int	main( int ac, char **av )
 void	dovector( void )
 {
 	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
-	::vector<int> c1;
+	NAMESPACE::vector<int> c1;
 	std::cout << "c1 max_size = " << c1.max_size() << std::endl;
 	std::cout << "c1 Empty: " << (c1.empty() ? "true" : "false") << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << "push(5) on c1" << std::endl; 
-	c1.push_back(5);
+	c1.push_back(1);
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << "push(2) on c1" << std::endl; 
 	c1.push_back(2);
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << "push(2) on c1" << std::endl; 
-	c1.push_back(2);
+	std::cout << "push(3) on c1" << std::endl; 
+	c1.push_back(3);
 	std::cout << "c1[0] = " << c1[0] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
@@ -82,19 +82,31 @@ void	dovector( void )
 	std::cout << std::endl;
 
 	//ASSIGN
+	NAMESPACE::vector<int> c3(static_cast<size_t>(30), 20);
 	std::cout << "Assign tests" << std::endl;
-	std::cout << "c1 address = " << &c1 << " --> c1[1] = " << c1[1] << std::endl;
+	for (int i = 3; i < 11; i++)
+	{
+		std::cout << "push(" << i << ") on c1" << std::endl; 
+		c1.push_back(i);
+	}
+	for (int i = 0; i < 10; i++)
+		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+	std::cout << "c1 address = " << &c1 << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	c1.assign(static_cast<size_t>(1), 10);
-	std::cout << "c1 address = " << &c1 << " --> c1[1] = " << c1[1] << std::endl;
-	std::cout << "c1[29] = " << c1[29] << std::endl;
+	c1.assign(static_cast<size_t>(5), 2);
+	std::cout << "c1 address = " << &c1 << std::endl;
+	for (int i = 0; i < 10; i++)
+		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+	std::cout << "c1 reserve(20)" << std::endl;
+	c1.reserve(20);
+	std::cout << "c1[5] = " << c1[5] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
-	::vector<int> c2(c1);
+	NAMESPACE::vector<int> c2(c1);
 	std::cout << "c2 Empty: " << (c2.empty() ? "true" : "false") << std::endl;
 	std::cout << "push(5) on c2" << std::endl; 
 	c2.push_back(5);
@@ -122,8 +134,10 @@ void	dovector( void )
 //	std::cout << std::endl;
 
 //	Operators avec c1 > c2
-/*	std::cout << "push_back(5) on c2" << std::endl; 
+	std::cout << "push_back(5) on c2" << std::endl; 
 	c2.push_back(5);
+	std::cout << "push_back(6) on c2" << std::endl; 
+	c2.push_back(6);
 	std::cout << "c2 size = " << c2.size() << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
@@ -158,13 +172,13 @@ void	dovector( void )
 	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
 	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
 	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
-*/}
+}
 
 //STACK
 void	dostack( void )
 {
 	std::cout << "Creation stack<int> c1" << std::endl << std::endl;
-	::stack<int> c1;
+	NAMESPACE::stack<int> c1;
 	std::cout << "c1 Empty: " << (c1.empty() ? "true" : "false") << std::endl;
 	std::cout << "push(5) on c1" << std::endl; 
 	c1.push(5);
@@ -173,7 +187,7 @@ void	dostack( void )
 	std::cout << "c1 size = " << c1.size() << std::endl;
 
 	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
-	::stack<int> c2(c1);
+	NAMESPACE::stack<int> c2(c1);
 	std::cout << "c2 Empty: " << (c2.empty() ? "true" : "false") << std::endl;
 	std::cout << "push(5) on c2" << std::endl; 
 	c2.push(5);
