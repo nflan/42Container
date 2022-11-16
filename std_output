@@ -1,0 +1,108 @@
+Creation stack<int> c1 avec size = 0
+
+c1 max_size = 2305843009213693951
+c1 Empty: true
+c1 size = 0
+c1 capacity = 0
+push(5) on c1
+c1 size = 1
+c1 capacity = 1
+push(2) on c1
+c1 size = 2
+c1 capacity = 2
+push(3) on c1
+c1[0] = 1
+c1 size = 3
+c1 capacity = 4
+c1 size = 2
+c1 capacity = 4
+
+Assign tests
+push(3) on c1
+push(4) on c1
+push(5) on c1
+push(6) on c1
+push(7) on c1
+push(8) on c1
+push(9) on c1
+push(10) on c1
+ --> c1[0] = 1
+ --> c1[1] = 2
+ --> c1[2] = 3
+ --> c1[3] = 4
+ --> c1[4] = 5
+ --> c1[5] = 6
+ --> c1[6] = 7
+ --> c1[7] = 8
+ --> c1[8] = 9
+ --> c1[9] = 10
+c1 address = 0x7fffd7768340
+c1 size = 10
+c1 capacity = 16
+c1 address = 0x7fffd7768340
+ --> c1[0] = 2
+ --> c1[1] = 2
+ --> c1[2] = 2
+ --> c1[3] = 2
+ --> c1[4] = 2
+ --> c1[5] = 6
+ --> c1[6] = 7
+ --> c1[7] = 8
+ --> c1[8] = 9
+ --> c1[9] = 10
+c1 reserve(20)
+c1[5] = 0
+c1 size = 5
+c1 capacity = 20
+
+
+creation de c2 par copie de c1
+
+c2 Empty: false
+push(5) on c2
+c2 size = 6
+pop() on c2
+c2 size = 5
+pop() on c2
+c2 size = 4
+c1 size = 5
+pop() on c2
+c2 size = 3
+pop() on c2
+c2 size = 2
+
+Operators avec c1 == c2
+C2 = C1
+
+c2 size = 5
+c1 size = 5
+c1 == c2 ? true
+c1 != c2 ? false
+c1 < c2 ? false
+c1 <= c2 ? true
+c1 > c2 ? false
+c1 >= c2 ? true
+
+Operators avec c1 > c2
+pop() on c2
+
+c2 size = 4
+c1 size = 5
+c1 == c2 ? false
+c1 != c2 ? true
+c1 < c2 ? false
+c1 <= c2 ? false
+c1 > c2 ? true
+c1 >= c2 ? true
+
+Operators avec c1 < c2
+push_back(42) on c2
+
+c2 size = 5
+c1 size = 5
+c1 == c2 ? false
+c1 != c2 ? true
+c1 < c2 ? true
+c1 <= c2 ? true
+c1 > c2 ? false
+c1 >= c2 ? false

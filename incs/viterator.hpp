@@ -6,31 +6,35 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/15 19:31:40 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 14:57:41 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VITERATOR_HPP
 #define VITERATOR_HPP
 
+#include <iterator>
+
 namespace ft
 {
-	template<typename _Iterator, typename _Sequence>
-	class viterator
-	{
+	template<typename _Iterator>
+	class viterator {
 		public:
-			typedef _Iterator											iterator_type;
+			typedef _Iterator													iterator_type;
 			typedef typename std::iterator_traits<_Iterator>::iterator_category	iterator_category;
-			typedef typename std::iterator_traits<_Iterator>::value_type			value_type;
+			typedef typename std::iterator_traits<_Iterator>::value_type		value_type;
 			typedef typename std::iterator_traits<_Iterator>::difference_type	difference_type;
 			typedef typename std::iterator_traits<_Iterator>::reference			reference;
 			typedef typename std::iterator_traits<_Iterator>::pointer			pointer;
 
-			viterator(): _r() {};
-			viterator( const viterator & o )
+			viterator() {}
+			viterator( const viterator & o ) { *this = o; }
+
+	/*		bool	isConstant() const
 			{
-				*this = o;
-			}
+				typedef typename	_Sequence::const_iterator const_iterator;
+				return (std::__are_same<const_iterator, viterator>::__value);
+			}*/
 
 			viterator &	operator=( const viterator & o ) { if (this = &o) this->_r = o->_r; return (*this); }
 			reference	operator*( void ) const { return (*this->_r); }

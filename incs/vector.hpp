@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 13:15:19 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 18:07:47 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ namespace ft {
 			typedef Allocator								allocator_type;
 			typedef std::size_t								size_type;
 			typedef std::ptrdiff_t							difference_type;
-			typedef value_type &							reference;
-			typedef const value_type &						const_reference;
+			typedef typename Allocator::reference			reference;
+			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
+		//	typedef typename ft::viterator<T>				iterator;
+		//	typedef typename ft::viterator<T>				const_iterator;
 			typedef typename std::vector<T>::iterator		iterator;
-			typedef typename std::vector<T>::const_iterator	const_iterator;
+			typedef typename std::vector<T>::iterator		const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
@@ -136,10 +138,10 @@ namespace ft {
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
 
 			//ITERATORS
-			iterator				begin( void ) { return iterator(&this->_tab[0]); }
-			const_iterator			begin( void ) const { return const_iterator(&this->_tab[0]); }
-			iterator				end( void ) { return iterator(&this->_tab[this->size()]); }
-			const_iterator			end( void ) const { return const_iterator(&this->_tab[this->size()]); }
+			iterator				begin( void ) { return (iterator(this->_tab)); }
+			const_iterator			begin( void ) const { return (const_iterator(this->_tab)); }
+			iterator				end( void ) { return (iterator(this->_tab + this->size())); }
+			const_iterator			end( void ) const { return (const_iterator(this->_tab + this->size())); }
 			reverse_iterator		rbegin( void ) { return (this->end()); }
 			const_reverse_iterator	rbegin( void ) const { return (this->end()); }
 			reverse_iterator		rend( void ) { return (this->begin()); }
@@ -170,7 +172,7 @@ namespace ft {
 			//			dest._alloc.construct(&dest._tab[i], this->_tab[i]);
 				}
 				*this = dest;
-			};
+			}
 
 			//ELEMENT ACCESS
 			reference				at(size_type pos)
@@ -249,7 +251,7 @@ namespace ft {
 					}
 					else
 					{
-						vector<T>	dest(this->capacity());
+						vector<T, Allocator>	dest(this->capacity());
 						size_type	i = 0;
 						while (i < this->size())
 						{
@@ -279,20 +281,32 @@ namespace ft {
 			size_type		_capacity;
 			size_type		_size;
 			Allocator		_alloc;
-		};
+	};
 
 	template< class T, class Allocator >
-	bool	operator==( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator==( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )
+	{
+		if (lhs.size() != rhs.size())
+			return (false);
+		typename vector<T, Allocator>::iterator rt = rhs.begin();
+		for (typename vector<T, Allocator>::iterator lt = lhs.begin(); lt != lhs.end(); lt++, rt++)
+			if (*lt != *rt)
+				return (false);
+		return (true);
+	}
 	template< class T, class Allocator >
-	bool	operator!=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator!=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )
+	{
+		return (!(lhs == rhs));
+	}
 	template< class T, class Allocator >
-	bool	operator<( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator<( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) && lhs != rhs); }
 	template< class T, class Allocator >
-	bool	operator<=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator<=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()) || lhs == rhs); }
 	template< class T, class Allocator >
-	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) && lhs != rhs); }
 	template< class T, class Allocator >
-	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())); }
+	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) || lhs == rhs); }
 };
 
 #endif

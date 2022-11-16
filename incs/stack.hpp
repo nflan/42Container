@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:01:56 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/12 13:41:04 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 17:07:08 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define STACK_HPP
 
 #include <vector>
+#include "vector.hpp"
 /*
 			typedef T					value_type;
 			typedef T					size_type;
@@ -27,7 +28,7 @@
 			typedef Allocator			allocator_type;*/
 namespace ft
 {
-	template< class T, class Container = ft::vector<T> > class stack
+	template< class T, class Container = std::vector<T> > class stack
 	{
 		public:
 			typedef Container							container_type;

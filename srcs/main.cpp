@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 13:12:04 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 16:54:08 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 void	dostack();
 void	dovector();
+template< typename T >
+void	compare(T c1, T c2);
 
 int	main( int ac, char **av )
 {
@@ -100,7 +102,7 @@ void	dovector( void )
 		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
 	std::cout << "c1 reserve(20)" << std::endl;
 	c1.reserve(20);
-	std::cout << "c1[5] = " << c1[5] << std::endl;
+	std::cout << "c1[4] = " << c1[4] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << std::endl;
@@ -133,47 +135,36 @@ void	dovector( void )
 //	std::cout << "c1 top() = " << c1.top() << std::endl;
 //	std::cout << std::endl;
 
-//	Operators avec c1 > c2
-	std::cout << "push_back(5) on c2" << std::endl; 
-	c2.push_back(5);
-	std::cout << "push_back(6) on c2" << std::endl; 
-	c2.push_back(6);
-	std::cout << "c2 size = " << c2.size() << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "Operators avec c1 == c2" << std::endl;
+	c2 = c1;
+	compare(c1, c2);
+	
+	std::cout << "Operators avec c1 > c2" << std::endl;
+	c2.pop_back();
+	compare(c1, c2);
 
-//	Operators avec c1 == c2
-	std::cout << std::endl;
-	std::cout << "push_back(42) on c2" << std::endl; 
+	std::cout << "Operators avec c1 < c2" << std::endl;
 	c2.push_back(42);
-	std::cout << "c2 size = " << c2.size() << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	compare(c1, c2);
 
-//	Operators avec c1 < c2
-	std::cout << std::endl;
-	std::cout << "push_back(-42) on c2" << std::endl; 
-	c2.push_back(-42);
-	std::cout << "c2 size = " << c2.size() << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "Operators avec c1 == c2" << std::endl;
+	c2.pop_back();
+	c2.push_back(0);
+	compare(c1, c2);
 }
 
+template< typename T >
+void	compare(T c1, T c2)
+{
+	std::cout << std::endl;
+	std::cout << "c1 == c2 ?\t" << (c1 == c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 != c2 ?\t" << (c1 != c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 < c2 ?\t" << (c1 < c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 <= c2 ?\t" << (c1 <= c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 > c2 ?\t" << (c1 > c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 >= c2 ?\t" << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << std::endl;
+}
 //STACK
 void	dostack( void )
 {
@@ -214,41 +205,25 @@ void	dostack( void )
 	std::cout << "c1 top() = " << c1.top() << std::endl;
 	std::cout << std::endl;
 
-//	Operators avec c1 > c2
-	std::cout << "push(5) on c2" << std::endl; 
-	c2.push(5);
-	std::cout << "c2 size = " << c2.size() << std::endl;
+	std::cout << "Operators avec c1 == c2" << std::endl;
+	c2 = c1;
 	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "c2 size = " << c2.size() << std::endl;
+	compare(c1, c2);
 
-//	Operators avec c1 == c2
-	std::cout << std::endl;
-	std::cout << "push(42) on c2" << std::endl; 
-	c2.push(42);
-	std::cout << "c2 size = " << c2.size() << std::endl;
+	std::cout << "Operators avec c1 > c2" << std::endl;
+	std::cout << "pop on c2" << std::endl; 
+	c2.pop();
 	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "c2 size = " << c2.size() << std::endl;
+	compare(c1, c2);
 
-//	Operators avec c1 < c2
-	std::cout << std::endl;
-	std::cout << "push(-42) on c2" << std::endl; 
-	c2.push(-42);
-	std::cout << "c2 size = " << c2.size() << std::endl;
+	std::cout << "Operators avec c1 < c2" << std::endl;
+	std::cout << "push(2) on c2" << std::endl; 
+	c2.push(2);
+	std::cout << "push(2) on c2" << std::endl; 
+	c2.push(2);
 	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 == c2 ? " << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ? " << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ? " << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ? " << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ? " << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ? " << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "c2 size = " << c2.size() << std::endl;
+	compare(c1, c2);
 }
