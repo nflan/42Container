@@ -6,15 +6,14 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:19:00 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/15 21:04:57 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:10:51 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOOLS_HPP
 #define TOOLS_HPP
 
-#include "viterator.hpp"
-#include "vector.hpp"
+#include <iostream>
 
 namespace ft
 {
@@ -41,7 +40,7 @@ namespace ft
 			if (comp(*first2, *first1))
 				return (false);
 		}
-		return (first1 == last1) && (first2 != last2);
+		return ((first1 == last1) && (first2 != last2));
 	}
 };
 

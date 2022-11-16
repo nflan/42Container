@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/15 21:54:49 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/16 13:15:19 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft {
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 			typedef typename std::vector<T>::iterator		iterator;
-			typedef typename std::vector<T>::const_iterator		const_iterator;
+			typedef typename std::vector<T>::const_iterator	const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
@@ -100,8 +100,7 @@ namespace ft {
 					return (*this);
 				if (this->_tab)
 				{
-					for (size_type i = this->size(); i != 0; i--)
-						this->_alloc.destroy(&this->_tab[i]);
+					this->clear();
 					this->_alloc.deallocate(this->_tab, this->capacity());
 				}
 				this->_alloc = other._alloc;
