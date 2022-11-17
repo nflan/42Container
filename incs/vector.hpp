@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 18:07:47 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:25:52 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iterator>
 #include "tools.hpp"
 #include "viterator.hpp"
+#include "const_viterator.hpp"
 
 namespace ft {
 
@@ -32,50 +33,28 @@ namespace ft {
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-		//	typedef typename ft::viterator<T>				iterator;
-		//	typedef typename ft::viterator<T>				const_iterator;
-			typedef typename std::vector<T>::iterator		iterator;
-			typedef typename std::vector<T>::iterator		const_iterator;
+			typedef typename ft::viterator<pointer, vector>			iterator;
+			typedef typename ft::const_viterator<pointer, vector>	const_iterator;
+		//	typedef typename std::vector<T>::iterator		iterator;
+		//	typedef typename std::vector<T>::iterator		const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Default
-			vector( void ): _tab(NULL), _capacity(0), _size(0)
-			{ 
-	//			std::cout << "Void constructor" << std::endl;
-			}
+			vector( void ): _tab(NULL), _capacity(0), _size(0), _alloc(Allocator()) {}
 			//Copy
-			//pointer allocate( size_type n, const void * hint = 0 );
-			vector( const vector & v )
+			vector( const vector & v ): _tab(NULL), _capacity(v._capacity), _size(v._size), _alloc(v._alloc)
 			{
-	//			std::cout << "Const vector & v constructor" << std::endl;
-				this->_size = v._size;
-				this->_capacity = v._capacity;
-				this->_alloc = v._alloc;
-				this->_tab = NULL;
 				if (this->_capacity)
 				{
-					this->_tab = this->_alloc.allocate(_capacity, 0);
+					this->_tab = this->_alloc.allocate(this->_capacity, 0);
 					for (size_type i = 0; i < this->_capacity; i++)
 						this->_alloc.construct(&this->_tab[i], v._tab[i]);
 				}
 			}
-			//OSCOURRRRRRRRRRR
-			explicit vector( const Allocator & alloc )
+			explicit vector( const Allocator & alloc ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc) {}
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): _tab(NULL), _capacity(count * 2), _size(count), _alloc(alloc)
 			{
-				std::cout << "const Allocator & alloc constructor" << std::endl;
-				this->_tab = NULL;
-				this->_capacity = 0;
-				this->_size = 0;
-				this->_alloc = alloc;
-			}
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-			{
-				std::cout << "size_type count, const T& value = T(), const Allocator& alloc = Allocator() constructor" << std::endl;
-				this->_size = count;
-				this->_capacity = count * 2;
-				this->_alloc = alloc;
-				this->_tab = NULL;
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
@@ -108,7 +87,7 @@ namespace ft {
 				this->_alloc = other._alloc;
 				this->_size = other._size;
 				this->_capacity = other._capacity;
-				this->_tab = this->_alloc.allocate(other._capacity, 0);
+				this->_tab = this->_alloc.allocate(this->capacity(), 0);
 				for (size_type i = 0; i < this->capacity(); i++)
 					this->_alloc.construct(&this->_tab[i], other._tab[i]);
 				return (*this);
@@ -138,10 +117,10 @@ namespace ft {
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
 
 			//ITERATORS
-			iterator				begin( void ) { return (iterator(this->_tab)); }
-			const_iterator			begin( void ) const { return (const_iterator(this->_tab)); }
-			iterator				end( void ) { return (iterator(this->_tab + this->size())); }
-			const_iterator			end( void ) const { return (const_iterator(this->_tab + this->size())); }
+			iterator				begin( void ) { return (iterator(this->data())); }
+			const_iterator			begin( void ) const { return (this->data()); }
+			iterator				end( void ) { return (iterator(this->data() + this->size())); }
+			const_iterator			end( void ) const { return (const_iterator(this->data() + this->size())); }
 			reverse_iterator		rbegin( void ) { return (this->end()); }
 			const_reverse_iterator	rbegin( void ) const { return (this->end()); }
 			reverse_iterator		rend( void ) { return (this->begin()); }
@@ -159,17 +138,18 @@ namespace ft {
 				else if (n > this->max_size())
 					throw std::length_error("oscour");
 				vector<T>	dest(this->_alloc);
+			//	value_type *	tmp = NULL;
+			//	this->_capacity = n;
 				dest._size = this->size();
 				dest._capacity = n;
-				dest._tab = NULL;
 				if (dest.capacity())
 				{
-			//		size_type	i = 0;
-					dest._tab = dest._alloc.allocate(dest.capacity(), 0);
-			//		for (; i < dest.size(); i++)
-			//			dest._alloc.construct(&dest._tab[i], this->_tab[i]);
-			//		for (; i < dest.capacity() && i <= this->size(); i++)
-			//			dest._alloc.construct(&dest._tab[i], this->_tab[i]);
+					size_type	i = 0;
+					dest._tab= this->_alloc.allocate(dest.capacity(), 0);
+					for (; i < dest.size(); i++)
+						this->_alloc.construct(&dest._tab[i], this->_tab[i]);
+					for (; i < dest.capacity() && i <= this->size(); i++)
+						this->_alloc.construct(&dest._tab[i], this->_tab[i]);
 				}
 				*this = dest;
 			}
@@ -177,7 +157,7 @@ namespace ft {
 			//ELEMENT ACCESS
 			reference				at(size_type pos)
 			{
-				if (pos = 0 && pos < this->size())
+				if (pos >= 0 && pos < this->size())
 					return (this->_tab[pos]);
 				throw std::out_of_range();
 			}
@@ -213,15 +193,17 @@ namespace ft {
 					return (this->_tab[this->size()]);
 				return (NULL);
 			}
-			value_type*				data( void );
-			const value_type*		data( void ) const;
+			value_type*				data( void ) { return (this->_tab); }
+			const value_type*		data( void ) const { return (this->_tab); }
 
 			//MODIFIERS
 			void					clear( void )
 			{
-				for (size_type i = this->size(); i; i--)
-					this->_alloc.destroy(&this->_tab[i]);
-				this->_size = 0;
+				while (this->_size)
+				{
+					this->_alloc.destroy(&this->_tab[this->size()]);
+					this->_size--;
+				}
 			}
 			iterator				insert(iterator position, const value_type& val);
 			void					insert(iterator position, size_type n, const value_type& val);
@@ -250,15 +232,23 @@ namespace ft {
 						this->_tab = this->_alloc.allocate(this->capacity(), 0);
 					}
 					else
-					{
+				/*	{
 						vector<T, Allocator>	dest(this->capacity());
-						size_type	i = 0;
-						while (i < this->size())
-						{
+						for (size_type i = 0; i < this->size(); i++)
 							dest._alloc.construct(&dest._tab[i], this->_tab[i]);
-							i++;
-						}
 						*this = dest;
+					}
+				*/	{
+						value_type *	tmp;
+						tmp = this->_alloc.allocate(this->capacity() * 2, 0);
+						for (size_type i = 0; i < this->size(); i++)
+						{
+							this->_alloc.construct(&tmp[i], this->_tab[i]);
+							this->_alloc.destroy(&this->_tab[i]);
+						}
+						this->_alloc.deallocate(this->_tab, this->_capacity);
+						this->_capacity *= 2;
+						this->_tab = tmp;
 					}
 				}
 				this->_alloc.construct(&this->_tab[this->size()], val);

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 16:54:08 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/17 14:58:05 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	dovector( void )
 	std::cout << "c1 Empty: " << (c1.empty() ? "true" : "false") << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << "push(5) on c1" << std::endl; 
+	std::cout << "push(1) on c1" << std::endl; 
 	c1.push_back(1);
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
@@ -158,11 +158,11 @@ void	compare(T c1, T c2)
 {
 	std::cout << std::endl;
 	std::cout << "c1 == c2 ?\t" << (c1 == c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 != c2 ?\t" << (c1 != c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 < c2 ?\t" << (c1 < c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 <= c2 ?\t" << (c1 <= c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 > c2 ?\t" << (c1 > c2 ? "true" : "false") << std::endl;
-	std::cout << "c1 >= c2 ?\t" << (c1 >= c2 ? "true" : "false") << std::endl;
+//	std::cout << "c1 != c2 ?\t" << (c1 != c2 ? "true" : "false") << std::endl;
+//	std::cout << "c1 < c2 ?\t" << (c1 < c2 ? "true" : "false") << std::endl;
+//	std::cout << "c1 <= c2 ?\t" << (c1 <= c2 ? "true" : "false") << std::endl;
+//	std::cout << "c1 > c2 ?\t" << (c1 > c2 ? "true" : "false") << std::endl;
+//	std::cout << "c1 >= c2 ?\t" << (c1 >= c2 ? "true" : "false") << std::endl;
 	std::cout << std::endl;
 }
 //STACK

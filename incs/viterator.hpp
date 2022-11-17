@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 14:57:41 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/17 17:30:57 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 #define VITERATOR_HPP
 
 #include <iterator>
+#include "iterator.hpp"
+
+#include <iostream>
 
 namespace ft
 {
-	template<typename _Iterator>
+	template< class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T& >
 	class viterator {
+		//	typedef std::iterator_traits<T> _Traits;
 		public:
-			typedef _Iterator													iterator_type;
-			typedef typename std::iterator_traits<_Iterator>::iterator_category	iterator_category;
-			typedef typename std::iterator_traits<_Iterator>::value_type		value_type;
-			typedef typename std::iterator_traits<_Iterator>::difference_type	difference_type;
-			typedef typename std::iterator_traits<_Iterator>::reference			reference;
-			typedef typename std::iterator_traits<_Iterator>::pointer			pointer;
+			typedef T			value_type;
+			typedef Category	iterator_category;
+			typedef Distance	difference_type;
+			typedef Reference	reference;
+			typedef Pointer		pointer;
 
 			viterator() {}
-			viterator( const viterator & o ) { *this = o; }
+			viterator( const viterator & o ): _r(o._r) {}
 
 	/*		bool	isConstant() const
 			{
@@ -36,7 +39,13 @@ namespace ft
 				return (std::__are_same<const_iterator, viterator>::__value);
 			}*/
 
-			viterator &	operator=( const viterator & o ) { if (this = &o) this->_r = o->_r; return (*this); }
+			viterator &	operator=( const viterator & o )
+			{
+				std::cout << "oui ?" << std::endl;
+				if (this != &o)
+					this->_r = o._r;
+				return (*this);
+			}
 			reference	operator*( void ) const { return (*this->_r); }
 			pointer		operator->( void ) const { return (&*this->_r); }
 			
@@ -61,12 +70,15 @@ namespace ft
 			viterator &	operator-=( const difference_type& n ) { this->_r -= n; return (*this); }
 			viterator	operator-( const difference_type& n) const { return (tmp(this->_r - n)); }
 
-			_Iterator	base( void ) const { return (this->_r); }
+
+			pointer	base( void ) const { return (this->_r); }
 			
 
 		private:
-			_Iterator	_r;
+			pointer	_r;
 	};
+	template<typename _Iterator, typename _Sequence>
+	bool	operator!=(const viterator<_Iterator, _Sequence>& lhs, const viterator<_Iterator, _Sequence>& rhs) { return (lhs.base() != rhs.base); }
 };
 
 #endif
