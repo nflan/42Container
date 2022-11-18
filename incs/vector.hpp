@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/18 16:23:03 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/18 19:17:07 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ namespace ft {
 				}
 			}
 			explicit vector( const Allocator & alloc ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc) {}
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): _tab(NULL), _capacity(count * 2), _size(count), _alloc(alloc)
+			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): _tab(NULL), _capacity(count), _size(count), _alloc(alloc)
 			{
 				if (this->_capacity)
 				{
@@ -68,8 +68,8 @@ namespace ft {
 			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
 			{
 	//			std::cout << "InputIT first, InputIt last, const Allocator& alloc = Allocator() constructor" << std::endl;
-				InputIt	tmp = first;
-				difference_type	dif = 0;
+				InputIt		tmp = first;
+				size_type	dif = 0;
 				while (tmp != last)
 				{
 					tmp++;
@@ -85,7 +85,7 @@ namespace ft {
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
 					for (size_type i = 0; tmp != last; i++)
 					{
-						this->_alloc.construct(&this->_tab[i], *tmp);
+						this->_alloc.construct(this->_tab + i, *tmp);
 						tmp++;
 					}
 				}
@@ -120,29 +120,50 @@ namespace ft {
 			}
 			void					assign( size_type count, const T& value )
 			{
-				pointer	tmp = NULL;
+				for (size_type i = 0; i < this->size(); i++)
+						this->_alloc.destroy(&this->_tab[i]);
 				this->_size = count;
 				if (this->capacity() < count)
 				{
-					size_type i = 0;
+					this->_alloc.deallocate(this->_tab, this->_capacity);
+					this->_tab = this->_alloc.allocate(count, 0);
+					for (size_type i = 0; i < count; i++)
+						this->_alloc.construct(&this->_tab[i], value);
 					this->_capacity = count;
-					tmp = this->_alloc.allocate(this->capacity(), 0);
-					for (; i < count; i++)
-						this->_alloc.construct(&tmp[i], value);
-					this->_tab = tmp;
 				}
-				else if (this->capacity() && this->capacity() > count)
+				else if (this->capacity() && this->capacity() >= count)
 				{
 					for (size_type i = 0; i < count; i++)
-					{
-						this->_alloc.destroy(&this->_tab[i]);
 						this->_alloc.construct(&this->_tab[i], value);
-					}
 				}
 			}
-			template< class InputIt >
 			//peut pas le faire avant les iterators // check diff aussi
-			void					assign( InputIt first, InputIt last );
+			template< class InputIt >
+			void					assign( InputIt first, InputIt last )
+			{
+				InputIt		tmp = first;
+				size_type	dif = 0;
+				while (tmp != last)
+				{
+					tmp++;
+					dif++;
+				}
+				tmp = first;
+				for (size_type i = 0; i < this->size(); i++)
+						this->_alloc.destroy(&this->_tab[i]);
+				if (this->capacity() < dif)
+				{
+					this->_alloc.deallocate(this->_tab, this->capacity());
+					this->_tab = this->_alloc.allocate(dif, 0);
+					for (size_type i = 0; tmp != last; i++, tmp++)
+						this->_alloc.construct(&this->_tab[i], *tmp);
+					this->_capacity = dif;
+				}
+				else
+					for (size_type i = 0; tmp != last; i++, tmp++)
+						this->_alloc.construct(&this->_tab[i], *tmp);
+				this->_size = dif;
+			}
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
 
 			//ITERATORS
@@ -236,17 +257,40 @@ namespace ft {
 			void					insert(iterator position, InputIterator first, InputIterator last);
 			iterator				erase( iterator pos )
 			{
-//				iterator	tmp = pos;
-				iterator	ret = pos + 1;
-
-				for (iterator it = pos + 1; it != this->end(); it++, pos++)
-					pos = it;
-				if (pos == this->end() - 1)
-					return (this->end());
-				//this->_alloc.destroy(&tmp);
-				return (ret);
+				if (pos == this->end())
+					return (pos);
+				iterator	tmp = pos;
+				while (pos != this->end() - 1)
+				{
+					this->_alloc.destroy(&*pos);
+					pos += 1;
+				//	*pos = *(pos + 1);
+				//	pos++;
+				}
+		//		this->_alloc.destroy(&*pos);
+				this->_size--;
+				return (tmp);
 			}
-			iterator				erase( iterator first, iterator last );
+			iterator				erase( iterator first, iterator last )
+			{
+				iterator	tmp = first;
+				while (first != last)
+				{
+					*tmp = *first;
+					this->_alloc.destroy(&*first);
+					first += 1;
+					this->_size--;
+				}
+				size_type i = this->_size;
+				while (i)
+				{
+					*tmp = *(first);
+					i--;
+					tmp++;
+					first++;
+				}
+				return (last - 1);
+			}
 			void					push_back(const value_type& val)
 			{
 				if (this->_size == this->_capacity)
@@ -257,13 +301,7 @@ namespace ft {
 						this->_tab = this->_alloc.allocate(this->capacity(), 0);
 					}
 					else
-				/*	{
-						vector<T, Allocator>	dest(this->capacity());
-						for (size_type i = 0; i < this->size(); i++)
-							dest._alloc.construct(&dest._tab[i], this->_tab[i]);
-						*this = dest;
-					}
-				*/	{
+					{
 						pointer	tmp;
 						tmp = this->_alloc.allocate(this->capacity() * 2, 0);
 						for (size_type i = 0; i < this->size(); i++)

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/18 15:45:44 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/18 18:36:26 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	dovector( void )
 	//ASSIGN
 	//constructeur avec infos
 	NAMESPACE::vector<int> c3(static_cast<size_t>(30), 20);
+	std::cout << "c3 size = " << c3.size() << std::endl;
+	std::cout << "c3 capacity = " << c3.capacity() << std::endl;
 	std::cout << "Assign tests" << std::endl;
 	for (int i = 3; i < 11; i++)
 	{
@@ -123,6 +125,41 @@ void	dovector( void )
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << std::endl;
+	std::cout << "Assign avec iterators c3.begin et c3.begin+3" << std::endl;
+	for (int i = 0; i < 7; i++)
+		std::cout << " --> c3[" << i << "] = " << c3[i] << std::endl;
+	std::cout << "c3 size = " << c3.size() << std::endl;
+	std::cout << "c3 capacity = " << c3.capacity() << std::endl;
+	c1.assign(c3.begin(), c3.begin() + 3);
+	for (int i = 0; i < 7; i++)
+		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+	std::cout << "c1 size = " << c1.size() << std::endl;
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	std::cout << std::endl;
+
+	//ERASE
+	{
+		std::cout << "Test erase avec c2 = 012346789" << std::endl;
+		NAMESPACE::vector<int> c2;
+		for (int i = 0; i < 10; i++)
+		{
+			c2.push_back(i);
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		}
+		std::cout << "c2.erase begin + 2" << std::endl;
+		c2.erase(c2.begin() + 2);
+		for (size_t i = 0; i < c2.size(); i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		std::cout << "c2.erase begin + 2 to begin + 4" << std::endl;
+		c2.erase(c2.begin() + 2, c2.begin() + 4);
+		for (size_t i = 0; i < c2.size(); i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		std::cout << "c2.erase begin() to end()" << std::endl;
+		c2.erase(c2.begin(), c2.end());
+		for (size_t i = 0; i < c2.size(); i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		std::cout << std::endl;
+	}
 
 	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
 	//constructeur par copie
@@ -159,23 +196,6 @@ void	dovector( void )
 
 	std::cout << "Operators avec c1 == c2" << std::endl;
 	//surcharge d'operateur =
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	c1.push_back(5);
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
 	c2 = c1;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
