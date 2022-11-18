@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2022/11/12 13:05:52 by nflan            ###   ########.fr        #
+#    Updated: 2022/11/18 15:54:43 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,13 @@ NAME = Container
 
 INC_DIR =		incs/
 OBJ_DIR =		obj
+OBJ_DIR_STD =		obj_std
 SRC_DIR =		srcs
 
 INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), vector stack iterator tools))
 SRC =			$(SRC_FT:%=$(SRC_DIR)/%.cpp)
 OBJ =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
+OBJ_STD =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR_STD)%.o)
 
 CXX = c++ $(CXXFLAGS)
 
@@ -38,21 +40,30 @@ all: $(NAME)
 
 $(OBJ_DIR):
 	mkdir -p $@
+$(OBJ_DIR_STD):
+	mkdir -p $@
 
 $(OBJ) : $(INC) | $(OBJ_DIR)
+$(OBJ_STD) : $(INC) | $(OBJ_DIR_STD)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) -c $< -o $@
+$(OBJ_DIR_STD)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -D NAMESPACE=std -c $< -o $@
 
-$(NAME): $(OBJ_DIR) $(SRC) $(OBJ)
+$(NAME): $(OBJ_DIR) $(OBJ_DIR_STR) $(SRC) $(OBJ) $(OBJ_STD)
 	$(CXX) $(OBJ) -o $@
+	$(CXX) -D NAMESPACE=std $(OBJ_STD) -o $@_std
 
 clean:
 	@$(RM) $(OBJ_DIR)
+	@$(RM) $(OBJ_DIR_STD)
 	@echo "Cleaned object"
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) $(NAME)_std
+	@$(RM) ft_container std_container
 	@echo "Cleaned program"
 
 re: fclean all
@@ -85,5 +96,5 @@ coffee: all clean
 	@echo "\0033[1;32m\033[3C                    Take Your Coffee"
 	$(call print_aligned_coffee)
 
-.SECONDARY: $(OBJ) $(OBJ_DIR)
+.SECONDARY: $(OBJ) $(OBJ_DIR) $(OBJ_STD) $(OBJ_DIR_STD)
 .PHONY: all clean fclean re coffee

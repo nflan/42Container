@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/17 14:58:05 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/18 15:45:44 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 #include <stack>
 #include <string>
 
+#ifndef	NAMESPACE
 #define	NAMESPACE ft
+#endif
 
 void	dostack();
 void	dovector();
@@ -60,6 +62,7 @@ int	main( int ac, char **av )
 void	dovector( void )
 {
 	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
+	//Constructeur par defaut
 	NAMESPACE::vector<int> c1;
 	std::cout << "c1 max_size = " << c1.max_size() << std::endl;
 	std::cout << "c1 Empty: " << (c1.empty() ? "true" : "false") << std::endl;
@@ -78,12 +81,24 @@ void	dovector( void )
 	std::cout << "c1[0] = " << c1[0] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	c1.pop_back();
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+//	std::cout << "pop() on c1" << std::endl; 
+//	c1.pop_back();
+//	std::cout << "c1 size = " << c1.size() << std::endl;
+//	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << std::endl;
 
+	//constructeur par iterator
+	NAMESPACE::vector<int> c4(c1.begin() + 1, c1.end());
+	std::cout << "c4 size = " << c4.size() << std::endl;
+	std::cout << "c4 capacity = " << c4.capacity() << std::endl;
+	for (int i = 0; i < 2; i++)
+	{
+		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+		std::cout << " --> c4[" << i << "] = " << c4[i] << std::endl;
+	}
+
 	//ASSIGN
+	//constructeur avec infos
 	NAMESPACE::vector<int> c3(static_cast<size_t>(30), 20);
 	std::cout << "Assign tests" << std::endl;
 	for (int i = 3; i < 11; i++)
@@ -93,22 +108,29 @@ void	dovector( void )
 	}
 	for (int i = 0; i < 10; i++)
 		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
-	std::cout << "c1 address = " << &c1 << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	c1.assign(static_cast<size_t>(5), 2);
-	std::cout << "c1 address = " << &c1 << std::endl;
 	for (int i = 0; i < 10; i++)
 		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+	std::cout << "c1 size = " << c1.size() << std::endl;
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	//Reserve
 	std::cout << "c1 reserve(20)" << std::endl;
 	c1.reserve(20);
-	std::cout << "c1[4] = " << c1[4] << std::endl;
+	for (int i = 0; i < 10; i++)
+		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 	std::cout << std::endl;
 
 	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
+	//constructeur par copie
 	NAMESPACE::vector<int> c2(c1);
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	std::cout << "c1 size = " << c1.size() << std::endl;
+	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
+	std::cout << "c2 size = " << c2.size() << std::endl;
 	std::cout << "c2 Empty: " << (c2.empty() ? "true" : "false") << std::endl;
 	std::cout << "push(5) on c2" << std::endl; 
 	c2.push_back(5);
@@ -136,7 +158,27 @@ void	dovector( void )
 //	std::cout << std::endl;
 
 	std::cout << "Operators avec c1 == c2" << std::endl;
+	//surcharge d'operateur =
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	std::cout << "c1 size = " << c1.size() << std::endl;
+	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	c1.push_back(5);
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	std::cout << "c1 size = " << c1.size() << std::endl;
+	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
 	c2 = c1;
+	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+	std::cout << "c2 capacity = " << c2.capacity() << std::endl;
 	compare(c1, c2);
 	
 	std::cout << "Operators avec c1 > c2" << std::endl;
@@ -149,7 +191,7 @@ void	dovector( void )
 
 	std::cout << "Operators avec c1 == c2" << std::endl;
 	c2.pop_back();
-	c2.push_back(0);
+	c2.push_back(2);
 	compare(c1, c2);
 }
 
@@ -158,11 +200,11 @@ void	compare(T c1, T c2)
 {
 	std::cout << std::endl;
 	std::cout << "c1 == c2 ?\t" << (c1 == c2 ? "true" : "false") << std::endl;
-//	std::cout << "c1 != c2 ?\t" << (c1 != c2 ? "true" : "false") << std::endl;
-//	std::cout << "c1 < c2 ?\t" << (c1 < c2 ? "true" : "false") << std::endl;
-//	std::cout << "c1 <= c2 ?\t" << (c1 <= c2 ? "true" : "false") << std::endl;
-//	std::cout << "c1 > c2 ?\t" << (c1 > c2 ? "true" : "false") << std::endl;
-//	std::cout << "c1 >= c2 ?\t" << (c1 >= c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 != c2 ?\t" << (c1 != c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 < c2 ?\t" << (c1 < c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 <= c2 ?\t" << (c1 <= c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 > c2 ?\t" << (c1 > c2 ? "true" : "false") << std::endl;
+	std::cout << "c1 >= c2 ?\t" << (c1 >= c2 ? "true" : "false") << std::endl;
 	std::cout << std::endl;
 }
 //STACK
