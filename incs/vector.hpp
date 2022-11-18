@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/18 15:49:33 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/18 16:23:03 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ namespace ft {
 			{
 				this->clear();
 				this->_alloc.deallocate(this->_tab, this->_capacity);
-				std::cout << "Destructor called" << std::endl;
+		//		std::cout << "Destructor called" << std::endl;
 			}
 
 			vector &				operator=( const vector & other )
