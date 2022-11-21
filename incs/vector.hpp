@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/18 19:17:07 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/21 18:25:28 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,8 @@ namespace ft {
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
-					for (size_type i = 0; tmp != last; i++)
-					{
+					for (size_type i = 0; tmp != last; i++, tmp++)
 						this->_alloc.construct(this->_tab + i, *tmp);
-						tmp++;
-					}
 				}
 					
 			}
@@ -251,10 +248,42 @@ namespace ft {
 					this->_size--;
 				}
 			}
-			iterator				insert(iterator position, const value_type& val);
-			void					insert(iterator position, size_type n, const value_type& val);
-			template <class InputIterator>
-			void					insert(iterator position, InputIterator first, InputIterator last);
+			iterator insert( const_iterator pos, const T& value )
+			{
+				iterator	ite = this->end();
+				if (this->size() == this->capacity())
+				{
+					iterator	it = this->begin();
+					size_type	i = 0;
+					pointer	tab = this->_alloc.allocate(this->capacity() * 2, 0);
+					while (it++ != pos)
+					{
+						this->_alloc.construct(&tab[i], this->_tab[i]);
+						i++;
+					}
+					this->_alloc.construct(&tab[i], value);
+					while (pos++ != this->end() && ++i)
+						this->_alloc.construct(&tab[i], *pos);
+					this->_alloc.deallocate(this->_tab, this->capacity());
+					this->_capacity *= 2;
+					this->_tab = tab;
+				}
+				else
+				{
+					this->_alloc.construct(&this->_tab[this->size()], *(this->end() - 1));
+					while (ite != pos)
+					{
+						*ite = *(ite - 1);
+						ite--;
+					}
+					*ite = value;
+				}
+				this->_size++;
+				return (ite);
+			}
+			iterator insert( const_iterator pos, size_type count, const T& value ){ (void) count, (void) value; return (pos); }
+			template< class InputIt >
+			iterator insert( const_iterator pos, InputIt first, InputIt last ){ (void) first, (void) last; return (pos);}
 			iterator				erase( iterator pos )
 			{
 				if (pos == this->end())
@@ -262,34 +291,37 @@ namespace ft {
 				iterator	tmp = pos;
 				while (pos != this->end() - 1)
 				{
-					this->_alloc.destroy(&*pos);
-					pos += 1;
-				//	*pos = *(pos + 1);
-				//	pos++;
+					*pos = *(pos + 1);
+					pos++;
 				}
-		//		this->_alloc.destroy(&*pos);
+				this->_alloc.destroy(&*pos);
 				this->_size--;
 				return (tmp);
 			}
 			iterator				erase( iterator first, iterator last )
 			{
-				iterator	tmp = first;
-				while (first != last)
+				size_type	i = 0;
+				iterator	it = this->begin();
+
+				while (it != first)
+					it++;
+				while (it != last)
 				{
-					*tmp = *first;
-					this->_alloc.destroy(&*first);
-					first += 1;
+					*(first + i) = *(last + i);
+					it++;
+					i++;
+				}
+				while (last != this->end() && (last + i) != this->end())
+				{
+					*it++ = *(last + i);
+					last++;
+				}
+				while (i--)
+				{
 					this->_size--;
+					this->_alloc.destroy(&this->_tab[this->size()]);
 				}
-				size_type i = this->_size;
-				while (i)
-				{
-					*tmp = *(first);
-					i--;
-					tmp++;
-					first++;
-				}
-				return (last - 1);
+				return (first);
 			}
 			void					push_back(const value_type& val)
 			{

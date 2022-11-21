@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/18 18:36:26 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/21 18:16:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	main( int ac, char **av )
 //VECTOR
 void	dovector( void )
 {
-	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
+/*	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
 	//Constructeur par defaut
 	NAMESPACE::vector<int> c1;
 	std::cout << "c1 max_size = " << c1.max_size() << std::endl;
@@ -135,18 +135,19 @@ void	dovector( void )
 		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
 	std::cout << "c1 size = " << c1.size() << std::endl;
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
 	//ERASE
-	{
+/*	{
 		std::cout << "Test erase avec c2 = 012346789" << std::endl;
 		NAMESPACE::vector<int> c2;
-		for (int i = 0; i < 10; i++)
+		size_t	size = 10;
+		for (size_t i = 0; i < size; i++)
 		{
 			c2.push_back(i);
 			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
 		}
-		std::cout << "c2.erase begin + 2" << std::endl;
+		std::cout << "c2.erase begin() + 2" << std::endl;
 		c2.erase(c2.begin() + 2);
 		for (size_t i = 0; i < c2.size(); i++)
 			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
@@ -159,9 +160,35 @@ void	dovector( void )
 		for (size_t i = 0; i < c2.size(); i++)
 			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
 		std::cout << std::endl;
+	}*/
+	
+	//INSERT
+	{
+		std::cout << "Test insert avec c2 = 012346789" << std::endl;
+		NAMESPACE::vector<int> c2(6);
+		size_t	size = 5;
+		for (size_t i = 0; i < size; i++)
+		{
+			c2[i] = i;
+			c2.push_back(i + 5);
+		}
+		for (size_t i = 0; i < 10; i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		std::cout << "c2.insert(begin() + 2, 5)" << std::endl;
+		c2.insert(c2.begin() + 2, 5);
+		std::cout << "c2.capacity() = " << c2.capacity() << std::endl;
+		for (size_t i = 0; i < c2.size(); i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		std::cout << "c2.insert(end(), 100)" << std::endl;
+		c2.insert(c2.end(), 100);
+		std::cout << "c2.capacity() = " << c2.capacity() << std::endl;
+		for (size_t i = 0; i < c2.size(); i++)
+			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
+		
+
 	}
 
-	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
+/*	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
 	//constructeur par copie
 	NAMESPACE::vector<int> c2(c1);
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
@@ -212,7 +239,7 @@ void	dovector( void )
 	std::cout << "Operators avec c1 == c2" << std::endl;
 	c2.pop_back();
 	c2.push_back(2);
-	compare(c1, c2);
+	compare(c1, c2);*/
 }
 
 template< typename T >
