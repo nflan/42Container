@@ -13,72 +13,61 @@
 #ifndef VITERATOR_HPP
 #define VITERATOR_HPP
 
-#include <iterator>
 #include "iterator.hpp"
-
-#include <iostream>
 
 namespace ft
 {
-	template< class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T& >
+	template <typename T>
 	class viterator {
-		//	typedef std::iterator_traits<T> _Traits;
 		public:
-			typedef T			value_type;
-			typedef Category	iterator_category;
-			typedef Distance	difference_type;
-			typedef Reference	reference;
-			typedef Pointer		pointer;
-
+			typedef T						value_type;
+			typedef value_type&				reference;
+			typedef const value_type&		const_reference;
+			typedef value_type*				pointer;
+			typedef const value_type*		const_pointer;
+			typedef typename std::ptrdiff_t difference_type;
 			viterator() {}
 			viterator( const viterator & o ): _r(o._r) {}
 
-	/*		bool	isConstant() const
-			{
-				typedef typename	_Sequence::const_iterator const_iterator;
-				return (std::__are_same<const_iterator, viterator>::__value);
-			}*/
-
 			viterator &	operator=( const viterator & o )
 			{
-				std::cout << "oui ?" << std::endl;
 				if (this != &o)
-					this->_r = o._r;
+					this->_r = o.operator->();
 				return (*this);
 			}
 			reference	operator*( void ) const { return (*this->_r); }
-			pointer		operator->( void ) const { return (&*this->_r); }
+			pointer		operator->( void ) const { return (this->_r); }
+			reference	operator[]( difference_type b ) { return (*(_ptr + b)); };
+			const_reference	operator[]( difference_type b ) const { return (*(_ptr + b)); };
 			
 			viterator &	operator++( void ) { ++this->_r; return (*this); }
-			viterator	operator++( int ) { return (tmp(this->_r++)); }
-/*			viterator	operator++( int )
-			{
-				viterator	tmp(*this);
-				++this->_r;
-				return (tmp);
-			}
-*/			viterator &	operator--( void ) { --this->_r; return (*this); }
-			viterator	operator--( int ) { return (tmp(this->_r--)); }
-		//	{
-		//		viterator	tmp(*this);
-		//		--this->_r;
-		//		return (tmp);
-		//	}
+			viterator	operator++( int ) { return (viterator(this->_r++)); }
+			viterator &	operator--( void ) { --this->_r; return (*this); }
+			viterator	operator--( int ) { return (viterator(this->_r--)); }
 			reference	operator[]( const difference_type& n ) const { return (this->_r[n]); }
 			viterator &	operator+=( const difference_type& n ) { this->_r += n; return (*this); }
-			viterator	operator+( const difference_type& n ) const { return (tmp(this->_r + n)); }
+			viterator	operator+( const difference_type& n ) const { return (viterator(this->_r + n)); }
 			viterator &	operator-=( const difference_type& n ) { this->_r -= n; return (*this); }
-			viterator	operator-( const difference_type& n) const { return (tmp(this->_r - n)); }
-
+			viterator	operator-( const difference_type& n) const { return (viterator(this->_r - n)); }
 
 			pointer	base( void ) const { return (this->_r); }
-			
+			static const bool	input_iter = true;
 
 		private:
 			pointer	_r;
 	};
-	template<typename _Iterator, typename _Sequence>
-	bool	operator!=(const viterator<_Iterator, _Sequence>& lhs, const viterator<_Iterator, _Sequence>& rhs) { return (lhs.base() != rhs.base); }
+	template<typename T>
+	bool	operator!=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() != rhs.base); }
+	template<typename T>
+	bool	operator==(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() == rhs.base); }
+	template<typename T>
+	bool	operator<(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() < rhs.base); }
+	template<typename T>
+	bool	operator<=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() <= rhs.base); }
+	template<typename T>
+	bool	operator>(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() > rhs.base); }
+	template<typename T>
+	bool	operator>=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() >= rhs.base); }
 };
 
 #endif

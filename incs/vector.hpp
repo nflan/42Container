@@ -34,8 +34,8 @@ namespace ft {
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-		//	typedef typename ft::viterator<pointer, vector>			iterator;
-		//	typedef typename ft::const_viterator<pointer, vector>	const_iterator;
+		//	typedef typename ft::viterator<T>			iterator;
+		//	typedef typename ft::const_viterator<T>	const_iterator;
 			typedef typename std::vector<T>::iterator		iterator;
 			typedef typename std::vector<T>::iterator		const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
@@ -45,7 +45,7 @@ namespace ft {
 			vector( void ): _tab(NULL), _capacity(0), _size(0), _alloc(Allocator()) {}
 			//Copy
 			vector( const vector & v ): _tab(NULL), _capacity(v._size), _size(v._size), _alloc(v._alloc)
-			{
+			{ //init a 0 puis = ?
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
@@ -67,6 +67,7 @@ namespace ft {
 			template< class InputIt >
 			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
 			{
+				//init a 0 et push back de first a last...
 	//			std::cout << "InputIT first, InputIt last, const Allocator& alloc = Allocator() constructor" << std::endl;
 				InputIt		tmp = first;
 				size_type	dif = 0;
@@ -91,7 +92,8 @@ namespace ft {
 			~vector( void )
 			{
 				this->clear();
-				this->_alloc.deallocate(this->_tab, this->_capacity);
+				if (this->capacity())
+					this->_alloc.deallocate(this->_tab, this->_capacity);
 		//		std::cout << "Destructor called" << std::endl;
 			}
 
@@ -117,9 +119,11 @@ namespace ft {
 				for (size_type i = 0; i < other.size(); i++)
 					this->_alloc.construct(&this->_tab[i], other._tab[i]);
 				return (*this);
+				//on peut juste clear puis naviguer sur les iterators pour push back jusqu au end du other ?
 			}
 			void					assign( size_type count, const T& value )
 			{
+				// clear puis push back de value autant de fois que count?
 				for (size_type i = 0; i < this->size(); i++)
 						this->_alloc.destroy(&this->_tab[i]);
 				this->_size = count;
@@ -137,7 +141,6 @@ namespace ft {
 						this->_alloc.construct(&this->_tab[i], value);
 				}
 			}
-			//peut pas le faire avant les iterators // check diff aussi
 			template< class InputIt >
 			void					assign( InputIt first, InputIt last )
 			{
@@ -163,6 +166,7 @@ namespace ft {
 					for (size_type i = 0; tmp != last; i++, tmp++)
 						this->_alloc.construct(&this->_tab[i], *tmp);
 				this->_size = dif;
+				// pareil on peut faire un clear puis full push back ?
 			}
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
 
@@ -170,27 +174,25 @@ namespace ft {
 			iterator				begin( void ) { return (iterator(this->data())); }
 			const_iterator			begin( void ) const { return (const_iterator(this->_tab)); }
 			iterator				end( void ) { return (iterator(this->data() + this->size())); }
-			const_iterator			end( void ) const { return (const_iterator(&(this->_tab[this->size()]))); }
-			reverse_iterator		rbegin( void ) { return (this->end()); }
-			const_reverse_iterator	rbegin( void ) const { return (this->end()); }
-			reverse_iterator		rend( void ) { return (this->begin()); }
-			const_reverse_iterator	rend( void ) const { return (this->begin()); }
+			const_iterator			end( void ) const { return (const_iterator(this->data() + this->size())); }
+			reverse_iterator		rbegin( void ) { return (reverse_iterator(this->end() - 1)); }
+			const_reverse_iterator	rbegin( void ) const { return (this->rbegin()); }
+			reverse_iterator		rend( void ) { return (reverse_iterator(this->begin())); }
+			const_reverse_iterator	rend( void ) const { return (this->rend()); }
 
 			//CAPACITY
 			size_type				size( void ) const { return (this->_size); }
 			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
 			size_type				capacity( void ) const { return (this->_capacity); }
-			bool					empty( void ) const { return (this->_size == 0 ? true : false ); }
+			bool					empty( void ) const { return (this->_size ? false : true ); }
 			void					reserve (size_type n)
 			{ 
 				if (n <= this->_capacity)
 					return ;
 				else if (n > this->max_size())
 					throw std::length_error("Impossible to reserve this size");
-				pointer	tmp = NULL;
-				size_type	i = 0;
-				tmp = this->_alloc.allocate(n, 0);
-				for (; i < this->size(); i++)
+				pointer	tmp = this->_alloc.allocate(n, 0);
+				for (size_type i = 0; i < this->size(); i++)
 				{
 					this->_alloc.construct(&tmp[i], this->_tab[i]);
 					this->_alloc.destroy(&this->_tab[i]);
@@ -220,13 +222,13 @@ namespace ft {
 			reference				back( void )
 			{
 				if (this->size())
-					return (this->_tab[this->size()]);
+					return (this->_tab[this->size() - 1]);
 				return (this->_tab);
 			}
 			const_reference			back( void ) const
 			{
 				if (this->size())
-					return (this->_tab[this->size()]);
+					return (this->_tab[this->size() - 1]);
 				return (this->_tab);
 			}
 			value_type*				data( void ) { return (this->_tab); }
@@ -240,6 +242,7 @@ namespace ft {
 			}
 			iterator insert( const_iterator pos, const T& value )
 			{
+				//vector temporaire par iterator pour conserver les valeurs apres ce qu'on veut ajouter puis pop back, construct value, push back tmp??
 				iterator	ite = this->end();
 				if (this->size() == this->capacity())
 				{
