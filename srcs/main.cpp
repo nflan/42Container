@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/21 18:16:53 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/22 18:49:25 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,31 +161,86 @@ void	dovector( void )
 			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
 		std::cout << std::endl;
 	}*/
-	
+
 	//INSERT
 	{
 		std::cout << "Test insert avec c2 = 012346789" << std::endl;
-		NAMESPACE::vector<int> c2(6);
+		NAMESPACE::vector<int> c2(5);
 		size_t	size = 5;
 		for (size_t i = 0; i < size; i++)
 		{
 			c2[i] = i;
 			c2.push_back(i + 5);
 		}
-		for (size_t i = 0; i < 10; i++)
-			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
-		std::cout << "c2.insert(begin() + 2, 5)" << std::endl;
+		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 		c2.insert(c2.begin() + 2, 5);
-		std::cout << "c2.capacity() = " << c2.capacity() << std::endl;
-		for (size_t i = 0; i < c2.size(); i++)
-			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
-		std::cout << "c2.insert(end(), 100)" << std::endl;
+		std::cout << "c2.insert(begin() + 2, 5): " << c2 << std::endl;
+		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 		c2.insert(c2.end(), 100);
-		std::cout << "c2.capacity() = " << c2.capacity() << std::endl;
-		for (size_t i = 0; i < c2.size(); i++)
-			std::cout << " --> c2[" << i << "] = " << c2[i] << std::endl;
-		
+		std::cout << "c2.insert(end(), 100): " << c2 << std::endl;
+		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
+		c2.insert(c2.end() - 3, static_cast<size_t>(10), static_cast<const int>(-2));
+		std::cout << "c2.insert(c2.end() - 3, 10, -2): " << c2 << std::endl;
+		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+
+		
+		c2.insert(c2.end(), static_cast<size_t>(100), static_cast<const int>(100));
+		std::cout << "c2.insert(c2.end(), 2, 100): " << c2 << std::endl;
+		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+
+	}
+
+/*	//SWAP
+	{
+		std::cout << "Test swap" << std::endl;
+		NAMESPACE::vector<int> a1;
+		NAMESPACE::vector<int> a2;
+
+		a1.push_back(1);
+		a1.push_back(2);
+		a1.push_back(3);
+		a2.push_back(4);
+		a2.push_back(5);
+		NAMESPACE::vector<int>::iterator it1 = a1.begin() + 1;
+		NAMESPACE::vector<int>::iterator it2 = a2.begin() + 1;
+
+		int& ref1 = a1.front();
+		int& ref2 = a2.front();
+
+		std::cout << "a1.capacity = " << a1.capacity() << " et a1.size = " << a1.size() << std::endl;
+		std::cout << "a2.capacity = " << a2.capacity() << " et a2.size = " << a2.size() << std::endl;
+		std::cout << a1 << a2 << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
+		a1.swap(a2);
+		std::cout << a1 << a2 << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
+		std::cout << "a1.capacity = " << a1.capacity() << " et a1.size = " << a1.size() << std::endl;
+		std::cout << "a2.capacity = " << a2.capacity() << " et a2.size = " << a2.size() << std::endl;
+
+	}
+*/
+
+	//RESIZE
+	{
+		std::cout << "Test resize" << std::endl;
+		NAMESPACE::vector<int> c;
+
+		c.push_back(1);
+		c.push_back(2);
+		c.push_back(3);
+		std::cout << "Le vector contient: " << c << std::endl;
+		std::cout << "c.capacity = " << c.capacity()<< " et c.size = " << c.size() << std::endl;
+
+		c.resize(5, 3);
+		std::cout << "Apres resize up a 5 (initializer = 3): " << c << std::endl;
+		std::cout << "c.capacity = " << c.capacity()<< " et c.size = " << c.size() << std::endl;
+
+		c.resize(2, 2);
+		std::cout << "Apres resize down a 2 (initializer = 2): " << c << std::endl;
+		std::cout << "c.capacity = " << c.capacity()<< " et c.size = " << c.size() << std::endl;
+
+		c.resize(7, 4);
+		std::cout << "Apres resize up a 7 (initializer = 4): " << c << std::endl;
+		std::cout << "c.capacity = " << c.capacity()<< " et c.size = " << c.size() << std::endl;
 	}
 
 /*	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
