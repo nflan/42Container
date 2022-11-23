@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/17 17:30:57 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/23 19:15:43 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ namespace ft
 			typedef const value_type&		const_reference;
 			typedef value_type*				pointer;
 			typedef const value_type*		const_pointer;
-			typedef typename std::ptrdiff_t difference_type;
+			typedef typename std::ptrdiff_t	difference_type;
 			viterator() {}
 			viterator( const viterator & o ): _r(o._r) {}
+			viterator( const pointer & o ): _r(o) {}
 
 			viterator &	operator=( const viterator & o )
 			{
@@ -36,14 +37,15 @@ namespace ft
 				return (*this);
 			}
 			reference	operator*( void ) const { return (*this->_r); }
+			operator viterator<const T>( void ) { return (viterator<const T>(this->_r)); }
 			pointer		operator->( void ) const { return (this->_r); }
-			reference	operator[]( difference_type b ) { return (*(_ptr + b)); };
-			const_reference	operator[]( difference_type b ) const { return (*(_ptr + b)); };
+			reference	operator[]( difference_type b ) { return (*(this->_r + b)); };
+			const_reference	operator[]( difference_type b ) const { return (*(this->_r + b)); };
 			
 			viterator &	operator++( void ) { ++this->_r; return (*this); }
-			viterator	operator++( int ) { return (viterator(this->_r++)); }
+			viterator	operator++( int ) { viterator tmp(*this); this->_r++; return (tmp); }
 			viterator &	operator--( void ) { --this->_r; return (*this); }
-			viterator	operator--( int ) { return (viterator(this->_r--)); }
+			viterator	operator--( int ) { viterator tmp(*this); this->_r--; return (tmp); }
 			reference	operator[]( const difference_type& n ) const { return (this->_r[n]); }
 			viterator &	operator+=( const difference_type& n ) { this->_r += n; return (*this); }
 			viterator	operator+( const difference_type& n ) const { return (viterator(this->_r + n)); }
@@ -56,18 +58,38 @@ namespace ft
 		private:
 			pointer	_r;
 	};
+	//COMPARE
 	template<typename T>
-	bool	operator!=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() != rhs.base); }
+	bool	operator!=(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() != rhs.base()); }
+	template<typename T, typename U>
+	bool	operator!=(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() != rhs.base()); }
 	template<typename T>
-	bool	operator==(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() == rhs.base); }
+	bool	operator==(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() == rhs.base()); }
+	template<typename T, typename U>
+	bool	operator==(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() == rhs.base()); }
 	template<typename T>
-	bool	operator<(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() < rhs.base); }
+	bool	operator<(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() < rhs.base()); }
+	template<typename T, typename U>
+	bool	operator<(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() < rhs.base()); }
 	template<typename T>
-	bool	operator<=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() <= rhs.base); }
+	bool	operator<=(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() <= rhs.base()); }
+	template<typename T, typename U>
+	bool	operator<=(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() <= rhs.base()); }
 	template<typename T>
-	bool	operator>(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() > rhs.base); }
+	bool	operator>(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() > rhs.base()); }
+	template<typename T, typename U>
+	bool	operator>(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() > rhs.base()); }
 	template<typename T>
-	bool	operator>=(const viterator<T>& lhs, const viterator<T>& rhs) const { return (lhs.base() >= rhs.base); }
+	bool	operator>=(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() >= rhs.base()); }
+	template<typename T, typename U>
+	bool	operator>=(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() >= rhs.base()); }
+	//CALCUL
+	template<typename T>
+	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() - rhs.base()); }
+	template<typename T, typename U>
+	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() - rhs.base()); }
+	template<typename T>
+	viterator<T>	operator+(typename viterator<T>::difference_type n, const viterator<T>& lhs) { return (viterator<T>(lhs.base() + n)); }
 };
 
 #endif
