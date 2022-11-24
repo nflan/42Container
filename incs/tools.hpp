@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:19:00 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/23 15:00:38 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/24 12:00:45 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,12 @@ namespace ft
 
 	template<class T>
 	struct is_integral : is_integral_b<T> {};
+
+	//IS_SAME
+	template< class T, class U >
+	struct is_same : ft::false_type{};
+	template< class T >
+	struct is_same<T, T> : ft::true_type{};
 };
 
 #endif

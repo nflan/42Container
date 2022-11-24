@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/23 19:14:56 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/24 16:15:38 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	dovector( void )
 			c2[i] = i;
 			c2.push_back(i + 5);
 		}
-		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+		std::cout << c1 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 		c2.insert(c2.begin() + 2, 5);
 		std::cout << "c2.insert(begin() + 2, 5): " << c2 << std::endl;
 		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
@@ -181,10 +181,19 @@ void	dovector( void )
 		std::cout << "c2.insert(end(), 100): " << c2 << std::endl;
 		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
+		std::cout << std::endl << "Creation d'un vector avec iterators begin + 2 / end - 2 de c2" << std::endl;
+		NAMESPACE::vector<int> c5(c2.begin() + 2, c2.end() - 2);
+		std::cout << c5 << std::endl;
+		std::cout << "c5.capacity() = " << c5.capacity() << " et size = " << c5.size() << std::endl;
+		std::cout << std::endl << "Insertion a c5[1] de c2[5] a c2[20]" << std::endl;
+		c5.insert(c5.begin() + 1, c2.begin() + 5, c2.begin() + 20);
+		std::cout << c5 << std::endl;
+		std::cout << "c5.capacity() = " << c5.capacity() << " et size = " << c5.size() << std::endl;
+		std::cout << std::endl;
+
 		c2.insert(c2.end() - 3, static_cast<size_t>(10), static_cast<const int>(-2));
 		std::cout << "c2.insert(c2.end() - 3, 10, -2): " << c2 << std::endl;
 		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
-
 		
 		c2.insert(c2.end(), static_cast<size_t>(100), static_cast<const int>(100));
 		std::cout << "c2.insert(c2.end(), 2, 100): " << c2 << std::endl;
@@ -204,6 +213,16 @@ void	dovector( void )
 		std::cout << c4 << std::endl;
 		std::cout << "c4.capacity() = " << c4.capacity() << " et size = " << c4.size() << std::endl;
 
+		//Test avec throw erreur car pos < 0
+		try {
+		std::cout << std::endl << "Insertion a c5[-1] de c2[20] a c2[10]" << std::endl;
+		c5.insert(c5.begin() - 1, c2.begin() + 20, c2.begin() + 10);
+		std::cout << c5 << std::endl;
+		std::cout << "c5.capacity() = " << c5.capacity() << " et size = " << c5.size() << std::endl;
+		std::cout << std::endl; }
+		catch ( std::exception & e ) {
+		}
+		std::cout << std::endl;
 	}
 
 	//SWAP
@@ -230,7 +249,7 @@ void	dovector( void )
 		std::cout << a1 << a2 << *it1 << ' ' << *it2 << ' ' << ref1 << ' ' << ref2 << '\n';
 		std::cout << "a1.capacity = " << a1.capacity() << " et a1.size = " << a1.size() << std::endl;
 		std::cout << "a2.capacity = " << a2.capacity() << " et a2.size = " << a2.size() << std::endl;
-
+		std::cout << std::endl;
 	}
 
 	//RESIZE
@@ -254,6 +273,7 @@ void	dovector( void )
 
 		c.resize(10, 100);
 		std::cout << "Apres resize up a 10 (initializer = 4): " << c << std::endl;
+		std::cout << std::endl;
 	}
 
 	//AT
@@ -270,9 +290,10 @@ void	dovector( void )
 		std::cout << "c.at(2) = " << c.at(2) << std::endl;
 		std::cout << "c.front() = " << c.front() << std::endl;
 		std::cout << "c.back() = " << c.back() << std::endl;
+		std::cout << std::endl;
 	}
 
-	std::cout << std::endl << "creation de c2 par copie de c1" << std::endl << std::endl;
+	std::cout << "creation de c2 par copie de c1" << std::endl << std::endl;
 	//constructeur par copie
 	NAMESPACE::vector<int> c2(c1);
 	std::cout << "c1 capacity = " << c1.capacity() << std::endl;

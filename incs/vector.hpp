@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/23 19:17:31 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/24 16:25:51 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,49 +119,37 @@ namespace ft
 			void					assign( size_type count, const T& value )
 			{
 				// clear puis push back de value autant de fois que count?
-				for (size_type i = 0; i < this->size(); i++)
-						this->_alloc.destroy(&this->_tab[i]);
+				this->clear();
+				if (count == 0)
+					return ;
 				this->_size = count;
 				if (this->capacity() < count)
 				{
-					this->_alloc.deallocate(this->_tab, this->_capacity);
+					if (this->_tab)
+						this->_alloc.deallocate(this->_tab, this->_capacity);
 					this->_tab = this->_alloc.allocate(count, 0);
-					for (size_type i = 0; i < count; i++)
-						this->_alloc.construct(&this->_tab[i], value);
 					this->_capacity = count;
 				}
-				else if (this->capacity() && this->capacity() >= count)
-				{
+				if (this->_tab)
 					for (size_type i = 0; i < count; i++)
 						this->_alloc.construct(&this->_tab[i], value);
-				}
 			}
 			template< class InputIt >
 			void					assign( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
 			{
-				InputIt		tmp = first;
-				size_type	dif = 0;
-				while (tmp != last)
+				difference_type	dif = this->_distance(first, last);
+				this->clear();
+				if (this->capacity() < static_cast<size_type>(dif))
 				{
-					tmp++;
-					dif++;
-				}
-				tmp = first;
-				for (size_type i = 0; i < this->size(); i++)
-						this->_alloc.destroy(&this->_tab[i]);
-				if (this->capacity() < dif)
-				{
-					this->_alloc.deallocate(this->_tab, this->capacity());
+					if (this->_tab)
+						this->_alloc.deallocate(this->_tab, this->capacity());
 					this->_tab = this->_alloc.allocate(dif, 0);
-					for (size_type i = 0; tmp != last; i++, tmp++)
-						this->_alloc.construct(&this->_tab[i], *tmp);
-					this->_capacity = dif;
+					this->_capacity = static_cast<size_type>(dif);
 				}
-				else
-					for (size_type i = 0; tmp != last; i++, tmp++)
-						this->_alloc.construct(&this->_tab[i], *tmp);
-				this->_size = dif;
-				// pareil on peut faire un clear puis full push back ?
+				if (this->_tab)
+					for (size_type i = 0; first != last; i++, first++)
+						this->_alloc.construct(&this->_tab[i], *first);
+				this->_size = static_cast<size_type>(dif);
 			}
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
 
@@ -276,20 +264,10 @@ namespace ft
 			}
 			iterator insert( iterator pos, size_type count, const T& value )
 			{
-				if (count < 0)
+				if (count < 0 || pos < this->begin())
 					throw std::length_error("vector::_M_fill_insert");
-				size_type	tmp = this->capacity();
-				size_type	countt = count;
-				if (this->size() + count > this->capacity())
-				{
-					tmp = this->size() * 2;
-					if (count < this->capacity())
-						while (tmp < this->size() + count)
-							tmp *= 2;
-					else if (count > this->capacity())
-						tmp = this->size() + count;
-				}
-				pointer	tab = this->_alloc.allocate(tmp, 0);
+				size_type	tmp = this->_new_capacity(count);
+				pointer		tab = this->_alloc.allocate(tmp, 0);
 				size_type	y = 0;
 				iterator	fill = this->begin();
 				for (; fill != pos; fill++, y++)
@@ -298,7 +276,7 @@ namespace ft
 					this->_alloc.destroy(&*fill);
 				}
 				iterator	it = pos;
-				while (countt--)
+				for (size_type t = 0; t < count; t++)
 					this->_alloc.construct(&tab[y++], value);
 				for (; fill != this->end(); fill++, y++)
 				{
@@ -308,11 +286,60 @@ namespace ft
 				this->_alloc.deallocate(this->data(), this->capacity());
 				this->_tab = tab;
 				this->_capacity = tmp;
-				this->_size = this->size() + count;
+				this->_size += count;
 				return (it);
 			}
 			template< class InputIt >
-			iterator insert( iterator pos, InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { (void) first, (void) last; return (pos);}
+			iterator insert( iterator pos, InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
+			{
+				if (pos < this->begin())
+					throw std::length_error("vector::_M_fill_insert");
+				difference_type	d = this->_distance(first, last);
+				size_type		tmp = this->_new_capacity(static_cast<size_type>(d));
+				if (d == -1)
+				{
+					iterator	tmpit = this->begin() + *pos;
+					for (;first != last; first++)
+						this->insert(pos, *first);
+					return (tmpit);
+				}
+				if (tmp > this->capacity())
+				{
+					pointer	tab = this->_alloc.allocate(tmp, 0);
+					size_type	i = 0;
+					for (iterator it = this->begin(); it != pos; it++, i++)
+					{
+						this->_alloc.construct(&tab[i], *it);
+						this->_alloc.destroy(&*it);
+					}
+					for (; first != last; first++, i++)
+						this->_alloc.construct(&tab[i], *first);
+					for (; pos != this->end(); pos++, i++)
+					{
+						this->_alloc.construct(&tab[i], *pos);
+						this->_alloc.destroy(&*pos);
+					}
+					this->_alloc.deallocate(this->_tab, this->capacity());
+					this->_tab = tab;
+					this->_capacity = tmp;
+				}
+				else
+				{
+					for (difference_type x = d; x; x--)
+					{
+						std::cout << "x = " << x << " size = " << this->size() << " capacity = " << this->capacity() << std::endl;
+						this->_alloc.construct(this->_tab + this->size() + d, *(this->_tab + this->size() - x));
+						this->_alloc.destroy(this->_tab + this->size() - x);
+					}
+					iterator	it = this->begin();
+					while (it < pos)
+						it++;
+					for (; first != last; first++)
+						this->_alloc.construct(&*it, *first);
+				}
+				this->_size = this->size() + d;
+				return (pos);
+			}
 			iterator				erase( iterator pos )
 			{
 				if (pos == this->end())
@@ -432,6 +459,35 @@ namespace ft
 			size_type		_capacity;
 			size_type		_size;
 			Allocator		_alloc;
+			
+			template<typename It>
+			difference_type	_distance(It & first, It & last)
+			{
+				if (is_same<It, std::input_iterator_tag>::value)
+					return (-1);
+				difference_type	diff = 0;
+				It	tmp = first;
+				for (; tmp != last; tmp++)
+					diff++;
+				return (diff);
+			}
+
+			size_type		_new_capacity(size_type count)
+			{
+				size_type tmp = this->capacity();
+				if (!tmp)
+					tmp = count;
+				if (tmp && this->size() + count > this->capacity())
+				{
+					tmp = this->size() * 2;
+					if (count < this->capacity())
+						while (tmp < this->size() + count)
+							tmp *= 2;
+					else if (count > this->capacity())
+						tmp = this->size() + count;
+				}
+				return (tmp);
+			}
 	};
 
 	template< class T, class Allocator >
