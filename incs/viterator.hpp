@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/23 19:15:43 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/25 19:25:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ namespace ft
 	template <typename T>
 	class viterator {
 		public:
-			typedef T						value_type;
-			typedef value_type&				reference;
-			typedef const value_type&		const_reference;
-			typedef value_type*				pointer;
-			typedef const value_type*		const_pointer;
-			typedef typename std::ptrdiff_t	difference_type;
+			typedef T								value_type;
+			typedef value_type&						reference;
+			typedef const value_type&				const_reference;
+			typedef value_type*						pointer;
+			typedef const value_type*				const_pointer;
+			typedef	std::random_access_iterator_tag	iterator_category;
+			typedef typename std::ptrdiff_t			difference_type;
 			viterator() {}
 			viterator( const viterator & o ): _r(o._r) {}
 			viterator( const pointer & o ): _r(o) {}

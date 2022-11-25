@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/24 16:15:38 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/25 16:28:11 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void	dovector( void )
 			c2[i] = i;
 			c2.push_back(i + 5);
 		}
-		std::cout << c1 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 		c2.insert(c2.begin() + 2, 5);
 		std::cout << "c2.insert(begin() + 2, 5): " << c2 << std::endl;
 		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
@@ -345,6 +345,45 @@ void	dovector( void )
 	c2.pop_back();
 	c2.push_back(2);
 	compare(c1, c2);
+	std::cout << std::endl;
+
+//REVERSE ITERATORS
+	{
+		std::cout << "Reverse iterators tests FT" << std::endl;
+		ft::vector<int> c2(5);
+		size_t	size = 5;
+		for (size_t i = 0; i < size; i++)
+		{
+			c2[i] = i;
+			c2.push_back(i + 5);
+		}
+		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+
+		ft::reverse_viterator<ft::vector<int>::iterator>	rev_ite = c2.rbegin();
+		ft::reverse_viterator<ft::vector<int>::iterator>	rev_it = c2.rend();
+		std::cout << "creation reverse iterator rbegin = " << *rev_ite << std::endl;
+		std::cout << "creation reverse iterator rend = " << *rev_it << std::endl;
+		std::cout << std::endl << "comparaison de rev_ite et rev_it" << std::endl;
+		compare(rev_ite, rev_it);
+	}
+	{
+		std::cout << "Reverse iterators tests STD" << std::endl;
+		std::vector<int> c2(5);
+		size_t	size = 5;
+		for (size_t i = 0; i < size; i++)
+		{
+			c2[i] = i;
+			c2.push_back(i + 5);
+		}
+		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
+
+		std::reverse_iterator<std::vector<int>::iterator>	rev_ite = c2.rbegin();
+		std::reverse_iterator<std::vector<int>::iterator>	rev_it = c2.rend();
+		std::cout << "creation reverse iterator rbegin = " << *rev_ite << std::endl;
+		std::cout << "creation reverse iterator rend = " << *rev_it << std::endl;
+		std::cout << std::endl << "comparaison de rev_ite et rev_it" << std::endl;
+		compare(rev_ite, rev_it);
+	}
 }
 
 template< typename T >
