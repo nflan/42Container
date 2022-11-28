@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/28 18:31:23 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/28 18:37:15 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,6 +313,12 @@ namespace ft
 			{
 				if (pos < this->begin())
 					throw std::length_error("vector::_M_fill_insert");
+				if (!this->capacity() || pos == this->end())
+				{
+					for (; first != last; first++)
+						this->push_back(*first);
+					return (pos);
+				}
 				difference_type	d = this->_distance(first, last);
 				if (d == -1)
 				{
@@ -343,13 +349,7 @@ namespace ft
 				}
 				size_type	tmp = this->_new_capacity(static_cast<size_type>(d));
 				size_type	i = 0;
-				if (!this->capacity() || pos == this->end())
-				{
-					for (; first != last; first++)
-						this->push_back(*first);
-					return (pos);
-				}
-				else if (tmp > this->capacity())
+				if (tmp > this->capacity())
 				{
 				//	std::cout << "helloowwwww " << this->capacity() << " | " << this->size() << " | " << tmp  << " | " << d << std::endl;
 					pointer	tab = this->_alloc.allocate(tmp, 0);
