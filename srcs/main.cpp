@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/25 16:28:11 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/28 13:08:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "../incs/iterator.hpp"
 #include "../incs/viterator.hpp"
 #include "../incs/tools.hpp"
+#include <sstream>
 #include <iostream>
 #include <stack>
 #include <string>
@@ -22,6 +23,15 @@
 #ifndef	NAMESPACE
 #define	NAMESPACE ft
 #endif
+
+/*template<class Os, class Co>
+Os& operator<<(Os& os, const Co& co) 
+{
+	os << "{";
+	for (size_t i = 0; i < co.size(); i++)
+		os << ' ' << co[i];
+	return os << " } ";
+}*/
 
 void	dostack();
 void	dovector();
@@ -100,43 +110,62 @@ void	dovector( void )
 
 	//ASSIGN
 	//constructeur avec infos
-	NAMESPACE::vector<int> c3(static_cast<size_t>(30), 20);
-	std::cout << "c3 size = " << c3.size() << std::endl;
-	std::cout << "c3 capacity = " << c3.capacity() << std::endl;
-	std::cout << "Assign tests" << std::endl;
-	for (int i = 3; i < 11; i++)
 	{
-		std::cout << "push(" << i << ") on c1" << std::endl; 
-		c1.push_back(i);
+		NAMESPACE::vector<int> c3(static_cast<size_t>(30), 20);
+		std::cout << "c3 size = " << c3.size() << std::endl;
+		std::cout << "c3 capacity = " << c3.capacity() << std::endl;
+		std::cout << "Assign tests" << std::endl;
+		for (int i = 3; i < 11; i++)
+		{
+			std::cout << "push(" << i << ") on c1" << std::endl; 
+			c1.push_back(i);
+		}
+		for (int i = 0; i < 10; i++)
+			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+		std::cout << "c1 size = " << c1.size() << std::endl;
+		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+		c1.assign(static_cast<size_t>(5), 2);
+		for (int i = 0; i < 10; i++)
+			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+		std::cout << "c1 size = " << c1.size() << std::endl;
+		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+		//Reserve
+		std::cout << "c1 reserve(20)" << std::endl;
+		c1.reserve(20);
+		for (int i = 0; i < 10; i++)
+			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+		std::cout << "c1 size = " << c1.size() << std::endl;
+		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+		std::cout << std::endl;
+		std::cout << "Assign avec iterators c3.begin et c3.begin+3" << std::endl;
+		for (int i = 0; i < 7; i++)
+			std::cout << " --> c3[" << i << "] = " << c3[i] << std::endl;
+		std::cout << "c3 size = " << c3.size() << std::endl;
+		std::cout << "c3 capacity = " << c3.capacity() << std::endl;
+		c1.assign(c3.begin(), c3.begin() + 3);
+		for (int i = 0; i < 7; i++)
+			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
+		std::cout << "c1 size = " << c1.size() << std::endl;
+		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
+		std::cout << std::endl;
+		{
+			// This test checks if vector works with iterators tagged as std::input_iterator_tag
+			std::cout << std::endl;
+			NAMESPACE::vector<char> v;
+
+			std::istringstream str("1 2 3 4 5 6 7");
+			std::istreambuf_iterator<char> it(str), end;
+			std::cout << "v size = " << v.size() << std::endl;
+			std::cout << "v capacity = " << v.capacity() << std::endl;
+			std::cout << "v = " << v << std::endl;
+			v.assign(it, end);
+
+			std::cout << "v size = " << v.size() << std::endl;
+			std::cout << "v capacity = " << v.capacity() << std::endl;
+			std::cout << "v = " << v << std::endl;
+			std::cout << std::endl;
+		}
 	}
-	for (int i = 0; i < 10; i++)
-		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	c1.assign(static_cast<size_t>(5), 2);
-	for (int i = 0; i < 10; i++)
-		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	//Reserve
-	std::cout << "c1 reserve(20)" << std::endl;
-	c1.reserve(20);
-	for (int i = 0; i < 10; i++)
-		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << std::endl;
-	std::cout << "Assign avec iterators c3.begin et c3.begin+3" << std::endl;
-	for (int i = 0; i < 7; i++)
-		std::cout << " --> c3[" << i << "] = " << c3[i] << std::endl;
-	std::cout << "c3 size = " << c3.size() << std::endl;
-	std::cout << "c3 capacity = " << c3.capacity() << std::endl;
-	c1.assign(c3.begin(), c3.begin() + 3);
-	for (int i = 0; i < 7; i++)
-		std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
-	std::cout << "c1 size = " << c1.size() << std::endl;
-	std::cout << "c1 capacity = " << c1.capacity() << std::endl;
-	std::cout << std::endl;
 
 	//ERASE
 	{
