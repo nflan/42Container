@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/28 18:37:15 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/29 16:52:14 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,8 @@ namespace ft
 			typedef typename Allocator::const_pointer				const_pointer;
 			typedef typename ft::viterator<T>						iterator;
 			typedef typename ft::viterator<const T>					const_iterator;
-		//	typedef typename std::vector<T>::iterator				iterator;
-		//	typedef typename std::vector<T>::iterator				const_iterator;
 			typedef typename ft::reverse_viterator<iterator>		reverse_iterator;
 			typedef typename ft::reverse_viterator<const_iterator>	const_reverse_iterator;
-	//		typedef std::reverse_iterator<iterator>					reverse_iterator;
-	//		typedef std::reverse_iterator<const_iterator>			const_reverse_iterator;
 			
 			//Default
 			vector( void ): _tab(NULL), _capacity(0), _size(0), _alloc(Allocator()) {}
@@ -54,8 +50,8 @@ namespace ft
 					throw std::length_error("vector: max_size overflow");
 				if (this->_capacity)
 				{
-					this->_tab = this->_alloc.allocate(this->_capacity, 0);
-					for (size_type i = 0; i < this->_capacity; i++)
+					this->_tab = this->_alloc.allocate(this->capacity(), 0);
+					for (size_type i = 0; i < this->capacity(); i++)
 						this->_alloc.construct(&this->_tab[i], value);
 				}
 			}
@@ -63,8 +59,6 @@ namespace ft
 			template< class InputIt >
 			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc)
 			{
-	//			std::cout << "InputIT first, InputIt last, const Allocator& alloc = Allocator() constructor" << std::endl;
-				InputIt		tmp = first;
 				difference_type	dif = this->_distance(first, last);
 				if (dif == -1)
 				{
@@ -72,6 +66,8 @@ namespace ft
 						this->push_back(*first);
 					return ;
 				}
+				else if (static_cast<size_type>(dif) > alloc.max_size())
+					throw std::length_error("vector: max_size overflow");
 				this->_size = dif;
 				this->_capacity = dif;
 				this->_tab = NULL;
@@ -79,8 +75,8 @@ namespace ft
 				if (this->_capacity)
 				{
 					this->_tab = this->_alloc.allocate(this->_capacity, 0);
-					for (size_type i = 0; tmp != last; i++, tmp++)
-						this->_alloc.construct(this->_tab + i, *tmp);
+					for (size_type i = 0; first != last; i++, first++)
+						this->_alloc.construct(this->_tab + i, *first);
 				}
 					
 			}
@@ -89,35 +85,28 @@ namespace ft
 				this->clear();
 				if (this->capacity())
 					this->_alloc.deallocate(this->_tab, this->_capacity);
-		//		std::cout << "Destructor called" << std::endl;
 			}
 
 			vector &				operator=( const vector & other )
 			{
 				if (this == &other)
 					return (*this);
+				this->clear();
+				this->_alloc = other._alloc;
+				this->_size = other._size;
 				if (!this->_tab || other.size() > this->capacity())
 				{
 					if (this->_tab)
-					{
-						this->clear();
 						this->_alloc.deallocate(this->_tab, this->capacity());
-					}
 					this->_capacity = other.size();
 					this->_tab = this->_alloc.allocate(this->capacity(), 0);
 				}
-				else
-					for (size_type i = 0; i < this->size(); i++)
-						this->_alloc.destroy(&this->_tab[i]);
-				this->_alloc = other._alloc;
-				this->_size = other._size;
 				for (size_type i = 0; i < other.size(); i++)
 					this->_alloc.construct(&this->_tab[i], other._tab[i]);
 				return (*this);
 			}
 			void					assign( size_type count, const T& value )
 			{
-				// clear puis push back de value autant de fois que count?
 				this->clear();
 				if (count == 0)
 					return ;
@@ -131,17 +120,19 @@ namespace ft
 					this->_tab = this->_alloc.allocate(count, 0);
 					this->_capacity = count;
 				}
-				if (this->_tab)
-					for (size_type i = 0; i < count; i++)
-						this->_alloc.construct(&this->_tab[i], value);
+				for (size_type i = 0; i < count; i++)
+					this->_alloc.construct(&this->_tab[i], value);
 			}
 			template< class InputIt >
 			void					assign( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
 			{
 				difference_type	dif = this->_distance(first, last);
 				this->clear();
-				if (dif == -1)
+				if (dif == -1 || !dif)
 				{
+					if (this->_tab)
+						this->_alloc.deallocate(this->_tab, this->capacity());
+					this->_capacity = 0;
 					for (;first != last; first++)
 						this->push_back(*first);
 					return ;
@@ -155,9 +146,8 @@ namespace ft
 					this->_tab = this->_alloc.allocate(dif, 0);
 					this->_capacity = static_cast<size_type>(dif);
 				}
-				if (this->_tab)
-					for (size_type i = 0; first != last; i++, first++)
-						this->_alloc.construct(&this->_tab[i], *first);
+				for (size_type i = 0; first != last; i++, first++)
+					this->_alloc.construct(&this->_tab[i], *first);
 				this->_size = static_cast<size_type>(dif);
 			}
 			allocator_type			get_allocator( void ) const { return (this->_alloc); }
@@ -183,13 +173,18 @@ namespace ft
 					return ;
 				else if (n > this->max_size())
 					throw std::length_error("Impossible to reserve this size");
-				pointer	tmp = this->_alloc.allocate(n, 0);
-				for (size_type i = 0; i < this->size(); i++)
+				pointer	tmp = NULL;
+				if (n > 0)
 				{
-					this->_alloc.construct(&tmp[i], this->_tab[i]);
-					this->_alloc.destroy(&this->_tab[i]);
+					tmp = this->_alloc.allocate(n, 0);
+					for (size_type i = 0; i < this->size(); i++)
+					{
+						this->_alloc.construct(&tmp[i], this->_tab[i]);
+						this->_alloc.destroy(&this->_tab[i]);
+					}
 				}
-				this->_alloc.deallocate(this->_tab, this->capacity());
+				if (this->capacity())
+					this->_alloc.deallocate(this->_tab, this->capacity());
 				this->_capacity = n;
 				this->_tab = tmp;
 			}
@@ -273,6 +268,7 @@ namespace ft
 					if (ite != this->end())
 						this->_alloc.destroy(&*ite);
 					this->_alloc.construct(&*ite, *(ite - 1));
+					*ite = *(ite - 1);
 				}
 				if (ite != this->end())
 					this->_alloc.destroy(&*ite);
@@ -282,27 +278,32 @@ namespace ft
 			}
 			iterator insert( iterator pos, size_type count, const T& value )
 			{
-				if (count < 0 || pos < this->begin())
+				if (count < 0 || pos < this->begin() || count > this->_alloc.max_size())
 					throw std::length_error("vector::_M_fill_insert");
 				size_type	tmp = this->_new_capacity(count);
-				pointer		tab = this->_alloc.allocate(tmp, 0);
-				size_type	y = 0;
-				iterator	fill = this->begin();
-				for (; fill != pos; fill++, y++)
+				pointer		tab = NULL;
+				iterator	it = NULL;
+				if (tmp)
 				{
-					this->_alloc.construct(&tab[y], *fill);
-					this->_alloc.destroy(&*fill);
-				}
-				iterator	it = pos;
-				for (size_type t = 0; t < count; t++)
-					this->_alloc.construct(&tab[y++], value);
-				for (; fill != this->end(); fill++, y++)
-				{
-					this->_alloc.construct(&tab[y], *fill);
-					this->_alloc.destroy(&*fill);
+					tab = this->_alloc.allocate(tmp, 0);
+					size_type	y = 0;
+					iterator	fill = this->begin();
+					for (; fill != pos; fill++, y++)
+					{
+						this->_alloc.construct(&tab[y], *fill);
+						this->_alloc.destroy(&*fill);
+					}
+					it = pos;
+					for (size_type t = 0; t < count; t++, y++)
+						this->_alloc.construct(&tab[y], value);
+					for (; fill != this->end(); fill++, y++)
+					{
+						this->_alloc.construct(&tab[y], *fill);
+						this->_alloc.destroy(&*fill);
+					}
 				}
 				if (this->capacity())
-					this->_alloc.deallocate(this->data(), this->capacity());
+					this->_alloc.deallocate(this->_tab, this->capacity());
 				this->_tab = tab;
 				this->_capacity = tmp;
 				this->_size += count;
@@ -351,8 +352,8 @@ namespace ft
 				size_type	i = 0;
 				if (tmp > this->capacity())
 				{
-				//	std::cout << "helloowwwww " << this->capacity() << " | " << this->size() << " | " << tmp  << " | " << d << std::endl;
 					pointer	tab = this->_alloc.allocate(tmp, 0);
+					size_type	temp = this->size();
 					for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
 					{
 						this->_alloc.construct(&tab[i], this->_tab[i]);
@@ -370,7 +371,7 @@ namespace ft
 						this->_alloc.deallocate(this->data(), this->capacity());
 					this->_capacity = tmp;
 					this->_tab = tab;
-					this->_size += d;
+					this->_size = temp + d;
 					return (ret);
 				}
 				iterator	it = pos;
@@ -423,8 +424,6 @@ namespace ft
 					if (!this->_tab)
 					{
 						this->_capacity++;
-						if (this->capacity() > this->max_size())
-							throw std::length_error("vector: max_size overflow");
 						this->_tab = this->_alloc.allocate(this->capacity(), 0);
 					}
 					else
@@ -504,10 +503,34 @@ namespace ft
 			Allocator		_alloc;
 			
 			template<typename It>
-			difference_type	_distance(It & first, It & last)
+			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename iterator_traits<It>::iterator_category, std::input_iterator_tag>::value, It>::type* = NULL)
 			{
-				if (ft::is_same<typename iterator_traits<It>::iterator_category, std::input_iterator_tag>::value)
-					return (-1);
+				(void) first, (void) last;
+				return (-1);
+			}
+			template<typename It>
+			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename iterator_traits<It>::iterator_category, std::output_iterator_tag>::value, It>::type* = NULL)
+			{
+				(void) first, (void) last;
+				return (-1);
+			}
+			template<typename It>
+			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename iterator_traits<It>::iterator_category, std::random_access_iterator_tag>::value, It>::type* = NULL)
+			{
+				return (last - first);
+			}
+			template<typename It>
+			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename iterator_traits<It>::iterator_category, std::forward_iterator_tag>::value, It>::type* = NULL)
+			{
+				difference_type	diff = 0;
+				It	tmp = first;
+				for (; tmp != last; tmp++)
+					diff++;
+				return (diff);
+			}
+			template<typename It>
+			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename iterator_traits<It>::iterator_category, std::bidirectional_iterator_tag>::value, It>::type* = NULL)
+			{
 				difference_type	diff = 0;
 				It	tmp = first;
 				for (; tmp != last; tmp++)
