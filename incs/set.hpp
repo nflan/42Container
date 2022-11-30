@@ -16,10 +16,10 @@
 #include <iterator>
 #include "rbtree.hpp"
 #include "rbiterator.hpp"
+#include <set>
 
 namespace ft
 {
-	template < class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
 	class set
 	{
 		public:

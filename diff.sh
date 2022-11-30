@@ -36,6 +36,7 @@ echo "Diff VECTOR done"
 valgrind ./Container vector 1> $dir/_ft_vector 2>> $dir/_ft_vector
 valgrind ./Container_std vector 1> $dir/_std_vector 2>> $dir/_std_vector
 
+<<<<<<< HEAD
 #MAP
 echo -e "${green}\nMAP"
 \time -f "Total time FT: %E" ./Container map 20000 > $dir/todel
@@ -62,3 +63,13 @@ valgrind ./Container 'set' 1> $dir/_ft_set 2>> $dir/_ft_set
 valgrind ./Container_std 'set' 1> $dir/_std_set 2>> $dir/_std_set
 
 rm $dir/todel
+=======
+#RBTREE
+\time -f "Total time: %E" ./Container rbtree > $dir/ft_rbtree
+\time -f "Total time: %E" ./Container_std rbtree > $dir/std_rbtree
+diff $dir/ft_rbtree $dir/std_rbtree
+echo "Diff rbtree done"
+
+valgrind ./Container rbtree 1> $dir/_ft_rbtree 2>> $dir/_ft_rbtree
+valgrind ./Container_std rbtree 1> $dir/_std_rbtree 2>> $dir/_std_rbtree
+>>>>>>> a903954 (Clean)
