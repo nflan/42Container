@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/25 17:01:03 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/30 18:26:19 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ namespace ft
 	typename reverse_viterator<T>::difference_type	operator-(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (rhs.base() - lhs.base()); }
 	template<typename T>
 	reverse_viterator<T>	operator+(typename reverse_viterator<T>::difference_type n, const reverse_viterator<T>& lhs) { return (reverse_viterator<T>(lhs.base() - n)); }
-};
+}
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 15:01:56 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/16 17:07:08 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/30 18:28:41 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,7 @@
 
 #include <vector>
 #include "vector.hpp"
-/*
-			typedef T					value_type;
-			typedef T					size_type;
-			typedef value_type *		pointer;
-			typedef value_type *		iterator;
-			typedef value_type *		reverse_iterator;
-			typedef const value_type *	const_iterator;
-			typedef const value_type *	const_reverse_iterator;
-			typedef value_type &		reference;
-			typedef const value_type &	const_reference;
-			typedef Allocator			allocator_type;*/
+
 namespace ft
 {
 	template< class T, class Container = std::vector<T> > class stack
@@ -76,6 +66,6 @@ namespace ft
 	bool	operator>( const stack<T,Container>& lhs, const stack<T,Container>& rhs );
 	template< class T, class Container >
 	bool	operator>=( const stack<T,Container>& lhs, const stack<T,Container>& rhs );
-};
+}
 
 #endif

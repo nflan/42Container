@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2022/11/25 13:10:15 by nflan            ###   ########.fr        #
+#    Updated: 2022/11/30 15:02:32 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ clean:
 fclean: clean
 	@$(RM) $(NAME)
 	@$(RM) $(NAME)_std
-	@$(RM) ft_container std_container _ft_container _std_container
+	@$(RM) tests
 	@echo "Cleaned program"
 
 re: fclean all

@@ -1,2 +1,3 @@
-containers_tests
-termine_moi
+containers_tests/
+termine_moi/
+bench/

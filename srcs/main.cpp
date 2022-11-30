@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/28 13:08:53 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/30 14:48:52 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,18 @@
 #define	NAMESPACE ft
 #endif
 
-/*template<class Os, class Co>
+template<class Os, class Co>
 Os& operator<<(Os& os, const Co& co) 
 {
 	os << "{";
 	for (size_t i = 0; i < co.size(); i++)
 		os << ' ' << co[i];
 	return os << " } ";
-}*/
+}
 
 void	dostack();
 void	dovector();
+void	dorbtree();
 template< typename T >
 void	compare(T c1, T c2);
 
@@ -46,7 +47,7 @@ int	main( int ac, char **av )
 	std::string	arg = av[1];
 	for (std::string::iterator it = arg.begin(); it != arg.end(); it++)
 		*it = std::tolower(*it);
-	std::string	type[] = { "stack", "vector", "map" };
+	std::string	type[] = { "stack", "vector", "rbtree", "map" };
 	for (i = 0; i < 3; i++)
 		if (type[i] == arg)
 			break;
@@ -59,7 +60,7 @@ int	main( int ac, char **av )
 			dovector();
 			break;
 		case (2):
-			std::cout << arg << std::endl;
+			dorbtree();
 			break;
 		case (3):
 			return (std::cout << "Container '" << arg << "' not found" << std::endl, 1);
@@ -67,6 +68,18 @@ int	main( int ac, char **av )
 	}
 
 	return (0);
+}
+
+//RBTREE
+void	dorbtree( void )
+{
+	std::cout << "Creation d'une pair avec int(2) et std::string('oui')" << std::endl << std::endl;
+	NAMESPACE::pair<int, std::string>	p = NAMESPACE::make_pair(2, "oui");
+	std::cout << "Creation d'une pair avec int(4) et std::string('et alors')" << std::endl;
+	NAMESPACE::pair<int, std::string>	p2 = NAMESPACE::make_pair(4, "et alors");
+	std::cout << "Comparaison entre les 2 pairs" << std::endl;
+	compare(p, p2);
+	std::cout << std::endl;
 }
 
 //VECTOR

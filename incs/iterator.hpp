@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 13:05:13 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/23 15:25:55 by nflan            ###   ########.fr       */
+/*   Updated: 2022/11/30 18:26:01 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,108 +61,6 @@ namespace ft
 			typedef typename iterator_traits<Iter>::pointer				pointer;
 			typedef typename iterator_traits<Iter>::reference			reference;
 	};
-};
+}
 
 #endif
-
-	//ITERATOR
-/*	template< class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T& >
-	struct iterator
-	{
-		public:
-			typedef Category	iterator_category;
-			typedef T			value_type;
-			typedef Distance	difference_type;
-			typedef Pointer		pointer;
-			typedef Reference	reference;
-			
-			//LegacyRandomAccessIterator
-			iterator &	operator+=( difference_type n )
-			{ 
-				difference_type m = n;
-				if (m >= 0)
-					while (m--) ++this->_r;
-				else
-					while (m++) --this->_r;
-				return (_r); 
-			}
-			iterator	operator+( difference_type n )
-			{
-				iterator	temp = this;
-				return (temp += n);
-			}
-			iterator &	operator-=( difference_type n ) { return (this->_r += -n); }
-			iterator	operator-( difference_type n )
-			{
-				iterator	temp = this;
-				return (temp -= n);
-			}
-			difference_type	operator-( iterator b ) { return (b - this); }
-			reference	operator[]( difference_type n ) { return (this + n); }
-
-			bool			operator<( iterator b ) { return (b - this > 0); }
-			bool			operator>( iterator b ) { return (b < this); }
-			bool			operator>=( iterator b ) { return (!(this < b)); }
-			bool			operator<=( iterator b ) { return (!(this > b)); }
-
-			//LegacyBidirectionalIterator
-			iterator &		operator--( void )
-			{
-				this->_r--;
-				return (*this);
-			}
-			iterator &		operator--( T )
-			{
-				iterator	temp = *this;
-
-				--*this;
-				return (temp);
-			}
-			reference		operator--( iterator )
-			{
-				return (this->_r--);
-			}
-			//LegacyForwardIterator
-			iterator &		operator++( void )
-			{
-				this->_r++;
-				return (*this);
-			}
-			reference 		operator++( iterator )
-			{
-				return (this->_r++);
-			}
-			//LegacyIterator
-			T		operator*( void ) { return (*this->r); }
-			iterator &		operator++( T )
-			{
-				iterator	temp = *this;
-
-				++*this;
-				return (temp);
-			}
-			//LegacyOutputIterator
-			void			operator+( pointer o ) { this->_r = o; }
-			pointer &		operator++( void )
-			{
-				this->_r++;
-				return (this);
-			}
-			pointer &		operator++( pointer * )
-			{
-				pointer	temp = this->_r;
-				this->_r++;
-				return (temp);
-			}
-			void			operator++( pointer * o )
-			{
-				*this->_r = o;
-				this->_r++;
-			}
-
-
-
-		private:
-			pointer	_r;
-	};
-*/	
