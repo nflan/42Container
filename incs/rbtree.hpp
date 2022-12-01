@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/30 16:18:44 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/01 15:22:41 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define RBTREE_HPP
 
 #include <set>
+
+// 0 = black / 1 = red
 
 namespace ft
 {
@@ -40,26 +42,86 @@ namespace ft
 			struct node
 			{
 				public:
+					node( void ): _col(0), _key(0), _left(NULL), _right(NULL), _parent(NULL) {}
+					node( const node & o ) { *this = o; }
+					node( value_type k, const node & parent ): _col(0), _key(k), _left(NULL), _right(NULL), _parent(parent) {}
+					node( value_type k ): _col(0), _key(k), _left(NULL), _right(NULL), _parent(NULL) {}
+					~node ( void ) {}
+
+					node & operator=( const node & o )
+					{
+						if (this == &o)
+							return (*this);
+						this->_col = o._col;
+						this->_key = o._key;
+						this->_left = o._left;
+						this->_right = o._right;
+						this->_parent = o._parent;
+						return (*this);
+					}
 				private:
 					bool		_col;
 					value_type	_key;
-					pointer		_lChild;
-					pointer		_rChild;
+					pointer		_left;
+					pointer		_right;
 					pointer		_parent;
 			};
 			typedef std::allocator<node>					NAllocator;
+			typedef node *									nodePTR;
+
+			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloctree(Allocator()) {}
+			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloctree(Allocator()) {}
+			rbtree( const rbtree & o ) { *this = o; }
+
+			rbtree &	operator=( const rbtree & o )
+			{
+				if (this == &o)
+					return (*this);
+				this->_root = o._root;
+				this->_allocnode = o._allocnode;
+				this->_alloctree = o._alloctree;
+			}
 
 			void	insert(const node & n)
 			{
 				if (!this->_root)
+				{
 					this->_root = n;
-
+					this->_root._col = 0;
+					return ;
+				}
+				node tmp = this->_root;
+				while (tmp != NULL)
+				{
+					if (tmp._key == n._key)
+						throw std::exception("same");
+					else if (tmp._key < n._key)
+						tmp = tmp._right;
+					else
+						tmp = tmp._left;
+				}
+				tmp = n;
+				tmp = 1;
 			}
+
 		private:
-			node		_root;
+			nodePTR		_root;
 			NAllocator	_allocnode;
 			Allocator	_alloctree;
+
+			void	_initNullNode( nodePTR nod, nodePTR parent )
+			{
+				nod->_col = 0;
+				nod->_key = 0;
+				nod->_parent = parent;
+				nod->_left = NULL;
+				nod->_right = NULL;
+			}
+			void	print(  )
+			{
+				
+			}
 	};
-};
+}
 
 #endif
