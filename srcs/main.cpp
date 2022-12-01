@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/30 14:48:52 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/01 18:42:40 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 #include "../incs/iterator.hpp"
 #include "../incs/viterator.hpp"
 #include "../incs/tools.hpp"
+#include "../incs/rbtree.hpp"
 #include <sstream>
 #include <iostream>
 #include <stack>
 #include <string>
+#include <algorithm>
 
 #ifndef	NAMESPACE
 #define	NAMESPACE ft
@@ -41,6 +43,7 @@ void	compare(T c1, T c2);
 
 int	main( int ac, char **av )
 {
+	srand (time(NULL));
 	int	i = 0;
 	if (ac != 2)
 		return (std::cout << "nb args invalid" << std::endl, 1);
@@ -80,6 +83,23 @@ void	dorbtree( void )
 	std::cout << "Comparaison entre les 2 pairs" << std::endl;
 	compare(p, p2);
 	std::cout << std::endl;
+
+	//Creation et affichage arbre binaire
+	ft::rbtree<int>	tree;
+	NAMESPACE::vector<int>	v;
+	for (size_t i = 0; i < 20; i++)
+		v.push_back(i);
+	std::random_shuffle(v.begin(), v.end());
+	try
+	{
+		for (size_t i = 0; i < 20; i++)
+			tree.insert(v[i]);
+	}
+	catch ( std::exception & e )
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	tree.print();
 }
 
 //VECTOR

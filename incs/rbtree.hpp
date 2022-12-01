@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/01 15:22:41 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/01 17:21:24 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define RBTREE_HPP
 
 #include <set>
-
+#include <iostream>
 // 0 = black / 1 = red
 
 namespace ft
@@ -42,29 +42,28 @@ namespace ft
 			struct node
 			{
 				public:
-					node( void ): _col(0), _key(0), _left(NULL), _right(NULL), _parent(NULL) {}
+					node( void ): col(0), key(0), left(NULL), right(NULL), parent(NULL) {}
 					node( const node & o ) { *this = o; }
-					node( value_type k, const node & parent ): _col(0), _key(k), _left(NULL), _right(NULL), _parent(parent) {}
-					node( value_type k ): _col(0), _key(k), _left(NULL), _right(NULL), _parent(NULL) {}
+					node( value_type k, const node & parent ): col(0), key(k), left(NULL), right(NULL), parent(parent) {}
+					node( value_type k ): col(0), key(k), left(NULL), right(NULL), parent(NULL) {}
 					~node ( void ) {}
 
 					node & operator=( const node & o )
 					{
 						if (this == &o)
 							return (*this);
-						this->_col = o._col;
-						this->_key = o._key;
-						this->_left = o._left;
-						this->_right = o._right;
-						this->_parent = o._parent;
+						this->col = o.col;
+						this->key = o.key;
+						this->left = o.left;
+						this->right = o.right;
+						this->parent = o.parent;
 						return (*this);
 					}
-				private:
-					bool		_col;
-					value_type	_key;
-					pointer		_left;
-					pointer		_right;
-					pointer		_parent;
+					bool		col;
+					value_type	key;
+					node *		left;
+					node *		right;
+					node *		parent;
 			};
 			typedef std::allocator<node>					NAllocator;
 			typedef node *									nodePTR;
@@ -82,27 +81,47 @@ namespace ft
 				this->_alloctree = o._alloctree;
 			}
 
-			void	insert(const node & n)
+			void	insert(const value_type & k)
 			{
+				nodePTR	n = new node(k);
 				if (!this->_root)
 				{
 					this->_root = n;
-					this->_root._col = 0;
 					return ;
 				}
-				node tmp = this->_root;
+				n->col = 1;
+				nodePTR	tmp = this->_root;
+				nodePTR	temp = NULL;
 				while (tmp != NULL)
 				{
-					if (tmp._key == n._key)
-						throw std::exception("same");
-					else if (tmp._key < n._key)
-						tmp = tmp._right;
+					temp = tmp;
+					if (tmp->key == n->key)
+						throw EqualException();
+					else if (tmp->key < n->key)
+						tmp = tmp->right;
 					else
-						tmp = tmp._left;
+						tmp = tmp->left;
 				}
-				tmp = n;
-				tmp = 1;
+				n->parent = temp;
+				if (n->key < temp->key)
+					temp->left = n;
+				else
+					temp->right = n;
+				if (!n->parent)
+				{
+					n->col = 0;
+					return;
+				}
+				if (!n->parent->parent)
+					return;
 			}
+			class EqualException: public std::exception {
+				virtual const char* what() const throw()
+				{
+					return ("Error: same values in two different nodes!");
+				}
+			};
+			void	print( void ) { this->printHelper(this->_root, "", true); }
 
 		private:
 			nodePTR		_root;
@@ -111,16 +130,49 @@ namespace ft
 
 			void	_initNullNode( nodePTR nod, nodePTR parent )
 			{
-				nod->_col = 0;
-				nod->_key = 0;
-				nod->_parent = parent;
-				nod->_left = NULL;
-				nod->_right = NULL;
+				nod->col = 0;
+				nod->key = 0;
+				nod->parent = parent;
+				nod->left = NULL;
+				nod->right = NULL;
 			}
-			void	print(  )
+			void printHelper(nodePTR root, std::string indent, bool last)
 			{
-				
+				if (root)
+				{
+					std::cout << indent;
+					if (last)
+					{
+						std::cout << "R----";
+						indent += "   ";
+					}
+					else
+					{
+						std::cout << "L----";
+						indent += "|  ";
+					}
+					std::string sColor = root->col ? "RED" : "BLACK";
+					std::cout << root->key << "(" << sColor << ")" << std::endl;
+					printHelper(root->left, indent, false);
+					printHelper(root->right, indent, true);
+				}
 			}
+	/*		void	_print( const nodePTR & n, std::string sep )
+			{
+				if (!n)
+					return ;
+				if (n->right)
+				{
+					_print(n->right, sep += "---");
+					std::cout << sep << n->key << std::endl;
+				}
+				if (n->left)
+				{
+					std::cout << sep << n->key << std::endl;
+					_print(n->left, sep += "---");
+				}
+				std::cout << n->key << std::endl;
+			}*/
 	};
 }
 
