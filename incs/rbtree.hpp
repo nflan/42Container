@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/01 17:21:24 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/02 17:34:07 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ namespace ft
 			typedef Compare									key_compare;
 			typedef Compare									value_compare;
 			typedef Allocator								allocator_type;
-			typedef value_type &							reference;
-			typedef const value_type &						const_reference;
+			typedef typename Allocator::reference			reference;
+			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
 			typedef typename std::set<Key>::iterator		iterator;
@@ -46,7 +46,7 @@ namespace ft
 					node( const node & o ) { *this = o; }
 					node( value_type k, const node & parent ): col(0), key(k), left(NULL), right(NULL), parent(parent) {}
 					node( value_type k ): col(0), key(k), left(NULL), right(NULL), parent(NULL) {}
-					~node ( void ) {}
+					~node ( void ) { }
 
 					node & operator=( const node & o )
 					{
@@ -69,8 +69,10 @@ namespace ft
 			typedef node *									nodePTR;
 
 			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloctree(Allocator()) {}
+			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloctree(alloc), _allocnode(NAllocator()) {}
 			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloctree(Allocator()) {}
 			rbtree( const rbtree & o ) { *this = o; }
+			~rbtree( void ) { this->_clear(this->_root); }
 
 			rbtree &	operator=( const rbtree & o )
 			{
@@ -80,8 +82,12 @@ namespace ft
 				this->_allocnode = o._allocnode;
 				this->_alloctree = o._alloctree;
 			}
+			allocator_type	get_allocator() const { return (this->_alloctree); }
+//			T&				at( const Key& key ) { return (this->_;
+//			T&				at( const key_type& k ) const;
 
-			void	insert(const value_type & k)
+			size_type		max_size( void ) const { return (this->_alloctree.max_size()); }
+			void	insert( const value_type & k )
 			{
 				nodePTR	n = new node(k);
 				if (!this->_root)
@@ -110,21 +116,25 @@ namespace ft
 				if (!n->parent)
 				{
 					n->col = 0;
-					return;
+					return ;
 				}
 				if (!n->parent->parent)
-					return;
+					return ;
+				this->_recolor(n);
 			}
+
+			//EXCEPTION
 			class EqualException: public std::exception {
 				virtual const char* what() const throw()
 				{
 					return ("Error: same values in two different nodes!");
 				}
 			};
-			void	print( void ) { this->printHelper(this->_root, "", true); }
+			void	print( void ) { this->_print(this->_root, "", true); }
 
 		private:
 			nodePTR		_root;
+			Compare		_compare;
 			NAllocator	_allocnode;
 			Allocator	_alloctree;
 
@@ -136,7 +146,7 @@ namespace ft
 				nod->left = NULL;
 				nod->right = NULL;
 			}
-			void printHelper(nodePTR root, std::string indent, bool last)
+			void	_print(nodePTR root, std::string indent, bool last)
 			{
 				if (root)
 				{
@@ -153,26 +163,123 @@ namespace ft
 					}
 					std::string sColor = root->col ? "RED" : "BLACK";
 					std::cout << root->key << "(" << sColor << ")" << std::endl;
-					printHelper(root->left, indent, false);
-					printHelper(root->right, indent, true);
+					_print(root->left, indent, false);
+					_print(root->right, indent, true);
 				}
 			}
-	/*		void	_print( const nodePTR & n, std::string sep )
+			void	_clear(nodePTR root)
 			{
-				if (!n)
-					return ;
-				if (n->right)
+				if (root)
 				{
-					_print(n->right, sep += "---");
-					std::cout << sep << n->key << std::endl;
+					_clear(root->left);
+					_clear(root->right);
+					delete (root);
 				}
+			}
+			void	_recolor( nodePTR & n )
+			{
+				nodePTR	p = n->parent;
+				nodePTR gp = p->parent;
+				std::cout << "n = " << n << " & p = " << p << " & gp = " << gp << std::endl;
+				while (p->col == 1)
+				{
+					if (p == gp->left)
+					{
+						if (gp->right && gp->right->col == 1)
+						{
+							gp->col = 1;
+							gp->right->col = 0;
+							gp->left->col = 0;
+							n = gp;
+						}
+						else if (n == p->right)
+						{
+							n = p;
+							this->_left_rotate(n);
+						}
+						else
+						{
+							p->col = 0;
+							gp->col = 1;
+							this->_right_rotate(gp);
+						}
+					}
+					else
+					{
+						if (gp->left && gp->left->col == 1)
+						{
+							gp->col = 1;
+							gp->right->col = 0;
+							gp->left->col = 0;
+							n = gp;
+						}
+						else if (n == p->left)
+						{
+							n = p;
+							this->_right_rotate(n);
+						}
+						else
+						{
+							p->col = 0;
+							gp->col = 1;
+							this->_left_rotate(gp);
+						}
+					}
+				}
+				this->_root->col = 0;
+			}
+			void	_left_rotate( nodePTR & n )
+			{
+				nodePTR	p = n->parent;
 				if (n->left)
 				{
-					std::cout << sep << n->key << std::endl;
-					_print(n->left, sep += "---");
+					n->left->parent = p;
 				}
-				std::cout << n->key << std::endl;
-			}*/
+				if (!p->parent)
+				{
+					p->parent = n;
+					this->_root = n;
+				}
+				else if (p == p->parent->left)
+					p->parent->left = n;
+				else
+					p->parent->right = n;
+				p->parent = n;
+			}
+			void	_right_rotate( nodePTR & n )
+			{
+				nodePTR	p = n->parent;
+				if (n->right)
+					p->right->parent = p;
+				if (!p->parent)
+				{
+					p->parent = n;
+					this->_root = n;
+				}
+				else if (p == p->parent->right)
+					p->parent->right = n;
+				else
+					p->parent->left = n;
+				p->parent = n;
+			}
+			void	_left_right_rot( nodePTR & n )
+			{
+				nodePTR	p = n->parent;
+				nodePTR	gp = n->parent->parent;
+				this->left_rotate(n);
+				this->left_rotate(p);
+				this->right_rotate(n);
+				this->right_rotate(gp);
+			}
+			void	_right_left_rot( nodePTR & n )
+			{
+				nodePTR	p = n->parent;
+				nodePTR	gp = n->parent->parent;
+				this->right_rotate(n);
+				this->right_rotate(p);
+				this->left_rotate(n);
+				this->left_rotate(gp);
+			}
 	};
 }
 
