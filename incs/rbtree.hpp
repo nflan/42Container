@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/02 17:34:07 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/03 18:07:24 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,15 @@ namespace ft
 				while (tmp != NULL)
 				{
 					temp = tmp;
-					if (tmp->key == n->key)
+					if (tmp->key._second == n->key._second)
 						throw EqualException();
-					else if (tmp->key < n->key)
+					else if (tmp->key._second < n->key._second)
 						tmp = tmp->right;
 					else
 						tmp = tmp->left;
 				}
 				n->parent = temp;
-				if (n->key < temp->key)
+				if (n->key._second < temp->key._second)
 					temp->left = n;
 				else
 					temp->right = n;
@@ -120,7 +120,7 @@ namespace ft
 				}
 				if (!n->parent->parent)
 					return ;
-				this->_recolor(n);
+			//	this->_recolor(n);
 			}
 
 			//EXCEPTION

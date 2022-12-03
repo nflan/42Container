@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/01 18:42:40 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/03 18:03:10 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../incs/viterator.hpp"
 #include "../incs/tools.hpp"
 #include "../incs/rbtree.hpp"
+#include "../incs/map.hpp"
 #include <sstream>
 #include <iostream>
 #include <stack>
@@ -26,17 +27,18 @@
 #define	NAMESPACE ft
 #endif
 
-template<class Os, class Co>
-Os& operator<<(Os& os, const Co& co) 
+
+/*template<class Os, typename T>
+Os& operator<<(Os& os, const ft::vector<T>& co) 
 {
 	os << "{";
 	for (size_t i = 0; i < co.size(); i++)
 		os << ' ' << co[i];
 	return os << " } ";
-}
+}*/
 
 void	dostack();
-void	dovector();
+//void	dovector();
 void	dorbtree();
 template< typename T >
 void	compare(T c1, T c2);
@@ -60,7 +62,7 @@ int	main( int ac, char **av )
 			dostack();
 			break;
 		case (1):
-			dovector();
+		//	dovector();
 			break;
 		case (2):
 			dorbtree();
@@ -85,7 +87,7 @@ void	dorbtree( void )
 	std::cout << std::endl;
 
 	//Creation et affichage arbre binaire
-	ft::rbtree<int>	tree;
+	ft::map<int, int>		map;
 	NAMESPACE::vector<int>	v;
 	for (size_t i = 0; i < 20; i++)
 		v.push_back(i);
@@ -93,17 +95,17 @@ void	dorbtree( void )
 	try
 	{
 		for (size_t i = 0; i < 20; i++)
-			tree.insert(v[i]);
+			map.insert(ft::make_pair(i, v[i]));
 	}
 	catch ( std::exception & e )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	tree.print();
+	map.print();
 }
 
 //VECTOR
-void	dovector( void )
+/*void	dovector( void )
 {
 	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
 	//Constructeur par defaut
@@ -446,7 +448,7 @@ void	dovector( void )
 		std::cout << std::endl << "comparaison de rev_ite et rev_it" << std::endl;
 		compare(rev_ite, rev_it);
 	}
-}
+}*/
 
 template< typename T >
 void	compare(T c1, T c2)
