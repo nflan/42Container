@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/03 17:59:58 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 16:25:39 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <map>
 #include "tools.hpp"
 #include "rbtree.hpp"
+//#include "miterator.hpp"
+//#include "reverse_miterator.hpp"
 
 namespace ft
 {
@@ -44,9 +46,8 @@ namespace ft
 			map( void ): _tree() {}
 			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(NULL, comp, alloc) {}
 			template< class InputIt >
-			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator() )
+			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(NULL, comp, alloc)
 			{
-				(void)alloc, (void)comp;
 				for (; first != last; first++)
 					this->insert(*first);
 			}
@@ -86,7 +87,7 @@ namespace ft
 			}
 			iterator					insert( iterator pos, const value_type& value );
 			template< class InputIt >
-			void						insert( InputIt first, InputIt last );
+			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL );
 			iterator					erase( iterator pos );
 			iterator					erase( iterator first, iterator last );
 			size_type					erase( const Key& key );
@@ -109,6 +110,7 @@ namespace ft
 
 
 			void	print() { this->_tree.print(); }
+			ft::rbtree<value_type, Compare, Allocator>	getTree( void ) { return (_tree); }
 
 		private:
 			ft::rbtree<value_type, Compare, Allocator>	_tree;

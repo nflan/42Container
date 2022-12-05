@@ -9,6 +9,8 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	//
+$(FT)	bench/Makefile	/^$(FT): $(SRC)$/;"	t
+$(STD)	bench/Makefile	/^$(STD): $(SRC)$/;"	t
 BASE_HPP	containers_test/srcs/base.hpp	/^# define BASE_HPP$/;"	d
 BLOCK_OPTIMIZATION	termine_moi/benchmarks/prelude.hpp	/^#define BLOCK_OPTIMIZATION(/;"	d
 CATCH_UNHANDLED_EX	termine_moi/tests/prelude.hpp	/^#define CATCH_UNHANDLED_EX(/;"	d
@@ -19,23 +21,37 @@ CHECK_TYPEDEF	termine_moi/tests/tests/map/typedefs.cpp	/^#define CHECK_TYPEDEF(/
 CHECK_TYPEDEF	termine_moi/tests/tests/set/typedefs.cpp	/^#define CHECK_TYPEDEF(/;"	d	file:
 CHECK_TYPEDEF	termine_moi/tests/tests/stack/typedefs.cpp	/^#define CHECK_TYPEDEF(/;"	d	file:
 CHECK_TYPEDEF	termine_moi/tests/tests/vector/typedefs.cpp	/^#define CHECK_TYPEDEF(/;"	d	file:
+CXX	bench/Makefile	/^CXX = clang++$/;"	m
+Clock	bench/main.cpp	/^		Clock(void) {gettimeofday(&_time, NULL);};$/;"	f	class:Clock	file:
+Clock	bench/main.cpp	/^class	Clock {$/;"	c	file:
+Containers_benchmark	bench/README.md	/^# Containers_benchmark$/;"	c
 Contributors	containers_test/README.md	/^## Contributors$/;"	s	chapter:containers_test
 DEALLOC_BAD_POINTER	termine_moi/tests/track/memory_tracker.hpp	/^    DEALLOC_BAD_POINTER,$/;"	e	enum:dealloc_result
 DEALLOC_BAD_SIZE	termine_moi/tests/track/memory_tracker.hpp	/^    DEALLOC_BAD_SIZE,$/;"	e	enum:dealloc_result
 DEALLOC_SUCCESS	termine_moi/tests/track/memory_tracker.hpp	/^    DEALLOC_SUCCESS$/;"	e	enum:dealloc_result
 Debug helper	termine_moi/README.md	/^## Debug helper$/;"	s	chapter:ft_containers terminator
 EOF	containers_test/fct.sh	/^	regex=$(cat <<- EOF$/;"	h
+EqualException	incs/rbtree.hpp	/^			class EqualException: public std::exception {$/;"	c	class:ft::rbtree
+FT	bench/Makefile	/^FT = test_ft$/;"	m
 ITERATOR_HPP	incs/iterator.hpp	/^#define ITERATOR_HPP$/;"	d
 Improvements/Bug fixes	termine_moi/README.md	/^## Improvements\/Bug fixes$/;"	s	chapter:ft_containers terminator
 MAIN	termine_moi/tests/prelude.hpp	/^#define MAIN(/;"	d
+MAP_HPP	incs/map.hpp	/^#define MAP_HPP$/;"	d
 MAXRAM	termine_moi/benchmarks/prelude.hpp	/^#define MAXRAM /;"	d
+MAXSIZE	bench/main.cpp	/^#define MAXSIZE /;"	d	file:
 MAXSIZE	termine_moi/benchmarks/map/map_prelude.hpp	/^#define MAXSIZE /;"	d
 MAXSIZE	termine_moi/benchmarks/set/set_prelude.hpp	/^#define MAXSIZE /;"	d
 MAXSIZE	termine_moi/benchmarks/vector/vector_prelude.hpp	/^#define MAXSIZE /;"	d
+MITERATOR_HPP	incs/miterator.hpp	/^#define MITERATOR_HPP$/;"	d
+NAMESPACE	bench/main.cpp	/^# define NAMESPACE /;"	d	file:
 NAMESPACE	srcs/main.cpp	/^#define	NAMESPACE /;"	d	file:
 NAMESPACE	termine_moi/benchmarks/prelude.hpp	/^#define NAMESPACE /;"	d
 NAMESPACE	termine_moi/tests/prelude.hpp	/^#define NAMESPACE /;"	d
+NAllocator	incs/rbtree.hpp	/^			typedef std::allocator<node>					NAllocator;$/;"	t	class:ft::rbtree	typeref:typename:std::allocator<node>
 NOTE	termine_moi/README.md	/^## NOTE$/;"	s	chapter:ft_containers terminator
+OBJ	bench/Makefile	/^OBJ = $(SRC:.cpp=.o)$/;"	m
+PREC	bench/Makefile	/^PREC = 1$/;"	m
+PREC	bench/main.cpp	/^# define PREC /;"	d	file:
 PRINT_ALL	termine_moi/tests/tests/map/map_prelude.hpp	/^#define PRINT_ALL(/;"	d
 PRINT_ALL	termine_moi/tests/tests/set/set_prelude.hpp	/^#define PRINT_ALL(/;"	d
 PRINT_ALL	termine_moi/tests/tests/vector/vector_prelude.hpp	/^#define PRINT_ALL(/;"	d
@@ -61,7 +77,9 @@ PRINT_TYPE	termine_moi/tests/tests/extra/iterator_traits.cpp	/^#define PRINT_TYP
 PRINT_VEC	termine_moi/tests/tests/extra/extra_prelude.hpp	/^#define PRINT_VEC(/;"	d
 PRINT_VEC	termine_moi/tests/tests/vector/vector_prelude.hpp	/^#define PRINT_VEC(/;"	d
 RBTREE_HPP	incs/rbtree.hpp	/^#define RBTREE_HPP$/;"	d
+REVERSE_MITERATOR_HPP	incs/reverse_miterator.hpp	/^#define REVERSE_MITERATOR_HPP$/;"	d
 REVERSE_VITERATOR_HPP	incs/reverse_viterator.hpp	/^#define REVERSE_VITERATOR_HPP$/;"	d
+ROUND	bench/main.cpp	/^#define ROUND(/;"	d	file:
 SEED	termine_moi/tests/prelude.hpp	/^#define SEED /;"	d
 SETUP	termine_moi/benchmarks/prelude.hpp	/^#define SETUP /;"	d
 SETUP_ARRAY	termine_moi/tests/tests/set/set_prelude.hpp	/^#define SETUP_ARRAY(/;"	d
@@ -70,7 +88,9 @@ SETUP_ARRAYS	termine_moi/tests/tests/map/map_prelude.hpp	/^#define SETUP_ARRAYS(
 SETUP_ARRAYS	termine_moi/tests/tests/set/set_prelude.hpp	/^#define SETUP_ARRAYS(/;"	d
 SETUP_ARRAYS	termine_moi/tests/tests/vector/vector_prelude.hpp	/^#define SETUP_ARRAYS(/;"	d
 SET_HPP	incs/set.hpp	/^#define SET_HPP$/;"	d
+SRC	bench/Makefile	/^SRC = main.cpp$/;"	m
 STACK_HPP	incs/stack.hpp	/^#define STACK_HPP$/;"	d
+STD	bench/Makefile	/^STD = test_std$/;"	m
 Summary	termine_moi/README.md	/^## Summary$/;"	s	chapter:ft_containers terminator
 T1	containers_test/srcs/map/bounds.cpp	/^#define T1 /;"	d	file:
 T1	containers_test/srcs/map/comp.cpp	/^#define T1 /;"	d	file:
@@ -230,6 +250,8 @@ T3	containers_test/srcs/multimap/rite_arrow.cpp	/^typedef _pair<const T1, T2> T3
 T3	containers_test/srcs/multimap/swap.cpp	/^typedef _pair<const T1, T2> T3;$/;"	t	typeref:typename:_pair<const T1,T2>	file:
 T3	containers_test/srcs/multimap/tricky_construct.cpp	/^typedef TESTED_NAMESPACE::multimap<T1, T2>::value_type T3;$/;"	t	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>::value_type	file:
 T3	containers_test/srcs/multimap/tricky_erase.cpp	/^typedef TESTED_NAMESPACE::multimap<T1, T2>::value_type T3;$/;"	t	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>::value_type	file:
+TEST	bench/Makefile	/^TEST = 0$/;"	m
+TEST	bench/main.cpp	/^# define TEST /;"	d	file:
 TESTED_NAMESPACE	containers_test/srcs/base.hpp	/^#  define TESTED_NAMESPACE /;"	d
 TESTED_TYPE	containers_test/srcs/deque/assign.cpp	/^#define TESTED_TYPE /;"	d	file:
 TESTED_TYPE	containers_test/srcs/deque/at.cpp	/^#define TESTED_TYPE /;"	d	file:
@@ -316,6 +338,8 @@ TESTED_TYPE	containers_test/srcs/vector/swap.cpp	/^#define TESTED_TYPE /;"	d	fil
 TOOLS_HPP	incs/tools.hpp	/^#define TOOLS_HPP$/;"	d
 T_SIZE_TYPE	containers_test/srcs/vector/common.hpp	/^#define T_SIZE_TYPE /;"	d
 Tested features	containers_test/README.md	/^## Tested features$/;"	s	chapter:containers_test
+Trunk	srcs/main.cpp	/^	Trunk(Trunk *prev, std::string str)$/;"	f	struct:Trunk	file:
+Trunk	srcs/main.cpp	/^struct Trunk$/;"	s	file:
 UNDER_TYPE	containers_test/srcs/list/huge_sort.cpp	/^typedef int UNDER_TYPE;$/;"	t	typeref:typename:int	file:
 UNDER_TYPE	containers_test/srcs/list/merge.cpp	/^typedef double UNDER_TYPE;$/;"	t	typeref:typename:double	file:
 Usage	containers_test/README.md	/^## Usage$/;"	s	chapter:containers_test
@@ -323,10 +347,16 @@ Usage	termine_moi/README.md	/^## Usage$/;"	s	chapter:ft_containers terminator
 VECTOR_HPP	incs/vector.hpp	/^#define VECTOR_HPP$/;"	d
 VITERATOR_HPP	incs/viterator.hpp	/^#define VITERATOR_HPP$/;"	d
 Warning	containers_test/README.md	/^## Warning$/;"	s	chapter:containers_test
+_alloc	incs/rbtree.hpp	/^			Allocator	_alloc;$/;"	m	class:ft::rbtree	typeref:typename:Allocator
 _alloc	incs/vector.hpp	/^			Allocator		_alloc;$/;"	m	class:ft::vector	typeref:typename:Allocator
+_allocnode	incs/rbtree.hpp	/^			NAllocator	_allocnode;$/;"	m	class:ft::rbtree	typeref:typename:NAllocator
 _capacity	incs/vector.hpp	/^			size_type		_capacity;$/;"	m	class:ft::vector	typeref:typename:size_type
+_clear	incs/rbtree.hpp	/^			void	_clear(nodePTR root)$/;"	f	class:ft::rbtree	typeref:typename:void
+_compare	incs/rbtree.hpp	/^			Compare		_compare;$/;"	m	class:ft::rbtree	typeref:typename:Compare
 _distance	incs/vector.hpp	/^			difference_type	_distance(It & first, It & last, typename ft::enable_if<ft::is_same<typename /;"	f	class:ft::vector	typeref:typename:difference_type
-_first	incs/tools.hpp	/^			first_type	_first;$/;"	m	struct:ft::pair	typeref:typename:first_type
+_initNullNode	incs/rbtree.hpp	/^			void	_initNullNode( nodePTR nod, nodePTR parent )$/;"	f	class:ft::rbtree	typeref:typename:void
+_left_right_rot	incs/rbtree.hpp	/^			void	_left_right_rot( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
+_left_rotate	incs/rbtree.hpp	/^			void	_left_rotate( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
 _map	containers_test/srcs/map/comp.cpp	/^typedef TESTED_NAMESPACE::map<T1, T2> _map;$/;"	t	typeref:typename:TESTED_NAMESPACE::map<T1,T2>	file:
 _multimap	containers_test/srcs/multimap/comp.cpp	/^typedef TESTED_NAMESPACE::multimap<T1, T2> _multimap;$/;"	t	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>	file:
 _multiset	containers_test/srcs/multiset/comp.cpp	/^typedef TESTED_NAMESPACE::multiset<T1> _multiset;$/;"	t	typeref:typename:TESTED_NAMESPACE::multiset<T1>	file:
@@ -335,12 +365,20 @@ _pair	containers_test/srcs/map/common.hpp	/^#define _pair /;"	d
 _pair	containers_test/srcs/multimap/common.hpp	/^#define _pair /;"	d
 _pair	containers_test/srcs/multiset/common.hpp	/^#define _pair /;"	d
 _pair	containers_test/srcs/set/common.hpp	/^#define _pair /;"	d
+_print	incs/rbtree.hpp	/^			void	_print(nodePTR root, std::string indent, bool last)$/;"	f	class:ft::rbtree	typeref:typename:void
+_r	incs/miterator.hpp	/^			pointer	_r;$/;"	m	class:ft::miterator	typeref:typename:pointer
+_r	incs/reverse_miterator.hpp	/^			Iter	_r;$/;"	m	class:ft::reverse_miterator	typeref:typename:Iter
 _r	incs/reverse_viterator.hpp	/^			Iter	_r;$/;"	m	class:ft::reverse_viterator	typeref:typename:Iter
 _r	incs/viterator.hpp	/^			pointer	_r;$/;"	m	class:ft::viterator	typeref:typename:pointer
-_second	incs/tools.hpp	/^			second_type	_second;$/;"	m	struct:ft::pair	typeref:typename:second_type
+_recolor	incs/rbtree.hpp	/^			void	_recolor( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
+_right_left_rot	incs/rbtree.hpp	/^			void	_right_left_rot( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
+_right_rotate	incs/rbtree.hpp	/^			void	_right_rotate( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
+_root	incs/rbtree.hpp	/^			nodePTR		_root;$/;"	m	class:ft::rbtree	typeref:typename:nodePTR
 _set	containers_test/srcs/set/comp.cpp	/^typedef TESTED_NAMESPACE::set<T1> _set;$/;"	t	typeref:typename:TESTED_NAMESPACE::set<T1>	file:
 _size	incs/vector.hpp	/^			size_type		_size;$/;"	m	class:ft::vector	typeref:typename:size_type
 _tab	incs/vector.hpp	/^			pointer			_tab;$/;"	m	class:ft::vector	typeref:typename:pointer
+_time	bench/main.cpp	/^		struct timeval _time;$/;"	m	class:Clock	typeref:struct:timeval	file:
+_tree	incs/map.hpp	/^			ft::rbtree<value_type, Compare, Allocator>	_tree;$/;"	m	class:ft::map	typeref:typename:ft::rbtree<value_type,Compare,Allocator>
 _verbose	containers_test/srcs/base.hpp	/^		bool		_verbose;$/;"	m	class:foo	typeref:typename:bool
 abc	termine_moi/tests/tests/vector/max_size.cpp	/^struct abc {$/;"	s	file:
 add_allocation	termine_moi/tests/track/memory_tracker.cpp	/^void memory_tracker::add_allocation(void* ptr, std::size_t size)$/;"	f	class:memory_tracker	typeref:typename:void
@@ -350,12 +388,14 @@ add_value	termine_moi/tests/tests/stack/stack_prelude.hpp	/^void add_value(C& s,
 add_values	termine_moi/tests/tests/stack/stack_prelude.hpp	/^void add_values(C& s, typename C::value_type value, std::size_t count)$/;"	f	typeref:typename:void
 address	termine_moi/tests/track/track_allocator.hpp	/^    const_pointer address(const_reference x) const$/;"	f	class:track_allocator	typeref:typename:const_pointer
 address	termine_moi/tests/track/track_allocator.hpp	/^    pointer address(reference x) const$/;"	f	class:track_allocator	typeref:typename:pointer
+all	bench/Makefile	/^all: $(FT) $(STD)$/;"	t
 allocate	termine_moi/tests/track/track_allocator.hpp	/^    T* allocate(std::size_t n, const void* hint = 0)$/;"	f	class:track_allocator	typeref:typename:T *
 allocation_count	termine_moi/tests/track/memory_tracker.cpp	/^std::size_t memory_tracker::allocation_count()$/;"	f	class:memory_tracker	typeref:typename:std::size_t
 allocation_empty	termine_moi/tests/track/memory_tracker.cpp	/^bool memory_tracker::allocation_empty()$/;"	f	class:memory_tracker	typeref:typename:bool
 allocations	termine_moi/tests/track/memory_tracker.cpp	/^std::map<void*, std::size_t> memory_tracker::allocations = std::map<void*, std::size_t>();$/;"	m	class:memory_tracker	typeref:typename:std::map<void *,std::size_t>
 allocations	termine_moi/tests/track/memory_tracker.hpp	/^    static std::map<void*, std::size_t> allocations;$/;"	m	class:memory_tracker	typeref:typename:std::map<void *,std::size_t>
-allocator_type	incs/rbtree.hpp	/^			typedef Allocator								allocator_type;$/;"	t	struct:ft::node	typeref:typename:Allocator
+allocator_type	incs/map.hpp	/^			typedef Allocator									allocator_type;$/;"	t	class:ft::map	typeref:typename:Allocator
+allocator_type	incs/rbtree.hpp	/^			typedef Allocator								allocator_type;$/;"	t	class:ft::rbtree	typeref:typename:Allocator
 allocator_type	incs/set.hpp	/^			typedef Allocator								allocator_type;$/;"	t	struct:ft::set	typeref:typename:Allocator
 allocator_type	incs/vector.hpp	/^			typedef Allocator										allocator_type;$/;"	t	class:ft::vector	typeref:typename:Allocator
 assign	incs/vector.hpp	/^			void					assign( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value/;"	f	class:ft::vector	typeref:typename:void
@@ -364,6 +404,8 @@ at	incs/vector.hpp	/^			const_reference			at(size_type pos) const$/;"	f	class:ft
 at	incs/vector.hpp	/^			reference				at(size_type pos)$/;"	f	class:ft::vector	typeref:typename:reference
 back	incs/vector.hpp	/^			const_reference			back( void ) const$/;"	f	class:ft::vector	typeref:typename:const_reference
 back	incs/vector.hpp	/^			reference				back( void )$/;"	f	class:ft::vector	typeref:typename:reference
+base	incs/miterator.hpp	/^			pointer	base( void ) const { return (this->_r); }$/;"	f	class:ft::miterator	typeref:typename:pointer
+base	incs/reverse_miterator.hpp	/^			iterator_type	base( void ) const { return (this->_r); }$/;"	f	class:ft::reverse_miterator	typeref:typename:iterator_type
 base	incs/reverse_viterator.hpp	/^			iterator_type	base( void ) const { return (this->_r); }$/;"	f	class:ft::reverse_viterator	typeref:typename:iterator_type
 base	incs/viterator.hpp	/^			pointer	base( void ) const { return (this->_r); }$/;"	f	class:ft::viterator	typeref:typename:pointer
 begin	incs/vector.hpp	/^			const_iterator			begin( void ) const { return (const_iterator(this->data())); }$/;"	f	class:ft::vector	typeref:typename:const_iterator
@@ -384,7 +426,9 @@ check_alive_objects	termine_moi/tests/track/leak_checker.cpp	/^void leak_checker
 check_all	termine_moi/tests/track/leak_checker.cpp	/^void leak_checker::check_all()$/;"	f	class:leak_checker	typeref:typename:void
 check_dir	termine_moi/tests/run_tests.sh	/^check_dir() {$/;"	f
 check_leaks	termine_moi/tests/track/leak_checker.cpp	/^void leak_checker::check_leaks()$/;"	f	class:leak_checker	typeref:typename:void
+clean	bench/Makefile	/^clean:$/;"	t
 clean_trailing_files	containers_test/fct.sh	/^	clean_trailing_files () {$/;"	f
+clear	incs/map.hpp	/^			void						clear( void ) { this->tree.clear(); }$/;"	f	class:ft::map	typeref:typename:void
 clear	incs/vector.hpp	/^			void					clear( void )$/;"	f	class:ft::vector	typeref:typename:void
 cmp	containers_test/srcs/deque/relational_ope.cpp	/^void	cmp(const TESTED_NAMESPACE::deque<T, Alloc> &lhs, const TESTED_NAMESPACE::deque<T, Alloc> &/;"	f	typeref:typename:void
 cmp	containers_test/srcs/list/relational_ope.cpp	/^void	cmp(const TESTED_NAMESPACE::list<T, Alloc> &lhs, const TESTED_NAMESPACE::list<T, Alloc> &rh/;"	f	typeref:typename:void
@@ -396,8 +440,7 @@ cmp	containers_test/srcs/stack/relational_ope.cpp	/^void	cmp(const T_STACK &lhs,
 cmp	containers_test/srcs/stack/relational_ope_list.cpp	/^void	cmp(const T_STACK &lhs, const T_STACK &rhs)$/;"	f	typeref:typename:void
 cmp	containers_test/srcs/vector/relational_ope.cpp	/^void	cmp(const TESTED_NAMESPACE::vector<T, Alloc> &lhs, const TESTED_NAMESPACE::vector<T, Alloc>/;"	f	typeref:typename:void
 cmp_one	containers_test/fct.sh	/^cmp_one () {$/;"	f
-col	incs/rbtree.hpp	/^			bool	col;$/;"	m	struct:ft::node	typeref:typename:bool
-col	incs/set.hpp	/^			bool	col;$/;"	m	struct:ft::set	typeref:typename:bool
+col	incs/rbtree.hpp	/^					bool		col;$/;"	m	struct:ft::rbtree::node	typeref:typename:bool
 compare	srcs/main.cpp	/^void	compare(T c1, T c2)$/;"	f	typeref:typename:void
 compare_output	containers_test/fct.sh	/^compare_output () {$/;"	f
 compile	containers_test/fct.sh	/^compile () {$/;"	f
@@ -405,21 +448,27 @@ const_it	containers_test/srcs/map/comp.cpp	/^typedef _map::const_iterator const_
 const_it	containers_test/srcs/multimap/comp.cpp	/^typedef _multimap::const_iterator const_it;$/;"	t	typeref:typename:_multimap::const_iterator	file:
 const_it	containers_test/srcs/multiset/comp.cpp	/^typedef _multiset::const_iterator const_it;$/;"	t	typeref:typename:_multiset::const_iterator	file:
 const_it	containers_test/srcs/set/comp.cpp	/^typedef _set::const_iterator const_it;$/;"	t	typeref:typename:_set::const_iterator	file:
-const_iterator	incs/rbtree.hpp	/^			typedef typename std::set<Key>::const_iterator	const_iterator;$/;"	t	struct:ft::node	typeref:typename:std::set<Key>::const_iterator
+const_iterator	incs/map.hpp	/^			typedef typename std::map<Key, T>::const_iterator	const_iterator;$/;"	t	class:ft::map	typeref:typename:std::map<Key,T>::const_iterator
+const_iterator	incs/rbtree.hpp	/^			typedef typename std::set<Key>::const_iterator	const_iterator;$/;"	t	class:ft::rbtree	typeref:typename:std::set<Key>::const_iterator
 const_iterator	incs/set.hpp	/^			typedef typename std::set<Key>::const_iterator	const_iterator;$/;"	t	struct:ft::set	typeref:typename:std::set<Key>::const_iterator
 const_iterator	incs/vector.hpp	/^			typedef typename ft::viterator<const T>					const_iterator;$/;"	t	class:ft::vector	typeref:typename:ft::viterator<const T>
-const_pointer	incs/rbtree.hpp	/^			typedef typename Allocator::const_pointer		const_pointer;$/;"	t	struct:ft::node	typeref:typename:Allocator::const_pointer
+const_pointer	incs/map.hpp	/^			typedef typename Allocator::const_pointer			const_pointer;$/;"	t	class:ft::map	typeref:typename:Allocator::const_pointer
+const_pointer	incs/miterator.hpp	/^			typedef const value_type*				const_pointer;$/;"	t	class:ft::miterator	typeref:typename:const value_type *
+const_pointer	incs/rbtree.hpp	/^			typedef typename Allocator::const_pointer		const_pointer;$/;"	t	class:ft::rbtree	typeref:typename:Allocator::const_pointer
 const_pointer	incs/set.hpp	/^			typedef typename Allocator::const_pointer		const_pointer;$/;"	t	struct:ft::set	typeref:typename:Allocator::const_pointer
 const_pointer	incs/vector.hpp	/^			typedef typename Allocator::const_pointer				const_pointer;$/;"	t	class:ft::vector	typeref:typename:Allocator::const_pointer
 const_pointer	incs/viterator.hpp	/^			typedef const value_type*				const_pointer;$/;"	t	class:ft::viterator	typeref:typename:const value_type *
 const_pointer	termine_moi/tests/track/track_allocator.hpp	/^    typedef const T*       const_pointer;$/;"	t	class:track_allocator	typeref:typename:const T *
-const_reference	incs/rbtree.hpp	/^			typedef const value_type &						const_reference;$/;"	t	struct:ft::node	typeref:typename:const value_type &
+const_reference	incs/map.hpp	/^			typedef typename Allocator::const_reference			const_reference;$/;"	t	class:ft::map	typeref:typename:Allocator::const_reference
+const_reference	incs/miterator.hpp	/^			typedef const value_type&				const_reference;$/;"	t	class:ft::miterator	typeref:typename:const value_type &
+const_reference	incs/rbtree.hpp	/^			typedef typename Allocator::const_reference		const_reference;$/;"	t	class:ft::rbtree	typeref:typename:Allocator::const_reference
 const_reference	incs/set.hpp	/^			typedef const value_type &						const_reference;$/;"	t	struct:ft::set	typeref:typename:const value_type &
 const_reference	incs/stack.hpp	/^			typedef typename Container::const_reference	const_reference;$/;"	t	class:ft::stack	typeref:typename:Container::const_reference
 const_reference	incs/vector.hpp	/^			typedef typename Allocator::const_reference				const_reference;$/;"	t	class:ft::vector	typeref:typename:Allocator::const_reference
 const_reference	incs/viterator.hpp	/^			typedef const value_type&				const_reference;$/;"	t	class:ft::viterator	typeref:typename:const value_type &
 const_reference	termine_moi/tests/track/track_allocator.hpp	/^    typedef const T&       const_reference;$/;"	t	class:track_allocator	typeref:typename:const T &
-const_reverse_iterator	incs/rbtree.hpp	/^			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;$/;"	t	struct:ft::node	typeref:typename:std::reverse_iterator<const_iterator>
+const_reverse_iterator	incs/map.hpp	/^			typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;$/;"	t	class:ft::map	typeref:typename:std::reverse_iterator<const_iterator>
+const_reverse_iterator	incs/rbtree.hpp	/^			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;$/;"	t	class:ft::rbtree	typeref:typename:std::reverse_iterator<const_iterator>
 const_reverse_iterator	incs/set.hpp	/^			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;$/;"	t	struct:ft::set	typeref:typename:std::reverse_iterator<const_iterator>
 const_reverse_iterator	incs/vector.hpp	/^			typedef typename ft::reverse_viterator<const_iterator>	const_reverse_iterator;$/;"	t	class:ft::vector	typeref:typename:ft::reverse_viterator<const_iterator>
 construct	termine_moi/tests/track/track_allocator.hpp	/^    void construct(pointer p, const_reference val)$/;"	f	class:track_allocator	typeref:typename:void
@@ -458,7 +507,10 @@ destroy	termine_moi/tests/track/track_allocator.hpp	/^    void destroy(pointer p
 difference_type	incs/iterator.hpp	/^			typedef std::ptrdiff_t					difference_type;$/;"	t	struct:ft::iterator_traits	typeref:typename:std::ptrdiff_t
 difference_type	incs/iterator.hpp	/^			typedef typename Iter::difference_type		difference_type;$/;"	t	struct:ft::iterator_traits	typeref:typename:Iter::difference_type
 difference_type	incs/iterator.hpp	/^			typedef typename iterator_traits<Iter>::difference_type		difference_type;$/;"	t	class:ft::reverse_iterator	typeref:typename:iterator_traits<Iter>::difference_type
-difference_type	incs/rbtree.hpp	/^			typedef std::ptrdiff_t							difference_type;$/;"	t	struct:ft::node	typeref:typename:std::ptrdiff_t
+difference_type	incs/map.hpp	/^			typedef std::ptrdiff_t								difference_type;$/;"	t	class:ft::map	typeref:typename:std::ptrdiff_t
+difference_type	incs/miterator.hpp	/^			typedef typename std::ptrdiff_t			difference_type;$/;"	t	class:ft::miterator	typeref:typename:std::ptrdiff_t
+difference_type	incs/rbtree.hpp	/^			typedef std::ptrdiff_t							difference_type;$/;"	t	class:ft::rbtree	typeref:typename:std::ptrdiff_t
+difference_type	incs/reverse_miterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::difference_type		difference_type;$/;"	t	class:ft::reverse_miterator	typeref:typename:ft::iterator_traits<Iter>::difference_type
 difference_type	incs/reverse_viterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::difference_type		difference_type;$/;"	t	class:ft::reverse_viterator	typeref:typename:ft::iterator_traits<Iter>::difference_type
 difference_type	incs/set.hpp	/^			typedef std::ptrdiff_t							difference_type;$/;"	t	struct:ft::set	typeref:typename:std::ptrdiff_t
 difference_type	incs/vector.hpp	/^			typedef std::ptrdiff_t									difference_type;$/;"	t	class:ft::vector	typeref:typename:std::ptrdiff_t
@@ -470,7 +522,7 @@ do_test	termine_moi/tests/run_tests.sh	/^do_test() {$/;"	f
 dorbtree	srcs/main.cpp	/^void	dorbtree( void )$/;"	f	typeref:typename:void
 dostack	srcs/main.cpp	/^void	dostack( void )$/;"	f	typeref:typename:void
 doublevector	termine_moi/tests/tests/vector/vector_prelude.hpp	/^typedef NAMESPACE::vector<double, track_allocator<double> > doublevector;$/;"	t	typeref:typename:NAMESPACE::vector<double,track_allocator<double>>
-dovector	srcs/main.cpp	/^void	dovector( void )$/;"	f	typeref:typename:void
+empty	incs/map.hpp	/^			bool		empty( void ) const { return (this->begin() == this->end()); }$/;"	f	class:ft::map	typeref:typename:bool
 empty	incs/stack.hpp	/^			bool			empty( void ) const				{ return (c.empty()); };$/;"	f	class:ft::stack	typeref:typename:bool
 empty	incs/vector.hpp	/^			bool					empty( void ) const { return (this->_size ? false : true ); }$/;"	f	class:ft::vector	typeref:typename:bool
 enable_if	incs/tools.hpp	/^	struct enable_if {};$/;"	s	namespace:ft
@@ -486,6 +538,8 @@ fake_std	termine_moi/tests/tests/extra/type_traits_impl.hpp	/^namespace fake_std
 false_type	incs/tools.hpp	/^	typedef integral_constant<bool, false>	false_type;$/;"	t	namespace:ft	typeref:typename:integral_constant<bool,false>
 false_type	termine_moi/tests/prelude.hpp	/^struct false_type {$/;"	s
 false_type	termine_moi/tests/tests/extra/type_traits_impl.hpp	/^struct false_type : public bool_constant<false> {$/;"	s	namespace:fake_std
+fclean	bench/Makefile	/^fclean: clean$/;"	t
+first	incs/tools.hpp	/^			first_type	first;$/;"	m	struct:ft::pair	typeref:typename:first_type
 first_type	incs/tools.hpp	/^			typedef T1	first_type;$/;"	t	struct:ft::pair	typeref:typename:T1
 foo	containers_test/srcs/base.hpp	/^		foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };$/;"	f	class:foo
 foo	containers_test/srcs/base.hpp	/^		foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };$/;"	f	class:foo
@@ -494,7 +548,10 @@ foo	containers_test/srcs/base.hpp	/^class foo {$/;"	c
 front	incs/vector.hpp	/^			const_reference			front( void ) const { return (*this->_tab); }$/;"	f	class:ft::vector	typeref:typename:const_reference
 front	incs/vector.hpp	/^			reference				front( void ) { return (*this->_tab); }$/;"	f	class:ft::vector	typeref:typename:reference
 ft	incs/iterator.hpp	/^namespace ft$/;"	n
+ft	incs/map.hpp	/^namespace ft$/;"	n
+ft	incs/miterator.hpp	/^namespace ft$/;"	n
 ft	incs/rbtree.hpp	/^namespace ft$/;"	n
+ft	incs/reverse_miterator.hpp	/^namespace ft$/;"	n
 ft	incs/reverse_viterator.hpp	/^namespace ft$/;"	n
 ft	incs/set.hpp	/^namespace ft$/;"	n
 ft	incs/stack.hpp	/^namespace ft$/;"	n
@@ -591,8 +648,12 @@ ft_true	containers_test/srcs/list/unique.cpp	/^bool	ft_true(TESTED_TYPE first, T
 ft_unique	containers_test/srcs/list/unique.cpp	/^void	ft_unique(TESTED_NAMESPACE::list<TESTED_TYPE> &lst)$/;"	f	typeref:typename:void
 ft_unique	containers_test/srcs/list/unique.cpp	/^void	ft_unique(TESTED_NAMESPACE::list<TESTED_TYPE> &lst, Pred pred)$/;"	f	typeref:typename:void
 getEmoji	containers_test/fct.sh	/^getEmoji () {$/;"	f
+getRoot	incs/rbtree.hpp	/^			nodePTR	getRoot() { return (this->_root); }$/;"	f	class:ft::rbtree	typeref:typename:nodePTR
+getTree	incs/map.hpp	/^			ft::rbtree<value_type, Compare, Allocator>	getTree( void ) { return (_tree); }$/;"	f	class:ft::map	typeref:typename:ft::rbtree<value_type,Compare,Allocator>
 getValue	containers_test/srcs/base.hpp	/^		value_type	getValue(void) const { return this->value; };$/;"	f	class:foo	typeref:typename:value_type
 getYN	containers_test/fct.sh	/^getYN () {$/;"	f
+get_allocator	incs/map.hpp	/^			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }$/;"	f	class:ft::map	typeref:typename:allocator_type
+get_allocator	incs/rbtree.hpp	/^			allocator_type	get_allocator() const { return (this->_alloc); }$/;"	f	class:ft::rbtree	typeref:typename:allocator_type
 get_allocator	incs/vector.hpp	/^			allocator_type			get_allocator( void ) const { return (this->_alloc); }$/;"	f	class:ft::vector	typeref:typename:allocator_type
 get_time	termine_moi/benchmarks/timer/timer.cpp	/^long timer::get_time()$/;"	f	class:timer	typeref:typename:long
 i	containers_test/srcs/map/comp.cpp	/^static unsigned int i = 0;$/;"	v	typeref:typename:unsigned int	file:
@@ -604,12 +665,16 @@ init_array	termine_moi/tests/tests/set/set_prelude.hpp	/^void init_array(T* arr,
 init_array	termine_moi/tests/tests/vector/vector_prelude.hpp	/^void init_array(T* arr, std::size_t size)$/;"	f	typeref:typename:void
 init_array_int_str	termine_moi/tests/tests/map/map_prelude.hpp	/^void init_array_int_str(NAMESPACE::pair<int, std::string>* arr, std::size_t size)$/;"	f	typeref:typename:void
 init_array_str_str	termine_moi/tests/tests/map/map_prelude.hpp	/^void init_array_str_str(NAMESPACE::pair<std::string, std::string>* arr, std::size_t size)$/;"	f	typeref:typename:void
+input_iter	incs/miterator.hpp	/^			static const bool	input_iter = true;$/;"	m	class:ft::miterator	typeref:typename:const bool
+input_iter	incs/reverse_miterator.hpp	/^			static const bool	input_iter = true;$/;"	m	class:ft::reverse_miterator	typeref:typename:const bool
 input_iter	incs/reverse_viterator.hpp	/^			static const bool	input_iter = true;$/;"	m	class:ft::reverse_viterator	typeref:typename:const bool
 input_iter	incs/viterator.hpp	/^			static const bool	input_iter = true;$/;"	m	class:ft::viterator	typeref:typename:const bool
 ins_pair	termine_moi/tests/tests/map/insert.cpp	/^        typedef NAMESPACE::pair<intmap::iterator, bool> ins_pair;$/;"	t	function:map_test_insert	typeref:typename:NAMESPACE::pair<intmap::iterator,bool>	file:
 ins_pair	termine_moi/tests/tests/map/insert.cpp	/^        typedef NAMESPACE::pair<strmap::iterator, bool> ins_pair;$/;"	t	function:map_test_insert	typeref:typename:NAMESPACE::pair<strmap::iterator,bool>	file:
 ins_pair	termine_moi/tests/tests/set/insert.cpp	/^        typedef NAMESPACE::pair<intset::iterator, bool> ins_pair;$/;"	t	function:set_test_insert	typeref:typename:NAMESPACE::pair<intset::iterator,bool>	file:
 ins_pair	termine_moi/tests/tests/set/insert.cpp	/^        typedef NAMESPACE::pair<strset::iterator, bool> ins_pair;$/;"	t	function:set_test_insert	typeref:typename:NAMESPACE::pair<strset::iterator,bool>	file:
+insert	incs/map.hpp	/^			void	insert( const value_type& value )$/;"	f	class:ft::map	typeref:typename:void
+insert	incs/rbtree.hpp	/^			void	insert( const value_type & k )$/;"	f	class:ft::rbtree	typeref:typename:void
 insert	incs/vector.hpp	/^			iterator insert( iterator pos, InputIt first, InputIt last, typename enable_if<!is_integral<I/;"	f	class:ft::vector	typeref:typename:iterator
 insert	incs/vector.hpp	/^			iterator insert( iterator pos, const T& value )$/;"	f	class:ft::vector	typeref:typename:iterator
 insert	incs/vector.hpp	/^			iterator insert( iterator pos, size_type count, const T& value )$/;"	f	class:ft::vector	typeref:typename:iterator
@@ -695,29 +760,38 @@ iterator	containers_test/srcs/map/insert.cpp	/^typedef TESTED_NAMESPACE::map<T1,
 iterator	containers_test/srcs/multimap/insert.cpp	/^typedef TESTED_NAMESPACE::multimap<T1, T2>::iterator iterator;$/;"	t	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>::iterator	file:
 iterator	containers_test/srcs/multiset/insert.cpp	/^typedef TESTED_NAMESPACE::multiset<T1>::iterator iterator;$/;"	t	typeref:typename:TESTED_NAMESPACE::multiset<T1>::iterator	file:
 iterator	containers_test/srcs/set/insert.cpp	/^typedef TESTED_NAMESPACE::set<T1>::iterator iterator;$/;"	t	typeref:typename:TESTED_NAMESPACE::set<T1>::iterator	file:
-iterator	incs/rbtree.hpp	/^			typedef typename std::set<Key>::iterator		iterator;$/;"	t	struct:ft::node	typeref:typename:std::set<Key>::iterator
+iterator	incs/map.hpp	/^			typedef typename std::map<Key, T>::iterator			iterator;$/;"	t	class:ft::map	typeref:typename:std::map<Key,T>::iterator
+iterator	incs/rbtree.hpp	/^			typedef typename std::set<Key>::iterator		iterator;$/;"	t	class:ft::rbtree	typeref:typename:std::set<Key>::iterator
 iterator	incs/set.hpp	/^			typedef typename std::set<Key>::iterator		iterator;$/;"	t	struct:ft::set	typeref:typename:std::set<Key>::iterator
 iterator	incs/vector.hpp	/^			typedef typename ft::viterator<T>						iterator;$/;"	t	class:ft::vector	typeref:typename:ft::viterator<T>
 iterator_category	incs/iterator.hpp	/^			typedef std::random_access_iterator_tag	iterator_category;$/;"	t	struct:ft::iterator_traits	typeref:typename:std::random_access_iterator_tag
 iterator_category	incs/iterator.hpp	/^			typedef typename Iter::iterator_category	iterator_category;$/;"	t	struct:ft::iterator_traits	typeref:typename:Iter::iterator_category
 iterator_category	incs/iterator.hpp	/^			typedef typename iterator_traits<Iter>::iterator_category	iterator_category;$/;"	t	class:ft::reverse_iterator	typeref:typename:iterator_traits<Iter>::iterator_category
+iterator_category	incs/miterator.hpp	/^			typedef	std::bidirectional_iterator_tag	iterator_category;$/;"	t	class:ft::miterator	typeref:typename:std::bidirectional_iterator_tag
+iterator_category	incs/reverse_miterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::iterator_category	iterator_category;$/;"	t	class:ft::reverse_miterator	typeref:typename:ft::iterator_traits<Iter>::iterator_category
 iterator_category	incs/reverse_viterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::iterator_category	iterator_category;$/;"	t	class:ft::reverse_viterator	typeref:typename:ft::iterator_traits<Iter>::iterator_category
 iterator_category	incs/viterator.hpp	/^			typedef	std::random_access_iterator_tag	iterator_category;$/;"	t	class:ft::viterator	typeref:typename:std::random_access_iterator_tag
 iterator_traits	incs/iterator.hpp	/^	struct iterator_traits$/;"	s	namespace:ft
 iterator_traits	incs/iterator.hpp	/^	struct iterator_traits<T*>$/;"	s	namespace:ft
 iterator_traits	incs/iterator.hpp	/^	struct iterator_traits<const T*>$/;"	s	namespace:ft
 iterator_type	incs/iterator.hpp	/^			typedef Iter												iterator_type;$/;"	t	class:ft::reverse_iterator	typeref:typename:Iter
+iterator_type	incs/reverse_miterator.hpp	/^			typedef Iter													iterator_type;$/;"	t	class:ft::reverse_miterator	typeref:typename:Iter
 iterator_type	incs/reverse_viterator.hpp	/^			typedef Iter													iterator_type;$/;"	t	class:ft::reverse_viterator	typeref:typename:Iter
-key_compare	incs/rbtree.hpp	/^			typedef Compare									key_compare;$/;"	t	struct:ft::node	typeref:typename:Compare
+key	incs/rbtree.hpp	/^					value_type	key;$/;"	m	struct:ft::rbtree::node	typeref:typename:value_type
+key_compare	incs/map.hpp	/^			typedef Compare										key_compare;$/;"	t	class:ft::map	typeref:typename:Compare
+key_compare	incs/rbtree.hpp	/^			typedef Compare									key_compare;$/;"	t	class:ft::rbtree	typeref:typename:Compare
 key_compare	incs/set.hpp	/^			typedef Compare									key_compare;$/;"	t	struct:ft::set	typeref:typename:Compare
-key_type	incs/rbtree.hpp	/^			typedef Key										key_type;$/;"	t	struct:ft::node	typeref:typename:Key
+key_type	incs/map.hpp	/^			typedef Key											key_type;$/;"	t	class:ft::map	typeref:typename:Key
+key_type	incs/rbtree.hpp	/^			typedef Key										key_type;$/;"	t	class:ft::rbtree	typeref:typename:Key
 key_type	incs/set.hpp	/^			typedef Key										key_type;$/;"	t	struct:ft::set	typeref:typename:Key
 leak_checker	termine_moi/tests/track/leak_checker.hpp	/^class leak_checker$/;"	c
+left	incs/rbtree.hpp	/^					node *		left;$/;"	m	struct:ft::rbtree::node	typeref:typename:node *
 lexicographical_compare	incs/tools.hpp	/^	bool	lexicographical_compare( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2 /;"	f	namespace:ft	typeref:typename:bool
 lexicographical_compare	incs/tools.hpp	/^	bool	lexicographical_compare( InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2,/;"	f	namespace:ft	typeref:typename:bool
 longvector	termine_moi/tests/tests/vector/vector_prelude.hpp	/^typedef NAMESPACE::vector<long, track_allocator<long> > longvector;$/;"	t	typeref:typename:NAMESPACE::vector<long,track_allocator<long>>
 m	containers_test/srcs/base.hpp	/^		void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; /;"	f	class:foo	typeref:typename:void
 m	containers_test/srcs/base.hpp	/^		void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };$/;"	f	class:foo	typeref:typename:void
+main	bench/main.cpp	/^int main () {$/;"	f	typeref:typename:int
 main	containers_test/fct.sh	/^function main () {$/;"	f
 main	containers_test/srcs/deque/assign.cpp	/^int		main(void)$/;"	f	typeref:typename:int
 main	containers_test/srcs/deque/at.cpp	/^int		main(void)$/;"	f	typeref:typename:int
@@ -941,6 +1015,11 @@ main	termine_moi/benchmarks/vector/push_back.cpp	/^int main()$/;"	f	typeref:type
 main	termine_moi/benchmarks/vector/resize.cpp	/^int main()$/;"	f	typeref:typename:int
 main	termine_moi/tests/main.cpp	/^int main()$/;"	f	typeref:typename:int
 make_pair	incs/tools.hpp	/^	ft::pair<T1, T2> make_pair( T1 t, T2 u ) { return (ft::pair<T1, T2>(t, u)); }$/;"	f	namespace:ft	typeref:typename:ft::pair<T1,T2>
+map	incs/map.hpp	/^			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(NULL, comp, /;"	f	class:ft::map
+map	incs/map.hpp	/^			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = A/;"	f	class:ft::map
+map	incs/map.hpp	/^			map( const map& other ) { *this = other; }$/;"	f	class:ft::map
+map	incs/map.hpp	/^			map( void ): _tree() {}$/;"	f	class:ft::map
+map	incs/map.hpp	/^	class map$/;"	c	namespace:ft
 map_check_typedefs	termine_moi/tests/tests/map/typedefs.cpp	/^void map_check_typedefs()$/;"	f	typeref:typename:void
 map_test_assignment	termine_moi/tests/tests/map/assignment.cpp	/^void map_test_assignment()$/;"	f	typeref:typename:void
 map_test_at	termine_moi/tests/tests/map/at.cpp	/^void map_test_at()$/;"	f	typeref:typename:void
@@ -975,14 +1054,31 @@ map_test_riterator	termine_moi/tests/tests/map/riterator.cpp	/^void map_test_rit
 map_test_swap	termine_moi/tests/tests/map/swap.cpp	/^void map_test_swap()$/;"	f	typeref:typename:void
 map_test_upper_bound	termine_moi/tests/tests/map/upper_bound.cpp	/^void map_test_upper_bound()$/;"	f	typeref:typename:void
 map_test_value_comp	termine_moi/tests/tests/map/value_comp.cpp	/^void map_test_value_comp()$/;"	f	typeref:typename:void
+mapped_type	incs/map.hpp	/^			typedef T											mapped_type;$/;"	t	class:ft::map	typeref:typename:T
+max_size	incs/map.hpp	/^			size_type	max_size( void ) const { return (this->_tree.max_size()); }$/;"	f	class:ft::map	typeref:typename:size_type
+max_size	incs/rbtree.hpp	/^			size_type		max_size( void ) const { return (this->_alloc.max_size()); }$/;"	f	class:ft::rbtree	typeref:typename:size_type
 max_size	incs/vector.hpp	/^			size_type				max_size( void ) const { return (this->_alloc.max_size()); }$/;"	f	class:ft::vector	typeref:typename:size_type
 max_size	termine_moi/tests/track/track_allocator.hpp	/^    size_type max_size() const$/;"	f	class:track_allocator	typeref:typename:size_type
 memory_tracker	termine_moi/tests/track/memory_tracker.hpp	/^class memory_tracker$/;"	c
+miterator	incs/miterator.hpp	/^			miterator( const miterator & o ): _r(o._r) {}$/;"	f	class:ft::miterator
+miterator	incs/miterator.hpp	/^			miterator( const pointer & o ): _r(o) {}$/;"	f	class:ft::miterator
+miterator	incs/miterator.hpp	/^			miterator() {}$/;"	f	class:ft::miterator
+miterator	incs/miterator.hpp	/^	class miterator {$/;"	c	namespace:ft
 mp	containers_test/srcs/map/find_count.cpp	/^TESTED_NAMESPACE::map<T1, T2> mp;$/;"	v	typeref:typename:TESTED_NAMESPACE::map<T1,T2>
 mp	containers_test/srcs/multimap/find_count.cpp	/^TESTED_NAMESPACE::multimap<T1, T2> mp;$/;"	v	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>
-node	incs/rbtree.hpp	/^	struct node$/;"	s	namespace:ft
+node	incs/rbtree.hpp	/^					node( const node & o ) { *this = o; }$/;"	f	struct:ft::rbtree::node
+node	incs/rbtree.hpp	/^					node( value_type k ): col(0), key(k), left(NULL), right(NULL), parent(NULL) {}$/;"	f	struct:ft::rbtree::node
+node	incs/rbtree.hpp	/^					node( value_type k, const node & parent ): col(0), key(k), left(NULL), right(NULL), parent(/;"	f	struct:ft::rbtree::node
+node	incs/rbtree.hpp	/^					node( void ): col(0), key(0), left(NULL), right(NULL), parent(NULL) {}$/;"	f	struct:ft::rbtree::node
+node	incs/rbtree.hpp	/^			struct node$/;"	s	class:ft::rbtree
+nodePTR	incs/rbtree.hpp	/^			typedef node *									nodePTR;$/;"	t	class:ft::rbtree	typeref:typename:node *
 non_integral_struct	termine_moi/tests/tests/extra/is_integral.cpp	/^struct non_integral_struct {$/;"	s	file:
 num	termine_moi/tests/tests/vector/max_size.cpp	/^    long num;$/;"	m	struct:abc	typeref:typename:long	file:
+operator !=	incs/map.hpp	/^	bool	operator!=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { r/;"	f	namespace:ft	typeref:typename:bool
+operator !=	incs/miterator.hpp	/^	bool	operator!=(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() != rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator !=	incs/miterator.hpp	/^	bool	operator!=(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() != rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator !=	incs/reverse_miterator.hpp	/^	bool	operator!=(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
+operator !=	incs/reverse_miterator.hpp	/^	bool	operator!=(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator !=	incs/reverse_viterator.hpp	/^	bool	operator!=(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator !=	incs/reverse_viterator.hpp	/^	bool	operator!=(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator !=	incs/stack.hpp	/^			friend bool	operator!=( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retu/;"	f	namespace:ft	typeref:typename:bool
@@ -999,39 +1095,74 @@ operator ()	containers_test/srcs/multimap/more.cpp	/^	bool	operator()(const T1 &
 operator ()	containers_test/srcs/multiset/more.cpp	/^	bool	operator()(const T1 &first, const T1 &second) const {$/;"	f	struct:ft_more	typeref:typename:bool	file:
 operator ()	containers_test/srcs/set/more.cpp	/^	bool	operator()(const T1 &first, const T1 &second) const {$/;"	f	struct:ft_more	typeref:typename:bool	file:
 operator ()	termine_moi/tests/tests/extra/type_traits_impl.hpp	/^    value_type operator()() const$/;"	f	struct:fake_std::integral_constant	typeref:typename:value_type
+operator *	incs/miterator.hpp	/^			reference	operator*( void ) const { return (*this->_r); }$/;"	f	class:ft::miterator	typeref:typename:reference
+operator *	incs/reverse_miterator.hpp	/^			reference	operator*( void ) const { return (*(this->_r - 1)); }$/;"	f	class:ft::reverse_miterator	typeref:typename:reference
 operator *	incs/reverse_viterator.hpp	/^			reference	operator*( void ) const { return (*(this->_r - 1)); }$/;"	f	class:ft::reverse_viterator	typeref:typename:reference
 operator *	incs/viterator.hpp	/^			reference	operator*( void ) const { return (*this->_r); }$/;"	f	class:ft::viterator	typeref:typename:reference
+operator +	incs/miterator.hpp	/^			miterator	operator+( const difference_type& n ) const { return (miterator(this->_r + n)); }$/;"	f	class:ft::miterator	typeref:typename:miterator
+operator +	incs/miterator.hpp	/^	miterator<T>	operator+(typename miterator<T>::difference_type n, const miterator<T>& lhs) { ret/;"	f	namespace:ft	typeref:typename:miterator<T>
+operator +	incs/reverse_miterator.hpp	/^			reverse_miterator	operator+( const difference_type& n ) const { return (reverse_miterator(thi/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator
+operator +	incs/reverse_miterator.hpp	/^	reverse_miterator<T>	operator+(typename reverse_miterator<T>::difference_type n, const reverse_/;"	f	namespace:ft	typeref:typename:reverse_miterator<T>
 operator +	incs/reverse_viterator.hpp	/^			reverse_viterator	operator+( const difference_type& n ) const { return (reverse_viterator(thi/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator
 operator +	incs/reverse_viterator.hpp	/^	reverse_viterator<T>	operator+(typename reverse_viterator<T>::difference_type n, const reverse_/;"	f	namespace:ft	typeref:typename:reverse_viterator<T>
 operator +	incs/viterator.hpp	/^			viterator	operator+( const difference_type& n ) const { return (viterator(this->_r + n)); }$/;"	f	class:ft::viterator	typeref:typename:viterator
 operator +	incs/viterator.hpp	/^	viterator<T>	operator+(typename viterator<T>::difference_type n, const viterator<T>& lhs) { ret/;"	f	namespace:ft	typeref:typename:viterator<T>
+operator ++	incs/miterator.hpp	/^			miterator	operator++( int ) { miterator tmp(*this); this->_r++; return (tmp); }$/;"	f	class:ft::miterator	typeref:typename:miterator
+operator ++	incs/miterator.hpp	/^			miterator &	operator++( void ) { ++this->_r; return (*this); }$/;"	f	class:ft::miterator	typeref:typename:miterator &
+operator ++	incs/reverse_miterator.hpp	/^			reverse_miterator	operator++( int ) { reverse_miterator tmp(*this); (this->_r)--; return (tmp/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator
+operator ++	incs/reverse_miterator.hpp	/^			reverse_miterator &	operator++( void ) { --(this->_r); return (*this); }$/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator &
 operator ++	incs/reverse_viterator.hpp	/^			reverse_viterator	operator++( int ) { reverse_viterator tmp(*this); (this->_r)--; return (tmp/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator
 operator ++	incs/reverse_viterator.hpp	/^			reverse_viterator &	operator++( void ) { --(this->_r); return (*this); }$/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator &
 operator ++	incs/viterator.hpp	/^			viterator	operator++( int ) { viterator tmp(*this); this->_r++; return (tmp); }$/;"	f	class:ft::viterator	typeref:typename:viterator
 operator ++	incs/viterator.hpp	/^			viterator &	operator++( void ) { ++this->_r; return (*this); }$/;"	f	class:ft::viterator	typeref:typename:viterator &
+operator +=	incs/miterator.hpp	/^			miterator &	operator+=( const difference_type& n ) { this->_r += n; return (*this); }$/;"	f	class:ft::miterator	typeref:typename:miterator &
+operator +=	incs/reverse_miterator.hpp	/^			reverse_miterator &	operator+=( const difference_type& n ) { this->_r -= n; return (*this); }$/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator &
 operator +=	incs/reverse_viterator.hpp	/^			reverse_viterator &	operator+=( const difference_type& n ) { this->_r -= n; return (*this); }$/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator &
 operator +=	incs/viterator.hpp	/^			viterator &	operator+=( const difference_type& n ) { this->_r += n; return (*this); }$/;"	f	class:ft::viterator	typeref:typename:viterator &
+operator -	incs/miterator.hpp	/^			miterator	operator-( const difference_type& n) const { return (miterator(this->_r - n)); }$/;"	f	class:ft::miterator	typeref:typename:miterator
+operator -	incs/miterator.hpp	/^	typename miterator<T>::difference_type	operator-(const miterator<T>& lhs, const miterator<T>& r/;"	f	namespace:ft	typeref:typename:miterator<T>::difference_type
+operator -	incs/miterator.hpp	/^	typename miterator<T>::difference_type	operator-(const miterator<T>& lhs, const miterator<U>& r/;"	f	namespace:ft	typeref:typename:miterator<T>::difference_type
+operator -	incs/reverse_miterator.hpp	/^			reverse_miterator	operator-( const difference_type& n) const { return (reverse_miterator(this/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator
+operator -	incs/reverse_miterator.hpp	/^	typename reverse_miterator<T>::difference_type	operator-(const reverse_miterator<T>& lhs, const/;"	f	namespace:ft	typeref:typename:reverse_miterator<T>::difference_type
 operator -	incs/reverse_viterator.hpp	/^			reverse_viterator	operator-( const difference_type& n) const { return (reverse_viterator(this/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator
 operator -	incs/reverse_viterator.hpp	/^	typename reverse_viterator<T>::difference_type	operator-(const reverse_viterator<T>& lhs, const/;"	f	namespace:ft	typeref:typename:reverse_viterator<T>::difference_type
 operator -	incs/viterator.hpp	/^			viterator	operator-( const difference_type& n) const { return (viterator(this->_r - n)); }$/;"	f	class:ft::viterator	typeref:typename:viterator
 operator -	incs/viterator.hpp	/^	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<T>& r/;"	f	namespace:ft	typeref:typename:viterator<T>::difference_type
 operator -	incs/viterator.hpp	/^	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<U>& r/;"	f	namespace:ft	typeref:typename:viterator<T>::difference_type
+operator --	incs/miterator.hpp	/^			miterator	operator--( int ) { miterator tmp(*this); this->_r--; return (tmp); }$/;"	f	class:ft::miterator	typeref:typename:miterator
+operator --	incs/miterator.hpp	/^			miterator &	operator--( void ) { --this->_r; return (*this); }$/;"	f	class:ft::miterator	typeref:typename:miterator &
+operator --	incs/reverse_miterator.hpp	/^			reverse_miterator	operator--( int ) { reverse_miterator tmp(*this); (this->_r)++; return (tmp/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator
+operator --	incs/reverse_miterator.hpp	/^			reverse_miterator &	operator--( void ) { ++(this->_r); return (*this); }$/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator &
 operator --	incs/reverse_viterator.hpp	/^			reverse_viterator	operator--( int ) { reverse_viterator tmp(*this); (this->_r)++; return (tmp/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator
 operator --	incs/reverse_viterator.hpp	/^			reverse_viterator &	operator--( void ) { ++(this->_r); return (*this); }$/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator &
 operator --	incs/viterator.hpp	/^			viterator	operator--( int ) { viterator tmp(*this); this->_r--; return (tmp); }$/;"	f	class:ft::viterator	typeref:typename:viterator
 operator --	incs/viterator.hpp	/^			viterator &	operator--( void ) { --this->_r; return (*this); }$/;"	f	class:ft::viterator	typeref:typename:viterator &
+operator -=	incs/miterator.hpp	/^			miterator &	operator-=( const difference_type& n ) { this->_r -= n; return (*this); }$/;"	f	class:ft::miterator	typeref:typename:miterator &
+operator -=	incs/reverse_miterator.hpp	/^			reverse_miterator &	operator-=( const difference_type& n ) { this->_r += n; return (*this); }$/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator &
 operator -=	incs/reverse_viterator.hpp	/^			reverse_viterator &	operator-=( const difference_type& n ) { this->_r += n; return (*this); }$/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator &
 operator -=	incs/viterator.hpp	/^			viterator &	operator-=( const difference_type& n ) { this->_r -= n; return (*this); }$/;"	f	class:ft::viterator	typeref:typename:viterator &
+operator ->	incs/miterator.hpp	/^			pointer		operator->( void ) const { return (this->_r); }$/;"	f	class:ft::miterator	typeref:typename:pointer
+operator ->	incs/reverse_miterator.hpp	/^			pointer		operator->( void ) const { return (&(*(this->_r - 1))); }$/;"	f	class:ft::reverse_miterator	typeref:typename:pointer
 operator ->	incs/reverse_viterator.hpp	/^			pointer		operator->( void ) const { return (&(*(this->_r - 1))); }$/;"	f	class:ft::reverse_viterator	typeref:typename:pointer
 operator ->	incs/viterator.hpp	/^			pointer		operator->( void ) const { return (this->_r); }$/;"	f	class:ft::viterator	typeref:typename:pointer
+operator <	incs/map.hpp	/^	bool	operator<( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { re/;"	f	namespace:ft	typeref:typename:bool
+operator <	incs/miterator.hpp	/^	bool	operator<(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() < rhs.bas/;"	f	namespace:ft	typeref:typename:bool
+operator <	incs/miterator.hpp	/^	bool	operator<(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() < rhs.bas/;"	f	namespace:ft	typeref:typename:bool
+operator <	incs/reverse_miterator.hpp	/^	bool	operator<(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
+operator <	incs/reverse_miterator.hpp	/^	bool	operator<(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/reverse_viterator.hpp	/^	bool	operator<(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/reverse_viterator.hpp	/^	bool	operator<(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/stack.hpp	/^			friend bool	operator<( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retur/;"	f	namespace:ft	typeref:typename:bool
-operator <	incs/tools.hpp	/^	bool operator<( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (lhs._first < rhs._fi/;"	f	namespace:ft	typeref:typename:bool
+operator <	incs/tools.hpp	/^	bool operator<( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (lhs.first < rhs.firs/;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/vector.hpp	/^	bool	operator<( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return/;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/viterator.hpp	/^	bool	operator<(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() < rhs.bas/;"	f	namespace:ft	typeref:typename:bool
 operator <	incs/viterator.hpp	/^	bool	operator<(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() < rhs.bas/;"	f	namespace:ft	typeref:typename:bool
 operator <<	containers_test/srcs/base.hpp	/^std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {$/;"	f	typeref:typename:std::ostream &
+operator <=	incs/map.hpp	/^	bool	operator<=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { r/;"	f	namespace:ft	typeref:typename:bool
+operator <=	incs/miterator.hpp	/^	bool	operator<=(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() <= rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator <=	incs/miterator.hpp	/^	bool	operator<=(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() <= rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator <=	incs/reverse_miterator.hpp	/^	bool	operator<=(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
+operator <=	incs/reverse_miterator.hpp	/^	bool	operator<=(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator <=	incs/reverse_viterator.hpp	/^	bool	operator<=(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator <=	incs/reverse_viterator.hpp	/^	bool	operator<=(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator <=	incs/stack.hpp	/^			friend bool	operator<=( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retu/;"	f	namespace:ft	typeref:typename:bool
@@ -1041,11 +1172,21 @@ operator <=	incs/viterator.hpp	/^	bool	operator<=(const viterator<T>& lhs, const
 operator <=	incs/viterator.hpp	/^	bool	operator<=(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() <= rhs.b/;"	f	namespace:ft	typeref:typename:bool
 operator =	containers_test/srcs/base.hpp	/^		foo &operator=(foo const &src) {$/;"	f	class:foo	typeref:typename:foo &
 operator =	containers_test/srcs/base.hpp	/^		foo &operator=(value_type src) { this->value = src; return *this; };$/;"	f	class:foo	typeref:typename:foo &
+operator =	incs/map.hpp	/^			map &	operator=( const map& other )$/;"	f	class:ft::map	typeref:typename:map &
+operator =	incs/miterator.hpp	/^			miterator &	operator=( const miterator & o )$/;"	f	class:ft::miterator	typeref:typename:miterator &
+operator =	incs/rbtree.hpp	/^					node & operator=( const node & o )$/;"	f	struct:ft::rbtree::node	typeref:typename:node &
+operator =	incs/rbtree.hpp	/^			rbtree &	operator=( const rbtree & o )$/;"	f	class:ft::rbtree	typeref:typename:rbtree &
+operator =	incs/reverse_miterator.hpp	/^			reverse_miterator &	operator=( const reverse_miterator<U> & o )$/;"	f	class:ft::reverse_miterator	typeref:typename:reverse_miterator &
 operator =	incs/reverse_viterator.hpp	/^			reverse_viterator &	operator=( const reverse_viterator<U> & o )$/;"	f	class:ft::reverse_viterator	typeref:typename:reverse_viterator &
 operator =	incs/stack.hpp	/^			stack&	operator=( const stack& other )$/;"	f	class:ft::stack	typeref:typename:stack &
 operator =	incs/tools.hpp	/^			pair& operator=( const pair& other )$/;"	f	struct:ft::pair	typeref:typename:pair &
 operator =	incs/vector.hpp	/^			vector &				operator=( const vector & other )$/;"	f	class:ft::vector	typeref:typename:vector &
 operator =	incs/viterator.hpp	/^			viterator &	operator=( const viterator & o )$/;"	f	class:ft::viterator	typeref:typename:viterator &
+operator ==	incs/map.hpp	/^	bool	operator==( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )$/;"	f	namespace:ft	typeref:typename:bool
+operator ==	incs/miterator.hpp	/^	bool	operator==(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() == rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator ==	incs/miterator.hpp	/^	bool	operator==(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() == rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator ==	incs/reverse_miterator.hpp	/^	bool	operator==(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
+operator ==	incs/reverse_miterator.hpp	/^	bool	operator==(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator ==	incs/reverse_viterator.hpp	/^	bool	operator==(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator ==	incs/reverse_viterator.hpp	/^	bool	operator==(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator ==	incs/stack.hpp	/^			friend bool	operator==( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retu/;"	f	namespace:ft	typeref:typename:bool
@@ -1054,6 +1195,11 @@ operator ==	incs/vector.hpp	/^	bool	operator==( const vector< T, Allocator >& lh
 operator ==	incs/viterator.hpp	/^	bool	operator==(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() == rhs.b/;"	f	namespace:ft	typeref:typename:bool
 operator ==	incs/viterator.hpp	/^	bool	operator==(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() == rhs.b/;"	f	namespace:ft	typeref:typename:bool
 operator ==	termine_moi/tests/track/track_allocator.hpp	/^    bool operator==(const track_allocator&)$/;"	f	class:track_allocator	typeref:typename:bool
+operator >	incs/map.hpp	/^	bool	operator>( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { re/;"	f	namespace:ft	typeref:typename:bool
+operator >	incs/miterator.hpp	/^	bool	operator>(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() > rhs.bas/;"	f	namespace:ft	typeref:typename:bool
+operator >	incs/miterator.hpp	/^	bool	operator>(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() > rhs.bas/;"	f	namespace:ft	typeref:typename:bool
+operator >	incs/reverse_miterator.hpp	/^	bool	operator>(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
+operator >	incs/reverse_miterator.hpp	/^	bool	operator>(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator >	incs/reverse_viterator.hpp	/^	bool	operator>(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator >	incs/reverse_viterator.hpp	/^	bool	operator>(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs./;"	f	namespace:ft	typeref:typename:bool
 operator >	incs/stack.hpp	/^			friend bool	operator>( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retur/;"	f	namespace:ft	typeref:typename:bool
@@ -1061,6 +1207,11 @@ operator >	incs/tools.hpp	/^	bool operator>( const pair<T1,T2>& lhs, const pair<
 operator >	incs/vector.hpp	/^	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return/;"	f	namespace:ft	typeref:typename:bool
 operator >	incs/viterator.hpp	/^	bool	operator>(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() > rhs.bas/;"	f	namespace:ft	typeref:typename:bool
 operator >	incs/viterator.hpp	/^	bool	operator>(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() > rhs.bas/;"	f	namespace:ft	typeref:typename:bool
+operator >=	incs/map.hpp	/^	bool	operator>=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { r/;"	f	namespace:ft	typeref:typename:bool
+operator >=	incs/miterator.hpp	/^	bool	operator>=(const miterator<T>& lhs, const miterator<T>& rhs) { return (lhs.base() >= rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator >=	incs/miterator.hpp	/^	bool	operator>=(const miterator<T>& lhs, const miterator<U>& rhs) { return (lhs.base() >= rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator >=	incs/reverse_miterator.hpp	/^	bool	operator>=(const reverse_miterator<T>& lhs, const reverse_miterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
+operator >=	incs/reverse_miterator.hpp	/^	bool	operator>=(const reverse_miterator<T>& lhs, const reverse_miterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator >=	incs/reverse_viterator.hpp	/^	bool	operator>=(const reverse_viterator<T>& lhs, const reverse_viterator<T>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator >=	incs/reverse_viterator.hpp	/^	bool	operator>=(const reverse_viterator<T>& lhs, const reverse_viterator<U>& rhs) { return (lhs/;"	f	namespace:ft	typeref:typename:bool
 operator >=	incs/stack.hpp	/^			friend bool	operator>=( const stack<T,Container>& lhs, const stack<T,Container>& rhs )	{ retu/;"	f	namespace:ft	typeref:typename:bool
@@ -1068,28 +1219,39 @@ operator >=	incs/tools.hpp	/^	bool operator>=( const pair<T1,T2>& lhs, const pai
 operator >=	incs/vector.hpp	/^	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ retur/;"	f	namespace:ft	typeref:typename:bool
 operator >=	incs/viterator.hpp	/^	bool	operator>=(const viterator<T>& lhs, const viterator<T>& rhs) { return (lhs.base() >= rhs.b/;"	f	namespace:ft	typeref:typename:bool
 operator >=	incs/viterator.hpp	/^	bool	operator>=(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() >= rhs.b/;"	f	namespace:ft	typeref:typename:bool
+operator []	incs/miterator.hpp	/^			const_reference	operator[]( difference_type b ) const { return (*(this->_r + b)); };$/;"	f	class:ft::miterator	typeref:typename:const_reference
+operator []	incs/miterator.hpp	/^			reference	operator[]( const difference_type& n ) const { return (this->_r[n]); }$/;"	f	class:ft::miterator	typeref:typename:reference
+operator []	incs/miterator.hpp	/^			reference	operator[]( difference_type b ) { return (*(this->_r + b)); };$/;"	f	class:ft::miterator	typeref:typename:reference
+operator []	incs/reverse_miterator.hpp	/^			reference	operator[]( difference_type n ) const { return (this->base()[-n - 1]); };$/;"	f	class:ft::reverse_miterator	typeref:typename:reference
 operator []	incs/reverse_viterator.hpp	/^			reference	operator[]( difference_type n ) const { return (this->base()[-n - 1]); };$/;"	f	class:ft::reverse_viterator	typeref:typename:reference
 operator []	incs/vector.hpp	/^			const_reference			operator[](size_type pos) const { return (this->_tab[pos]); }$/;"	f	class:ft::vector	typeref:typename:const_reference
 operator []	incs/vector.hpp	/^			reference				operator[](size_type pos) { return (this->_tab[pos]); }$/;"	f	class:ft::vector	typeref:typename:reference
 operator []	incs/viterator.hpp	/^			const_reference	operator[]( difference_type b ) const { return (*(this->_r + b)); };$/;"	f	class:ft::viterator	typeref:typename:const_reference
 operator []	incs/viterator.hpp	/^			reference	operator[]( const difference_type& n ) const { return (this->_r[n]); }$/;"	f	class:ft::viterator	typeref:typename:reference
 operator []	incs/viterator.hpp	/^			reference	operator[]( difference_type b ) { return (*(this->_r + b)); };$/;"	f	class:ft::viterator	typeref:typename:reference
+operator miterator<const T>	incs/miterator.hpp	/^			operator miterator<const T>( void ) { return (miterator<const T>(this->_r)); }$/;"	f	class:ft::miterator
+operator reverse_miterator<const Iter>	incs/reverse_miterator.hpp	/^			operator reverse_miterator<const Iter>( void ) { return (reverse_miterator<const Iter>(this->/;"	f	class:ft::reverse_miterator
 operator reverse_viterator<const Iter>	incs/reverse_viterator.hpp	/^			operator reverse_viterator<const Iter>( void ) { return (reverse_viterator<const Iter>(this->/;"	f	class:ft::reverse_viterator
 operator value_type	containers_test/srcs/base.hpp	/^		operator value_type(void) const {$/;"	f	class:foo
 operator value_type	incs/tools.hpp	/^			operator value_type( void ) { return (value); }$/;"	f	struct:ft::integral_constant
 operator value_type	termine_moi/tests/tests/extra/type_traits_impl.hpp	/^    operator value_type() const$/;"	f	struct:fake_std::integral_constant
 operator viterator<const T>	incs/viterator.hpp	/^			operator viterator<const T>( void ) { return (viterator<const T>(this->_r)); }$/;"	f	class:ft::viterator
 other	termine_moi/tests/track/track_allocator.hpp	/^        typedef track_allocator<U> other;$/;"	t	struct:track_allocator::rebind	typeref:typename:track_allocator<U>
-pair	incs/tools.hpp	/^			pair( const T1& x, const T2& y ): _first(x), _second(y) {}$/;"	f	struct:ft::pair
-pair	incs/tools.hpp	/^			pair( const pair<U1, U2>& p ): _first(p._first), _second(p._second) {}$/;"	f	struct:ft::pair
+p	bench/main.cpp	/^		void p(void) {long tmp = time(); std::cout << tmp\/1000 << "." << std::setfill('0') << std::se/;"	f	class:Clock	typeref:typename:void	file:
+pair	incs/tools.hpp	/^			pair( const T1& x, const T2& y ): first(x), second(y) {}$/;"	f	struct:ft::pair
+pair	incs/tools.hpp	/^			pair( const pair<U1, U2>& p ): first(p.first), second(p.second) {}$/;"	f	struct:ft::pair
 pair	incs/tools.hpp	/^			pair( void ) {}$/;"	f	struct:ft::pair
 pair	incs/tools.hpp	/^	struct pair$/;"	s	namespace:ft
+parent	incs/rbtree.hpp	/^					node *		parent;$/;"	m	struct:ft::rbtree::node	typeref:typename:node *
 pheader	containers_test/fct.sh	/^function pheader () {$/;"	f
 pointer	incs/iterator.hpp	/^			typedef T *								pointer;$/;"	t	struct:ft::iterator_traits	typeref:typename:T *
 pointer	incs/iterator.hpp	/^			typedef const T *						pointer;$/;"	t	struct:ft::iterator_traits	typeref:typename:const T *
 pointer	incs/iterator.hpp	/^			typedef typename Iter::pointer				pointer;$/;"	t	struct:ft::iterator_traits	typeref:typename:Iter::pointer
 pointer	incs/iterator.hpp	/^			typedef typename iterator_traits<Iter>::pointer				pointer;$/;"	t	class:ft::reverse_iterator	typeref:typename:iterator_traits<Iter>::pointer
-pointer	incs/rbtree.hpp	/^			typedef typename Allocator::pointer				pointer;$/;"	t	struct:ft::node	typeref:typename:Allocator::pointer
+pointer	incs/map.hpp	/^			typedef typename Allocator::pointer					pointer;$/;"	t	class:ft::map	typeref:typename:Allocator::pointer
+pointer	incs/miterator.hpp	/^			typedef value_type*						pointer;$/;"	t	class:ft::miterator	typeref:typename:value_type *
+pointer	incs/rbtree.hpp	/^			typedef typename Allocator::pointer				pointer;$/;"	t	class:ft::rbtree	typeref:typename:Allocator::pointer
+pointer	incs/reverse_miterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::pointer				pointer;$/;"	t	class:ft::reverse_miterator	typeref:typename:ft::iterator_traits<Iter>::pointer
 pointer	incs/reverse_viterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::pointer				pointer;$/;"	t	class:ft::reverse_viterator	typeref:typename:ft::iterator_traits<Iter>::pointer
 pointer	incs/set.hpp	/^			typedef typename Allocator::pointer				pointer;$/;"	t	struct:ft::set	typeref:typename:Allocator::pointer
 pointer	incs/vector.hpp	/^			typedef typename Allocator::pointer						pointer;$/;"	t	class:ft::vector	typeref:typename:Allocator::pointer
@@ -1099,6 +1261,9 @@ pop	incs/stack.hpp	/^			void			pop( void )						{ if (!c.size()) return ; c.pop_
 pop_back	incs/vector.hpp	/^			void					pop_back( void )$/;"	f	class:ft::vector	typeref:typename:void
 prepost_incdec	containers_test/srcs/deque/ite.cpp	/^void	prepost_incdec(TESTED_NAMESPACE::deque<TESTED_TYPE> &deq)$/;"	f	typeref:typename:void
 prepost_incdec	containers_test/srcs/vector/ite.cpp	/^void	prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)$/;"	f	typeref:typename:void
+prev	srcs/main.cpp	/^	Trunk *prev;$/;"	m	struct:Trunk	typeref:typename:Trunk *	file:
+print	incs/map.hpp	/^			void	print() { this->_tree.print(); }$/;"	f	class:ft::map	typeref:typename:void
+print	incs/rbtree.hpp	/^			void	print( void ) { this->_print(this->_root, "", true); }$/;"	f	class:ft::rbtree	typeref:typename:void
 print	termine_moi/tests/tests/vector/vector_prelude.hpp	/^void print(const T& x)$/;"	f	typeref:typename:void
 printPair	containers_test/srcs/map/common.hpp	/^std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)$/;"	f	typeref:typename:std::string
 printPair	containers_test/srcs/multimap/common.hpp	/^std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)$/;"	f	typeref:typename:std::string
@@ -1119,22 +1284,33 @@ printSize	containers_test/srcs/queue/common.hpp	/^void	printSize(T_QUEUE &qu_, b
 printSize	containers_test/srcs/set/common.hpp	/^void	printSize(T_SET const &st, bool print_content = 1)$/;"	f	typeref:typename:void
 printSize	containers_test/srcs/stack/common.hpp	/^void	printSize(T_STACK &stck, bool print_content = 1)$/;"	f	typeref:typename:void
 printSize	containers_test/srcs/vector/common.hpp	/^void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)$/;"	f	typeref:typename:void
+printTree	srcs/main.cpp	/^void printTree(ft::rbtree<ft::pair<const int, int>, std::less<int> >::nodePTR root, Trunk *prev,/;"	f	typeref:typename:void
 print_err	termine_moi/benchmarks/run_benchmarks.sh	/^print_err() {$/;"	f
 print_err	termine_moi/tests/run_tests.sh	/^print_err() {$/;"	f
 print_map	termine_moi/tests/tests/map/map_prelude.hpp	/^void print_map(It first, It last)$/;"	f	typeref:typename:void
 print_msg	termine_moi/benchmarks/run_benchmarks.sh	/^print_msg() {$/;"	f
 print_range	termine_moi/tests/prelude.hpp	/^void print_range(Iter first, Iter last)$/;"	f	typeref:typename:void
 print_set	termine_moi/tests/tests/set/set_prelude.hpp	/^void print_set(It first, It last)$/;"	f	typeref:typename:void
+printnode	srcs/main.cpp	/^void printnode(ft::rbtree<int>::nodePTR & tmp)$/;"	f	typeref:typename:void
 push	incs/stack.hpp	/^			void			push( const value_type& value )	{ c.push_back(value); };$/;"	f	class:ft::stack	typeref:typename:void
 push_back	incs/vector.hpp	/^			void					push_back(const value_type& val)$/;"	f	class:ft::vector	typeref:typename:void
 rbegin	incs/vector.hpp	/^			const_reverse_iterator	rbegin( void ) const { return (const_reverse_iterator(this->end())); }$/;"	f	class:ft::vector	typeref:typename:const_reverse_iterator
 rbegin	incs/vector.hpp	/^			reverse_iterator		rbegin( void ) { return (reverse_iterator(this->end())); }$/;"	f	class:ft::vector	typeref:typename:reverse_iterator
+rbtree	incs/rbtree.hpp	/^			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _c/;"	f	class:ft::rbtree
+rbtree	incs/rbtree.hpp	/^			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloc(Allocator()) {}$/;"	f	class:ft::rbtree
+rbtree	incs/rbtree.hpp	/^			rbtree( const rbtree & o ) { *this = o; }$/;"	f	class:ft::rbtree
+rbtree	incs/rbtree.hpp	/^			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloc(Allocator()) {}$/;"	f	class:ft::rbtree
+rbtree	incs/rbtree.hpp	/^	class rbtree$/;"	c	namespace:ft
+re	bench/Makefile	/^re: fclean all$/;"	t
 rebind	termine_moi/tests/track/track_allocator.hpp	/^    struct rebind {$/;"	s	class:track_allocator
 reference	incs/iterator.hpp	/^			typedef T &								reference;$/;"	t	struct:ft::iterator_traits	typeref:typename:T &
 reference	incs/iterator.hpp	/^			typedef const T &						reference;$/;"	t	struct:ft::iterator_traits	typeref:typename:const T &
 reference	incs/iterator.hpp	/^			typedef typename Iter::reference			reference;$/;"	t	struct:ft::iterator_traits	typeref:typename:Iter::reference
 reference	incs/iterator.hpp	/^			typedef typename iterator_traits<Iter>::reference			reference;$/;"	t	class:ft::reverse_iterator	typeref:typename:iterator_traits<Iter>::reference
-reference	incs/rbtree.hpp	/^			typedef value_type &							reference;$/;"	t	struct:ft::node	typeref:typename:value_type &
+reference	incs/map.hpp	/^			typedef typename Allocator::reference				reference;$/;"	t	class:ft::map	typeref:typename:Allocator::reference
+reference	incs/miterator.hpp	/^			typedef value_type&						reference;$/;"	t	class:ft::miterator	typeref:typename:value_type &
+reference	incs/rbtree.hpp	/^			typedef typename Allocator::reference			reference;$/;"	t	class:ft::rbtree	typeref:typename:Allocator::reference
+reference	incs/reverse_miterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::reference			reference;$/;"	t	class:ft::reverse_miterator	typeref:typename:ft::iterator_traits<Iter>::reference
 reference	incs/reverse_viterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::reference			reference;$/;"	t	class:ft::reverse_viterator	typeref:typename:ft::iterator_traits<Iter>::reference
 reference	incs/set.hpp	/^			typedef value_type &							reference;$/;"	t	struct:ft::set	typeref:typename:value_type &
 reference	incs/stack.hpp	/^			typedef typename Container::reference		reference;$/;"	t	class:ft::stack	typeref:typename:Container::reference
@@ -1153,14 +1329,21 @@ reserve	incs/vector.hpp	/^			void					reserve (size_type n)$/;"	f	class:ft::vect
 reset	termine_moi/benchmarks/timer/timer.cpp	/^void timer::reset()$/;"	f	class:timer	typeref:typename:void
 resize	incs/vector.hpp	/^			void					resize( size_type count, T value = T() )$/;"	f	class:ft::vector	typeref:typename:void
 reverse_iterator	incs/iterator.hpp	/^	class reverse_iterator$/;"	c	namespace:ft
-reverse_iterator	incs/rbtree.hpp	/^			typedef std::reverse_iterator<iterator>			reverse_iterator;$/;"	t	struct:ft::node	typeref:typename:std::reverse_iterator<iterator>
+reverse_iterator	incs/map.hpp	/^			typedef std::reverse_iterator<iterator>				reverse_iterator;$/;"	t	class:ft::map	typeref:typename:std::reverse_iterator<iterator>
+reverse_iterator	incs/rbtree.hpp	/^			typedef std::reverse_iterator<iterator>			reverse_iterator;$/;"	t	class:ft::rbtree	typeref:typename:std::reverse_iterator<iterator>
 reverse_iterator	incs/set.hpp	/^			typedef std::reverse_iterator<iterator>			reverse_iterator;$/;"	t	struct:ft::set	typeref:typename:std::reverse_iterator<iterator>
 reverse_iterator	incs/vector.hpp	/^			typedef typename ft::reverse_viterator<iterator>		reverse_iterator;$/;"	t	class:ft::vector	typeref:typename:ft::reverse_viterator<iterator>
+reverse_miterator	incs/reverse_miterator.hpp	/^			explicit reverse_miterator( iterator_type x ): _r(x) {}$/;"	f	class:ft::reverse_miterator
+reverse_miterator	incs/reverse_miterator.hpp	/^			reverse_miterator( const pointer & o ): _r(o) {}$/;"	f	class:ft::reverse_miterator
+reverse_miterator	incs/reverse_miterator.hpp	/^			reverse_miterator( const reverse_miterator<U>& other ): _r(other.base()) {}$/;"	f	class:ft::reverse_miterator
+reverse_miterator	incs/reverse_miterator.hpp	/^			reverse_miterator(): _r(Iter()) {}$/;"	f	class:ft::reverse_miterator
+reverse_miterator	incs/reverse_miterator.hpp	/^	class reverse_miterator {$/;"	c	namespace:ft
 reverse_viterator	incs/reverse_viterator.hpp	/^			explicit reverse_viterator( iterator_type x ): _r(x) {}$/;"	f	class:ft::reverse_viterator
 reverse_viterator	incs/reverse_viterator.hpp	/^			reverse_viterator( const pointer & o ): _r(o) {}$/;"	f	class:ft::reverse_viterator
 reverse_viterator	incs/reverse_viterator.hpp	/^			reverse_viterator( const reverse_viterator<U>& other ): _r(other.base()) {}$/;"	f	class:ft::reverse_viterator
 reverse_viterator	incs/reverse_viterator.hpp	/^			reverse_viterator(): _r(Iter()) {}$/;"	f	class:ft::reverse_viterator
 reverse_viterator	incs/reverse_viterator.hpp	/^	class reverse_viterator {$/;"	c	namespace:ft
+right	incs/rbtree.hpp	/^					node *		right;$/;"	m	struct:ft::rbtree::node	typeref:typename:node *
 riter	termine_moi/tests/tests/extra/riterator.cpp	/^#define riter /;"	d	file:
 riter	termine_moi/tests/tests/extra/riterator_comparisons.cpp	/^#define riter /;"	d	file:
 riterator_check_typedefs	termine_moi/tests/tests/extra/riterator_typedefs.cpp	/^void riterator_check_typedefs()$/;"	f	typeref:typename:void
@@ -1169,6 +1352,7 @@ run_container_benchmarks	termine_moi/benchmarks/run_benchmarks.sh	/^run_containe
 run_container_tests	termine_moi/tests/run_tests.sh	/^run_container_tests() {$/;"	f
 run_test_files	termine_moi/tests/run_tests.sh	/^run_test_files() {$/;"	f
 same_integral_part	containers_test/srcs/list/unique.cpp	/^bool	same_integral_part(TESTED_TYPE first, TESTED_TYPE second)$/;"	f	typeref:typename:bool
+second	incs/tools.hpp	/^			second_type	second;$/;"	m	struct:ft::pair	typeref:typename:second_type
 second_type	incs/tools.hpp	/^			typedef T2	second_type;$/;"	t	struct:ft::pair	typeref:typename:T2
 set	incs/set.hpp	/^	struct set$/;"	s	namespace:ft
 set_check_typedefs	termine_moi/tests/tests/set/typedefs.cpp	/^void set_check_typedefs()$/;"	f	typeref:typename:void
@@ -1203,10 +1387,13 @@ set_test_riterator	termine_moi/tests/tests/set/riterator.cpp	/^void set_test_rit
 set_test_swap	termine_moi/tests/tests/set/swap.cpp	/^void set_test_swap()$/;"	f	typeref:typename:void
 set_test_upper_bound	termine_moi/tests/tests/set/upper_range.cpp	/^void set_test_upper_bound()$/;"	f	typeref:typename:void
 set_test_value_comp	termine_moi/tests/tests/set/value_comp.cpp	/^void set_test_value_comp()$/;"	f	typeref:typename:void
+showTrunks	srcs/main.cpp	/^void showTrunks(Trunk *p)$/;"	f	typeref:typename:void
 single_binary	termine_moi/tests/run_tests.sh	/^single_binary() {$/;"	f
+size	incs/map.hpp	/^			size_type	size( void ) const { return (this->_distance(this->begin(), this->end())); }$/;"	f	class:ft::map	typeref:typename:size_type
 size	incs/stack.hpp	/^			size_type		size( void ) const				{ return (c.size()); };$/;"	f	class:ft::stack	typeref:typename:size_type
 size	incs/vector.hpp	/^			size_type				size( void ) const { return (this->_size); }$/;"	f	class:ft::vector	typeref:typename:size_type
-size_type	incs/rbtree.hpp	/^			typedef std::size_t								size_type;$/;"	t	struct:ft::node	typeref:typename:std::size_t
+size_type	incs/map.hpp	/^			typedef std::size_t									size_type;$/;"	t	class:ft::map	typeref:typename:std::size_t
+size_type	incs/rbtree.hpp	/^			typedef std::size_t								size_type;$/;"	t	class:ft::rbtree	typeref:typename:std::size_t
 size_type	incs/set.hpp	/^			typedef std::size_t								size_type;$/;"	t	struct:ft::set	typeref:typename:std::size_t
 size_type	incs/stack.hpp	/^			typedef typename Container::size_type		size_type;$/;"	t	class:ft::stack	typeref:typename:Container::size_type
 size_type	incs/vector.hpp	/^			typedef std::size_t										size_type;$/;"	t	class:ft::vector	typeref:typename:std::size_t
@@ -1226,9 +1413,11 @@ stack_test_comparisons_lt	termine_moi/tests/tests/stack/comparisons_lt.cpp	/^voi
 stack_test_comparisons_ne	termine_moi/tests/tests/stack/comparisons_ne.cpp	/^void stack_test_comparisons_ne()$/;"	f	typeref:typename:void
 stack_test_misc	termine_moi/tests/tests/stack/misc.cpp	/^void stack_test_misc()$/;"	f	typeref:typename:void
 stamp	termine_moi/benchmarks/timer/timer.hpp	/^    struct timeval stamp;$/;"	m	class:timer	typeref:struct:timeval
+str	srcs/main.cpp	/^	std::string str;$/;"	m	struct:Trunk	typeref:typename:std::string	file:
 strmap	termine_moi/tests/tests/map/map_prelude.hpp	/^    strmap;$/;"	t
 strset	termine_moi/tests/tests/set/set_prelude.hpp	/^typedef NAMESPACE::set<std::string, std::less<std::string>, track_allocator<std::string> > strse/;"	t	typeref:typename:NAMESPACE::set<std::string,std::less<std::string>,track_allocator<std::string>>
 strvector	termine_moi/tests/tests/vector/vector_prelude.hpp	/^typedef NAMESPACE::vector<std::string, track_allocator<std::string> > strvector;$/;"	t	typeref:typename:NAMESPACE::vector<std::string,track_allocator<std::string>>
+swap	incs/map.hpp	/^	void swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs ) { lhs.swap(rhs); }$/;"	f	namespace:ft	typeref:typename:void
 swap	incs/vector.hpp	/^			void					swap( vector& other )$/;"	f	class:ft::vector	typeref:typename:void
 swap	incs/vector.hpp	/^	void swap( ft::vector<T,Alloc>& lhs, ft::vector<T,Alloc>& rhs ) { lhs.swap(rhs); }$/;"	f	namespace:ft	typeref:typename:void
 switchVerbose	containers_test/srcs/base.hpp	/^		void		switchVerbose(void) { this->_verbose = !(this->_verbose); };$/;"	f	class:foo	typeref:typename:void
@@ -1244,6 +1433,7 @@ t_stack_	containers_test/srcs/stack/default_copy.cpp	/^#define t_stack_ /;"	d	fi
 t_stack_	containers_test/srcs/stack/list_copy.cpp	/^#define t_stack_ /;"	d	file:
 t_stack_	containers_test/srcs/stack/relational_ope.cpp	/^#define t_stack_ /;"	d	file:
 t_stack_	containers_test/srcs/stack/relational_ope_list.cpp	/^#define t_stack_ /;"	d	file:
+test	bench/Makefile	/^test: $(FT) $(STD)$/;"	t
 test_container	termine_moi/tests/run_tests.sh	/^test_container() {$/;"	f
 test_fail	termine_moi/tests/run_tests.sh	/^test_fail() {$/;"	f
 test_files	termine_moi/tests/run_tests.sh	/^test_files() {$/;"	f
@@ -1252,6 +1442,7 @@ test_riterator	termine_moi/tests/tests/extra/riterator.cpp	/^void test_riterator
 test_riterator_comparisons	termine_moi/tests/tests/extra/riterator_comparisons.cpp	/^void test_riterator_comparisons()$/;"	f	typeref:typename:void
 test_success	termine_moi/tests/run_tests.sh	/^test_success() {$/;"	f
 test_vec_assign_mixed	termine_moi/tests/tests/vector/assign_mixed.cpp	/^void test_vec_assign_mixed()$/;"	f	typeref:typename:void
+time	bench/main.cpp	/^		long time(void) {struct timeval now; gettimeofday(&now, NULL); return (((now.tv_sec - _time.tv/;"	f	class:Clock	typeref:typename:long	file:
 timer	termine_moi/benchmarks/timer/timer.cpp	/^timer::timer()$/;"	f	class:timer
 timer	termine_moi/benchmarks/timer/timer.hpp	/^class timer$/;"	c
 times2	termine_moi/tests/tests/extra/extra_prelude.hpp	/^T times2(const T& x)$/;"	f	typeref:typename:T
@@ -1285,13 +1476,17 @@ value	incs/tools.hpp	/^	bool const integral_constant<bool, val>::value;$/;"	m	cl
 value	termine_moi/tests/prelude.hpp	/^    static const bool value = false;$/;"	m	struct:false_type	typeref:typename:const bool
 value	termine_moi/tests/prelude.hpp	/^    static const bool value = true;$/;"	m	struct:true_type	typeref:typename:const bool
 value	termine_moi/tests/tests/extra/type_traits_impl.hpp	/^    static const bool value = v;$/;"	m	struct:fake_std::integral_constant	typeref:typename:const bool
-value_compare	incs/rbtree.hpp	/^			typedef Compare									value_compare;$/;"	t	struct:ft::node	typeref:typename:Compare
+value_compare	incs/map.hpp	/^			class value_compare: std::binary_function<value_type, value_type, bool> {};$/;"	c	class:ft::map
+value_compare	incs/rbtree.hpp	/^			typedef Compare									value_compare;$/;"	t	class:ft::rbtree	typeref:typename:Compare
 value_compare	incs/set.hpp	/^			typedef Compare									value_compare;$/;"	t	struct:ft::set	typeref:typename:Compare
 value_type	containers_test/srcs/base.hpp	/^		typedef T	value_type;$/;"	t	class:foo	typeref:typename:T
 value_type	incs/iterator.hpp	/^			typedef T								value_type;$/;"	t	struct:ft::iterator_traits	typeref:typename:T
 value_type	incs/iterator.hpp	/^			typedef typename Iter::value_type			value_type;$/;"	t	struct:ft::iterator_traits	typeref:typename:Iter::value_type
 value_type	incs/iterator.hpp	/^			typedef typename iterator_traits<Iter>::value_type			value_type;$/;"	t	class:ft::reverse_iterator	typeref:typename:iterator_traits<Iter>::value_type
-value_type	incs/rbtree.hpp	/^			typedef Key										value_type;$/;"	t	struct:ft::node	typeref:typename:Key
+value_type	incs/map.hpp	/^			typedef ft::pair<const Key, T>						value_type;$/;"	t	class:ft::map	typeref:typename:ft::pair<const Key,T>
+value_type	incs/miterator.hpp	/^			typedef T								value_type;$/;"	t	class:ft::miterator	typeref:typename:T
+value_type	incs/rbtree.hpp	/^			typedef Key										value_type;$/;"	t	class:ft::rbtree	typeref:typename:Key
+value_type	incs/reverse_miterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::value_type			value_type;$/;"	t	class:ft::reverse_miterator	typeref:typename:ft::iterator_traits<Iter>::value_type
 value_type	incs/reverse_viterator.hpp	/^			typedef typename ft::iterator_traits<Iter>::value_type			value_type;$/;"	t	class:ft::reverse_viterator	typeref:typename:ft::iterator_traits<Iter>::value_type
 value_type	incs/set.hpp	/^			typedef Key										value_type;$/;"	t	struct:ft::set	typeref:typename:Key
 value_type	incs/stack.hpp	/^			typedef T									value_type;$/;"	t	class:ft::stack	typeref:typename:T
@@ -1350,9 +1545,14 @@ viterator	incs/viterator.hpp	/^			viterator( const pointer & o ): _r(o) {}$/;"	f
 viterator	incs/viterator.hpp	/^			viterator( const viterator & o ): _r(o._r) {}$/;"	f	class:ft::viterator
 viterator	incs/viterator.hpp	/^			viterator() {}$/;"	f	class:ft::viterator
 viterator	incs/viterator.hpp	/^	class viterator {$/;"	c	namespace:ft
+what	incs/rbtree.hpp	/^				virtual const char* what() const throw()$/;"	f	class:ft::rbtree::EqualException	typeref:typename:const char *
 x	termine_moi/tests/tests/extra/is_integral.cpp	/^    int x;$/;"	m	struct:non_integral_struct	typeref:typename:int	file:
 y	termine_moi/tests/tests/extra/is_integral.cpp	/^    long y;$/;"	m	struct:non_integral_struct	typeref:typename:long	file:
 ~foo	containers_test/srcs/base.hpp	/^		~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };$/;"	f	class:foo
+~map	incs/map.hpp	/^			~map() {}$/;"	f	class:ft::map
+~node	incs/rbtree.hpp	/^					~node ( void ) { }$/;"	f	struct:ft::rbtree::node
+~pair	incs/tools.hpp	/^			~pair( void ) {}$/;"	f	struct:ft::pair
+~rbtree	incs/rbtree.hpp	/^			~rbtree( void ) { this->_clear(this->_root); }$/;"	f	class:ft::rbtree
 ~stack	incs/stack.hpp	/^			~stack() {};$/;"	f	class:ft::stack
 ~track_allocator	termine_moi/tests/track/track_allocator.hpp	/^    ~track_allocator()$/;"	f	class:track_allocator
 ~vector	incs/vector.hpp	/^			~vector( void )$/;"	f	class:ft::vector

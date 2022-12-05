@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/03 18:03:10 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 17:40:38 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,72 @@ void	dostack();
 void	dorbtree();
 template< typename T >
 void	compare(T c1, T c2);
+
+struct Trunk
+{
+	Trunk *prev;
+	std::string str;
+	Trunk(Trunk *prev, std::string str)
+	{
+		this->prev = prev;
+		this->str = str;
+	}
+};
+
+void showTrunks(Trunk *p)
+{
+	if (p == NULL)
+		return;
+	showTrunks(p->prev);
+	std::cout << p->str;
+}
+
+void printnode(ft::rbtree<ft::pair<int,int> >::nodePTR & tmp)
+{
+	if (!tmp)
+	{
+		std::cout << "Invalide insert" << std::endl;
+		return ;
+	}
+	if (!tmp->col)
+		std::cout << "\033[0;90m";
+	else
+		std::cout << "\033[0;91m";
+	std::cout << "Key : " << tmp->key << " | Val : " << tmp->key << "\033[0m" << std::endl;
+}
+
+void printTree(ft::rbtree<ft::pair<const int, int>, std::less<int> >::nodePTR root, Trunk *prev, bool isLeft)
+{
+	if (root == NULL)
+		return ;
+//    std::cout << "root : " << root->val.first << std::endl;
+	std::string prev_str = "         ";
+	Trunk *trunk = new Trunk(prev, prev_str);
+	printTree(root->right, trunk, true);
+	if (!prev)
+		trunk->str = "—————————";
+	else if (isLeft)
+	{
+		trunk->str = ".—————————";
+		prev_str = "         |";
+	}
+	else
+	{
+		trunk->str = "`—————————";
+		prev->str = prev_str;
+	}
+	showTrunks(trunk);
+	if (!root->col)
+		std::cout << "\033[0;90m";
+	else
+		std::cout << "\033[0;91m";
+	std::cout << " " << root->key<< "\033[0m" << std::endl;
+	if (prev)
+		prev->str = prev_str;
+	trunk->str = "         |";
+	printTree(root->left, trunk, false);
+	delete trunk;
+}
 
 int	main( int ac, char **av )
 {
@@ -101,7 +167,8 @@ void	dorbtree( void )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	map.print();
+	printTree(map.getTree().getRoot(), NULL, false);
+//	map.print();
 }
 
 //VECTOR

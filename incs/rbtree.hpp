@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/03 18:07:24 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 17:17:02 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,21 @@ namespace ft
 			struct node
 			{
 				public:
-					node( void ): col(0), key(0), left(NULL), right(NULL), parent(NULL) {}
+					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) {}
+					node( value_type k, const node & parent ): col(0), left(NULL), right(NULL), parent(parent)
+					{
+						Allocator	al;
+						key = al.allocate(1, 0);
+						al.construct(key, k);
+					}
+					node( value_type k ): col(0), left(NULL), right(NULL), parent(NULL)
+					{
+						Allocator	al;
+						key = al.allocate(1, 0);
+						al.construct(key, k);
+						std::cout << key << std::endl;
+					}
 					node( const node & o ) { *this = o; }
-					node( value_type k, const node & parent ): col(0), key(k), left(NULL), right(NULL), parent(parent) {}
-					node( value_type k ): col(0), key(k), left(NULL), right(NULL), parent(NULL) {}
 					~node ( void ) { }
 
 					node & operator=( const node & o )
@@ -60,7 +71,7 @@ namespace ft
 						return (*this);
 					}
 					bool		col;
-					value_type	key;
+					pointer		key;
 					node *		left;
 					node *		right;
 					node *		parent;
@@ -68,9 +79,9 @@ namespace ft
 			typedef std::allocator<node>					NAllocator;
 			typedef node *									nodePTR;
 
-			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloctree(Allocator()) {}
-			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloctree(alloc), _allocnode(NAllocator()) {}
-			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloctree(Allocator()) {}
+			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloc(Allocator()) {}
+			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()) {}
+			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloc(Allocator()) {}
 			rbtree( const rbtree & o ) { *this = o; }
 			~rbtree( void ) { this->_clear(this->_root); }
 
@@ -80,16 +91,18 @@ namespace ft
 					return (*this);
 				this->_root = o._root;
 				this->_allocnode = o._allocnode;
-				this->_alloctree = o._alloctree;
+				this->_alloc = o._alloc;
+				return (*this);
 			}
-			allocator_type	get_allocator() const { return (this->_alloctree); }
+			allocator_type	get_allocator() const { return (this->_alloc); }
 //			T&				at( const Key& key ) { return (this->_;
 //			T&				at( const key_type& k ) const;
 
-			size_type		max_size( void ) const { return (this->_alloctree.max_size()); }
+			size_type		max_size( void ) const { return (this->_alloc.max_size()); }
 			void	insert( const value_type & k )
 			{
-				nodePTR	n = new node(k);
+				nodePTR	n = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(n, k);
 				if (!this->_root)
 				{
 					this->_root = n;
@@ -101,15 +114,15 @@ namespace ft
 				while (tmp != NULL)
 				{
 					temp = tmp;
-					if (tmp->key._second == n->key._second)
+					if (tmp->key->second == n->key->second)
 						throw EqualException();
-					else if (tmp->key._second < n->key._second)
+					else if (tmp->key->second < n->key->second)
 						tmp = tmp->right;
 					else
 						tmp = tmp->left;
 				}
 				n->parent = temp;
-				if (n->key._second < temp->key._second)
+				if (n->key->second < temp->key->second)
 					temp->left = n;
 				else
 					temp->right = n;
@@ -131,12 +144,14 @@ namespace ft
 				}
 			};
 			void	print( void ) { this->_print(this->_root, "", true); }
+		//	void	print() { printTree(this->_root, NULL, false); }
+			nodePTR	getRoot() { return (this->_root); }
 
 		private:
 			nodePTR		_root;
 			Compare		_compare;
 			NAllocator	_allocnode;
-			Allocator	_alloctree;
+			Allocator	_alloc;
 
 			void	_initNullNode( nodePTR nod, nodePTR parent )
 			{
@@ -173,7 +188,8 @@ namespace ft
 				{
 					_clear(root->left);
 					_clear(root->right);
-					delete (root);
+					this->_allocnode.destroy(root);
+					this->_allocnode.deallocate(root, 1);
 				}
 			}
 			void	_recolor( nodePTR & n )
@@ -185,7 +201,7 @@ namespace ft
 				{
 					if (p == gp->left)
 					{
-						if (gp->right && gp->right->col == 1)
+						if (gp->right->col == 1)
 						{
 							gp->col = 1;
 							gp->right->col = 0;
@@ -206,7 +222,7 @@ namespace ft
 					}
 					else
 					{
-						if (gp->left && gp->left->col == 1)
+						if (gp->left->col == 1)
 						{
 							gp->col = 1;
 							gp->right->col = 0;
