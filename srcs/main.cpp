@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 17:40:38 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 18:36:40 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ Os& operator<<(Os& os, const ft::vector<T>& co)
 
 void	dostack();
 //void	dovector();
-void	dorbtree();
+void	domap();
 template< typename T >
 void	compare(T c1, T c2);
 
@@ -118,7 +118,7 @@ int	main( int ac, char **av )
 	std::string	arg = av[1];
 	for (std::string::iterator it = arg.begin(); it != arg.end(); it++)
 		*it = std::tolower(*it);
-	std::string	type[] = { "stack", "vector", "rbtree", "map" };
+	std::string	type[] = { "stack", "vector", "map" };
 	for (i = 0; i < 3; i++)
 		if (type[i] == arg)
 			break;
@@ -131,7 +131,7 @@ int	main( int ac, char **av )
 		//	dovector();
 			break;
 		case (2):
-			dorbtree();
+			domap();
 			break;
 		case (3):
 			return (std::cout << "Container '" << arg << "' not found" << std::endl, 1);
@@ -142,7 +142,7 @@ int	main( int ac, char **av )
 }
 
 //RBTREE
-void	dorbtree( void )
+void	domap( void )
 {
 	std::cout << "Creation d'une pair avec int(2) et std::string('oui')" << std::endl << std::endl;
 	NAMESPACE::pair<int, std::string>	p = NAMESPACE::make_pair(2, "oui");
@@ -169,7 +169,12 @@ void	dorbtree( void )
 	}
 	printTree(map.getTree().getRoot(), NULL, false);
 //	map.print();
-}
+/*	ft::map<int, int>	map;
+	map.insert(ft::make_pair(42, 42));
+	map.insert(ft::make_pair(402, 402));
+	map.insert(ft::make_pair(420, 420));
+	map.insert(ft::make_pair(4200, 4200));
+*/}
 
 //VECTOR
 /*void	dovector( void )

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 16:25:39 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 18:54:16 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,17 @@ namespace ft
 			typedef std::reverse_iterator<iterator>				reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;
 
-			class value_compare: std::binary_function<value_type, value_type, bool> {};
+			class value_compare: std::binary_function<value_type, value_type, bool>
+			{
+				public:
+					value_compare( void ): comp() {}
+					value_compare( Compare c ): comp(c) {}
+					bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
+					bool operator() (const key_type& x, const value_type& y) const { return comp(x.first, y.first); }
+					bool operator() (const value_type& x, const key_type& y) const { return comp(x.first, y.first); }
+				protected:
+					Compare	comp;
+			};
 
 			map( void ): _tree() {}
 			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(NULL, comp, alloc) {}

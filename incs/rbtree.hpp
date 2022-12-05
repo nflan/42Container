@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 17:17:02 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 18:58:07 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,34 @@ namespace ft
 						Allocator	al;
 						key = al.allocate(1, 0);
 						al.construct(key, k);
-						std::cout << key << std::endl;
 					}
-					node( const node & o ) { *this = o; }
-					~node ( void ) { }
+					node( const node & o ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) { *this = o; }
+					~node ( void )
+					{
+						Allocator	al;
+						al.destroy(this->key);
+						al.deallocate(this->key, 1);
+					}
 
 					node & operator=( const node & o )
 					{
+						Allocator	al;
 						if (this == &o)
 							return (*this);
 						this->col = o.col;
-						this->key = o.key;
+						if (this->key)
+						{
+							al.destroy(key);
+							if (!o.key)
+								al.deallocate(key, 1);
+							else
+								al.construct(key, *o.key);
+						}
+						else if (o.key)
+						{
+							this->key = al.allocate(1, 0);
+							al.construct(key, *o.key);
+						}
 						this->left = o.left;
 						this->right = o.right;
 						this->parent = o.parent;
@@ -81,12 +98,13 @@ namespace ft
 
 			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloc(Allocator()) {}
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()) {}
-			rbtree( const node & n ): _root(n), _allocnode(NAllocator()), _alloc(Allocator()) {}
+			rbtree( const node & n ): _root(n), _compare(), _allocnode(NAllocator()), _alloc(Allocator()) {}
 			rbtree( const rbtree & o ) { *this = o; }
 			~rbtree( void ) { this->_clear(this->_root); }
 
 			rbtree &	operator=( const rbtree & o )
 			{
+				std::cout << "THIS WILL SEG SADGE" << std::endl;
 				if (this == &o)
 					return (*this);
 				this->_root = o._root;
@@ -101,7 +119,8 @@ namespace ft
 			size_type		max_size( void ) const { return (this->_alloc.max_size()); }
 			void	insert( const value_type & k )
 			{
-				nodePTR	n = this->_allocnode.allocate(1, 0);
+				nodePTR	n;
+				n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, k);
 				if (!this->_root)
 				{
@@ -114,15 +133,15 @@ namespace ft
 				while (tmp != NULL)
 				{
 					temp = tmp;
-					if (tmp->key->second == n->key->second)
-						throw EqualException();
-					else if (tmp->key->second < n->key->second)
+					if (_compare(tmp->key, n->key))
 						tmp = tmp->right;
-					else
+					else if (_compare(n->key, tmp->key))
 						tmp = tmp->left;
+					else
+						throw EqualException();
 				}
 				n->parent = temp;
-				if (n->key->second < temp->key->second)
+				if (_compare(n->key, temp->key))
 					temp->left = n;
 				else
 					temp->right = n;
