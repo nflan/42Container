@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 18:58:07 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 22:00:08 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #define RBTREE_HPP
 
 #include <set>
+#include <map>
 #include <iostream>
+#include "tools.hpp"
 // 0 = black / 1 = red
 
 namespace ft
@@ -34,8 +36,8 @@ namespace ft
 			typedef typename Allocator::const_reference		const_reference;
 			typedef typename Allocator::pointer				pointer;
 			typedef typename Allocator::const_pointer		const_pointer;
-			typedef typename std::set<Key>::iterator		iterator;
-			typedef typename std::set<Key>::const_iterator	const_iterator;
+			typedef typename std::map<Key, Key>::iterator		iterator;
+			typedef typename std::map<Key, Key>::const_iterator	const_iterator;
 			typedef std::reverse_iterator<iterator>			reverse_iterator;
 			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
 
@@ -43,19 +45,24 @@ namespace ft
 			{
 				public:
 					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) {}
-					node( value_type k, const node & parent ): col(0), left(NULL), right(NULL), parent(parent)
-					{
-						Allocator	al;
-						key = al.allocate(1, 0);
-						al.construct(key, k);
-					}
 					node( value_type k ): col(0), left(NULL), right(NULL), parent(NULL)
 					{
 						Allocator	al;
 						key = al.allocate(1, 0);
 						al.construct(key, k);
 					}
-					node( const node & o ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) { *this = o; }
+					node( value_type k, const node & parent ): col(0), left(NULL), right(NULL), parent(parent)
+					{
+						Allocator	al;
+						key = al.allocate(1, 0);
+						al.construct(key, k);
+					}
+					node( const node & o ): col(o.col), key(o.key), left(o.left), right(o.right), parent(o.parent)
+					{
+						Allocator	al;
+						key = al.allocate(1, 0);
+						al.construct(key, *o.key);
+					}
 					~node ( void )
 					{
 						Allocator	al;
@@ -96,10 +103,18 @@ namespace ft
 			typedef std::allocator<node>					NAllocator;
 			typedef node *									nodePTR;
 
-			rbtree( void ): _root(NULL), _allocnode(NAllocator()), _alloc(Allocator()) {}
-			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()) {}
-			rbtree( const node & n ): _root(n), _compare(), _allocnode(NAllocator()), _alloc(Allocator()) {}
-			rbtree( const rbtree & o ) { *this = o; }
+			rbtree( void ): _root(NULL), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
+			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0) {}
+			template <class InputIt>
+			rbtree( InputIt first, InputIt last, const Compare & comp = Compare(), const allocator_type & alloc = allocator_type() ): _root(NULL), _compare(comp), _allocnode(NAllocator()), _alloc(alloc), _size(0)
+			{
+				insert(first, last);
+			}
+		//	rbtree( const node & n ): _root(n), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
+			rbtree( const rbtree & o ): _root(NULL), _compare(o._compare), _allocnode(o._allocnode), _alloc(o._alloc), _size(o._size)
+			{
+				this->insert(o.begin(), o.end());
+			}
 			~rbtree( void ) { this->_clear(this->_root); }
 
 			rbtree &	operator=( const rbtree & o )
@@ -107,15 +122,39 @@ namespace ft
 				std::cout << "THIS WILL SEG SADGE" << std::endl;
 				if (this == &o)
 					return (*this);
-				this->_root = o._root;
+				this->clear();
+				this->_root = NULL;
 				this->_allocnode = o._allocnode;
 				this->_alloc = o._alloc;
+				this->_compare = o._compare;
+				this->_size = o._size;
+				this->insert(o.begin(), o.end());
 				return (*this);
 			}
 			allocator_type	get_allocator() const { return (this->_alloc); }
 //			T&				at( const Key& key ) { return (this->_;
 //			T&				at( const key_type& k ) const;
 
+			iterator				begin( void )
+			{
+				nodePTR tmp = this->_root;
+				if (!this->_root)
+					return (iterator(this->_root, this));
+				while (tmp->left)
+					tmp = tmp->left;
+				return (iterator(tmp, this));
+			}
+			const_iterator			begin( void ) const
+			{
+				nodePTR tmp = this->_root;
+				if (!this->_root)
+					return (const_iterator(this->_root, this));
+				while (tmp->left)
+					tmp = tmp->left;
+				return (const_iterator(tmp, this));
+			}
+			iterator				end( void ) { return (iterator(NULL, this)); }
+			const_iterator			end( void ) const { return (const_iterator(NULL, this)); }
 			size_type		max_size( void ) const { return (this->_alloc.max_size()); }
 			void	insert( const value_type & k )
 			{
@@ -141,6 +180,7 @@ namespace ft
 						throw EqualException();
 				}
 				n->parent = temp;
+				this->_size++;
 				if (_compare(n->key, temp->key))
 					temp->left = n;
 				else
@@ -154,6 +194,18 @@ namespace ft
 					return ;
 			//	this->_recolor(n);
 			}
+			iterator					insert( iterator pos, const value_type& value )
+			{
+				(void)pos;
+				ft::pair<iterator, bool> ret = insert(value);
+				return (ret.first);
+			}
+			template< class InputIt >
+			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
+			{
+				for (; first != last; first++)
+					this->insert(*first);
+			}
 
 			//EXCEPTION
 			class EqualException: public std::exception {
@@ -162,15 +214,18 @@ namespace ft
 					return ("Error: same values in two different nodes!");
 				}
 			};
+			key_compare		key_comp() const { return (_compare); }
+
 			void	print( void ) { this->_print(this->_root, "", true); }
 		//	void	print() { printTree(this->_root, NULL, false); }
 			nodePTR	getRoot() { return (this->_root); }
 
 		private:
 			nodePTR		_root;
-			Compare		_compare;
+			key_compare	_compare;
 			NAllocator	_allocnode;
 			Allocator	_alloc;
+			size_type	_size;
 
 			void	_initNullNode( nodePTR nod, nodePTR parent )
 			{

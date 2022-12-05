@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 18:54:16 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/05 21:29:52 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ namespace ft
 					value_compare( void ): comp() {}
 					value_compare( Compare c ): comp(c) {}
 					bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
-					bool operator() (const key_type& x, const value_type& y) const { return comp(x.first, y.first); }
-					bool operator() (const value_type& x, const key_type& y) const { return comp(x.first, y.first); }
+					bool operator() (const key_type& x, const value_type& y) const { return comp(x, y.first); }
+					bool operator() (const value_type& x, const key_type& y) const { return comp(x.first, y); }
 				protected:
 					Compare	comp;
 			};
@@ -115,7 +115,7 @@ namespace ft
 			const_iterator								upper_bound( const Key& key ) const;
 
 			//OBSERVERS
-			key_compare		key_comp() const;
+			key_compare		key_comp() const { return (this->_tree.key_comp()); }
 			value_compare	value_comp() const;
 
 
