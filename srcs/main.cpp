@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 18:36:40 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/06 18:53:13 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void printnode(ft::rbtree<ft::pair<int,int> >::nodePTR & tmp)
 	std::cout << "Key : " << tmp->key << " | Val : " << tmp->key << "\033[0m" << std::endl;
 }
 
-void printTree(ft::rbtree<ft::pair<const int, int>, std::less<int> >::nodePTR root, Trunk *prev, bool isLeft)
+void printTree(ft::rbtree<ft::pair<const int, int>, ft::map<int, int>::value_compare >::nodePTR root, Trunk *prev, bool isLeft)
 {
 	if (root == NULL)
 		return ;
@@ -97,7 +97,7 @@ void printTree(ft::rbtree<ft::pair<const int, int>, std::less<int> >::nodePTR ro
 		prev->str = prev_str;
 	}
 	showTrunks(trunk);
-	if (!root->col)
+	if (root->col)
 		std::cout << "\033[0;90m";
 	else
 		std::cout << "\033[0;91m";
@@ -161,7 +161,7 @@ void	domap( void )
 	try
 	{
 		for (size_t i = 0; i < 20; i++)
-			map.insert(ft::make_pair(i, v[i]));
+			map.insert(ft::make_pair(v[i], v[i]));
 	}
 	catch ( std::exception & e )
 	{

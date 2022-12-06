@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 21:29:52 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/06 15:32:37 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ namespace ft
 
 
 			void	print() { this->_tree.print(); }
-			ft::rbtree<value_type, Compare, Allocator>	getTree( void ) { return (_tree); }
+			ft::rbtree<value_type, value_compare, Allocator>	getTree( void ) { return (_tree); }
 
 		private:
-			ft::rbtree<value_type, Compare, Allocator>	_tree;
+			ft::rbtree<value_type, value_compare, Allocator>	_tree;
 	};
 	template< class Key, class T, class Compare, class Alloc >
 	void swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs ) { lhs.swap(rhs); }

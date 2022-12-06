@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 22:00:08 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/06 18:50:28 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <map>
 #include <iostream>
 #include "tools.hpp"
-// 0 = black / 1 = red
+// 0 = red / 1 = black
 
 namespace ft
 {
@@ -45,19 +45,19 @@ namespace ft
 			{
 				public:
 					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) {}
-					node( value_type k ): col(0), left(NULL), right(NULL), parent(NULL)
+					node( value_type k ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
 					{
 						Allocator	al;
 						key = al.allocate(1, 0);
 						al.construct(key, k);
 					}
-					node( value_type k, const node & parent ): col(0), left(NULL), right(NULL), parent(parent)
+					node( value_type k, const node & parent ): col(0), key(NULL), left(NULL), right(NULL), parent(parent)
 					{
 						Allocator	al;
 						key = al.allocate(1, 0);
 						al.construct(key, k);
 					}
-					node( const node & o ): col(o.col), key(o.key), left(o.left), right(o.right), parent(o.parent)
+					node( const node & o ): col(o.col), key(NULL), left(o.left), right(o.right), parent(o.parent)
 					{
 						Allocator	al;
 						key = al.allocate(1, 0);
@@ -66,8 +66,12 @@ namespace ft
 					~node ( void )
 					{
 						Allocator	al;
-						al.destroy(this->key);
-						al.deallocate(this->key, 1);
+						if (this->key)
+						{
+							al.destroy(this->key);
+							al.deallocate(this->key, 1);
+							this->key = NULL;
+						}
 					}
 
 					node & operator=( const node & o )
@@ -80,11 +84,14 @@ namespace ft
 						{
 							al.destroy(key);
 							if (!o.key)
+							{
 								al.deallocate(key, 1);
+								key = NULL;
+							}
 							else
 								al.construct(key, *o.key);
 						}
-						else if (o.key)
+						else if (!this->key && o.key)
 						{
 							this->key = al.allocate(1, 0);
 							al.construct(key, *o.key);
@@ -111,15 +118,16 @@ namespace ft
 				insert(first, last);
 			}
 		//	rbtree( const node & n ): _root(n), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
-			rbtree( const rbtree & o ): _root(NULL), _compare(o._compare), _allocnode(o._allocnode), _alloc(o._alloc), _size(o._size)
+			rbtree( const rbtree & o ): _root(NULL), _compare(o._compare), _allocnode(o._allocnode), _alloc(o._alloc)
 			{
-				this->insert(o.begin(), o.end());
+		//		this->insert(o.begin(), o.end());
+				this->_root = o._root;
+				this-> _size = o._size;
 			}
 			~rbtree( void ) { this->_clear(this->_root); }
 
 			rbtree &	operator=( const rbtree & o )
 			{
-				std::cout << "THIS WILL SEG SADGE" << std::endl;
 				if (this == &o)
 					return (*this);
 				this->clear();
@@ -127,8 +135,8 @@ namespace ft
 				this->_allocnode = o._allocnode;
 				this->_alloc = o._alloc;
 				this->_compare = o._compare;
-				this->_size = o._size;
 				this->insert(o.begin(), o.end());
+				this->_size = o._size;
 				return (*this);
 			}
 			allocator_type	get_allocator() const { return (this->_alloc); }
@@ -161,38 +169,34 @@ namespace ft
 				nodePTR	n;
 				n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, k);
-				if (!this->_root)
-				{
-					this->_root = n;
-					return ;
-				}
-				n->col = 1;
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = NULL;
 				while (tmp != NULL)
 				{
 					temp = tmp;
-					if (_compare(tmp->key, n->key))
-						tmp = tmp->right;
-					else if (_compare(n->key, tmp->key))
+					if (_compare(*n->key, *tmp->key))
 						tmp = tmp->left;
+					else if (_compare(*tmp->key, *n->key))
+						tmp = tmp->right;
 					else
 						throw EqualException();
 				}
 				n->parent = temp;
 				this->_size++;
-				if (_compare(n->key, temp->key))
+				if (!temp)
+					this->_root = n;
+				else if (_compare(*n->key, *temp->key))
 					temp->left = n;
 				else
 					temp->right = n;
 				if (!n->parent)
 				{
-					n->col = 0;
+					n->col = 1;
 					return ;
 				}
 				if (!n->parent->parent)
 					return ;
-			//	this->_recolor(n);
+				this->_recolor(n);
 			}
 			iterator					insert( iterator pos, const value_type& value )
 			{
@@ -268,91 +272,91 @@ namespace ft
 			}
 			void	_recolor( nodePTR & n )
 			{
-				nodePTR	p = n->parent;
-				nodePTR gp = p->parent;
-				std::cout << "n = " << n << " & p = " << p << " & gp = " << gp << std::endl;
-				while (p->col == 1)
+				nodePTR	u;
+				while (n->parent->col == 0)
 				{
-					if (p == gp->left)
+					if (n->parent == n->parent->parent->right)
 					{
-						if (gp->right->col == 1)
+						u = n->parent->parent->left;
+						if (u && u->col == 0)
 						{
-							gp->col = 1;
-							gp->right->col = 0;
-							gp->left->col = 0;
-							n = gp;
-						}
-						else if (n == p->right)
-						{
-							n = p;
-							this->_left_rotate(n);
+							u->col = 1;
+							n->parent->col = 1;
+							n->parent->parent->col = 0;
+							n = n->parent->parent;
 						}
 						else
 						{
-							p->col = 0;
-							gp->col = 1;
-							this->_right_rotate(gp);
+							if (n == n->parent->left)
+							{
+								n = n->parent;
+								this->_right_rotate(n);
+							}
+							n->parent->col = 1;
+							n->parent->parent->col = 0;
+							this->_left_rotate(n->parent->parent);
 						}
 					}
 					else
 					{
-						if (gp->left->col == 1)
+						u = n->parent->parent->right;
+						if (u && u->col == 0)
 						{
-							gp->col = 1;
-							gp->right->col = 0;
-							gp->left->col = 0;
-							n = gp;
-						}
-						else if (n == p->left)
-						{
-							n = p;
-							this->_right_rotate(n);
+							u->col = 1;
+							n->parent->col = 1;
+							n->parent->parent->col = 0;
+							n = n->parent->parent;
 						}
 						else
 						{
-							p->col = 0;
-							gp->col = 1;
-							this->_left_rotate(gp);
+							if (n == n->parent->right)
+							{
+								n = n->parent;
+								this->_left_rotate(n);
+							}
+							n->parent->col = 1;
+							n->parent->parent->col = 0;
+							this->_right_rotate(n->parent->parent);
 						}
 					}
+					if (n == this->_root)
+						break ;
 				}
-				this->_root->col = 0;
+				this->_root->col = 1;
 			}
-			void	_left_rotate( nodePTR & n )
+			void	_left_rotate( nodePTR n )
 			{
-				nodePTR	p = n->parent;
-				if (n->left)
-				{
-					n->left->parent = p;
-				}
-				if (!p->parent)
-				{
-					p->parent = n;
-					this->_root = n;
-				}
-				else if (p == p->parent->left)
-					p->parent->left = n;
+				nodePTR	y = n->right;
+				n->right = y->left;
+				if (y->left)
+					y->left->parent = n;
+				y->parent = n->parent;
+				if (!n->parent)
+					this->_root = y;
+				else if (n == n->parent->left)
+					n->parent->left = y;
 				else
-					p->parent->right = n;
-				p->parent = n;
+					n->parent->right = y;
+				y->left = n;
+				n->parent = y;
 			}
-			void	_right_rotate( nodePTR & n )
+			void	_right_rotate( nodePTR n )
 			{
-				nodePTR	p = n->parent;
-				if (n->right)
-					p->right->parent = p;
-				if (!p->parent)
-				{
-					p->parent = n;
-					this->_root = n;
-				}
-				else if (p == p->parent->right)
-					p->parent->right = n;
+				nodePTR	y = n->left;
+				n->left = y->right;
+				if (y->right)
+					y->right->parent = n;
+				y->parent = n->parent;
+				if (!n->parent)
+					this->_root = y;
+				else if (n == n->parent->right)
+					n->parent->right = y;
 				else
-					p->parent->left = n;
-				p->parent = n;
+					n->parent->left = y;
+				y->right = n;
+				n->parent = y;
 			}
-			void	_left_right_rot( nodePTR & n )
+		/*	void	_left_right_rot( nodePTR & n )
 			{
 				nodePTR	p = n->parent;
 				nodePTR	gp = n->parent->parent;
@@ -370,7 +374,7 @@ namespace ft
 				this->left_rotate(n);
 				this->left_rotate(gp);
 			}
-	};
+*/	};
 }
 
 #endif
