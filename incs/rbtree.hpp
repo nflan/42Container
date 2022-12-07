@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/06 18:50:28 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/07 16:12:44 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <map>
 #include <iostream>
 #include "tools.hpp"
+#include "rbiterator.hpp"
 // 0 = red / 1 = black
 
 namespace ft
@@ -25,21 +26,25 @@ namespace ft
 	class rbtree
 	{
 		public:
-			typedef Key										key_type;
-			typedef Key										value_type;
-			typedef std::size_t								size_type;
-			typedef std::ptrdiff_t							difference_type;
-			typedef Compare									key_compare;
-			typedef Compare									value_compare;
-			typedef Allocator								allocator_type;
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
-			typedef typename std::map<Key, Key>::iterator		iterator;
-			typedef typename std::map<Key, Key>::const_iterator	const_iterator;
-			typedef std::reverse_iterator<iterator>			reverse_iterator;
-			typedef std::reverse_iterator<const_iterator>	const_reverse_iterator;
+			struct	node;
+
+			typedef Key													key_type;
+			typedef Key													value_type;
+			typedef std::size_t											size_type;
+			typedef std::ptrdiff_t										difference_type;
+			typedef Compare												key_compare;
+			typedef Compare												value_compare;
+			typedef Allocator											allocator_type;
+			typedef std::allocator<node>								NAllocator;
+			typedef node *												nodePTR;
+			typedef typename Allocator::reference						reference;
+			typedef typename Allocator::const_reference					const_reference;
+			typedef typename Allocator::pointer							pointer;
+			typedef typename Allocator::const_pointer					const_pointer;
+			typedef typename ft::rbiterator<nodePTR, rbtree>			iterator;
+			typedef typename ft::rbiterator<const nodePTR, rbtree>		const_iterator;
+			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 			struct node
 			{
@@ -107,8 +112,6 @@ namespace ft
 					node *		right;
 					node *		parent;
 			};
-			typedef std::allocator<node>					NAllocator;
-			typedef node *									nodePTR;
 
 			rbtree( void ): _root(NULL), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0) {}
@@ -142,6 +145,7 @@ namespace ft
 			allocator_type	get_allocator() const { return (this->_alloc); }
 //			T&				at( const Key& key ) { return (this->_;
 //			T&				at( const key_type& k ) const;
+//			out_of_range exception si jamais on trouve pas la cle.
 
 			iterator				begin( void )
 			{

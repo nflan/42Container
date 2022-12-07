@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/06 15:32:37 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/07 16:29:25 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <map>
 #include "tools.hpp"
 #include "rbtree.hpp"
-//#include "miterator.hpp"
+#include "rbiterator.hpp"
 //#include "reverse_miterator.hpp"
 
 namespace ft
@@ -25,21 +25,24 @@ namespace ft
 	class map
 	{
 		public:
-			typedef Key											key_type;
-			typedef T											mapped_type;
-			typedef ft::pair<const Key, T>						value_type;
-			typedef std::size_t									size_type;
-			typedef std::ptrdiff_t								difference_type;
-			typedef Compare										key_compare;
-			typedef Allocator									allocator_type;
-			typedef typename Allocator::reference				reference;
-			typedef typename Allocator::const_reference			const_reference;
-			typedef typename Allocator::pointer					pointer;
-			typedef typename Allocator::const_pointer			const_pointer;
-			typedef typename std::map<Key, T>::iterator			iterator;
-			typedef typename std::map<Key, T>::const_iterator	const_iterator;
-			typedef std::reverse_iterator<iterator>				reverse_iterator;
-			typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;
+			class value_compare;
+
+			typedef Key															key_type;
+			typedef T															mapped_type;
+			typedef ft::pair<const Key, T>										value_type;
+			typedef std::size_t													size_type;
+			typedef std::ptrdiff_t												difference_type;
+			typedef Compare														key_compare;
+			typedef Allocator													allocator_type;
+			typedef typename Allocator::reference								reference;
+			typedef typename Allocator::const_reference							const_reference;
+			typedef typename Allocator::pointer									pointer;
+			typedef typename Allocator::const_pointer							const_pointer;
+			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
+			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
+			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
+			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 			class value_compare: std::binary_function<value_type, value_type, bool>
 			{
@@ -77,10 +80,10 @@ namespace ft
 			T&				at( const key_type& k ) const;
 			T&				operator[]( const Key& key );
 
-			iterator				begin( void );
-			const_iterator			begin( void ) const;
-			iterator				end( void );
-			const_iterator			end( void ) const;
+			iterator				begin( void ) { return (this->_tree.begin()); }
+			const_iterator			begin( void ) const { return (this->_tree.begin()); }
+			iterator				end( void ) { return (this->_tree.end()); }
+			const_iterator			end( void ) const { return (this->_tree.end()); }
 			reverse_iterator		rbegin( void );
 			const_reverse_iterator	rbegin( void ) const;
 			reverse_iterator		rend( void );
@@ -117,7 +120,6 @@ namespace ft
 			//OBSERVERS
 			key_compare		key_comp() const { return (this->_tree.key_comp()); }
 			value_compare	value_comp() const;
-
 
 			void	print() { this->_tree.print(); }
 			ft::rbtree<value_type, value_compare, Allocator>	getTree( void ) { return (_tree); }

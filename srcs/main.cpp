@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/06 18:53:13 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/07 15:46:18 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,13 +168,13 @@ void	domap( void )
 		std::cerr << e.what() << std::endl;
 	}
 	printTree(map.getTree().getRoot(), NULL, false);
-//	map.print();
-/*	ft::map<int, int>	map;
-	map.insert(ft::make_pair(42, 42));
-	map.insert(ft::make_pair(402, 402));
-	map.insert(ft::make_pair(420, 420));
-	map.insert(ft::make_pair(4200, 4200));
-*/}
+
+	std::cout << "Les iterateurs de l'arbre" << std::endl;
+	ft::map<int,int>::iterator it = map.begin();
+	for (size_t i = 0; i < 20; it++, i++)
+		std::cout << *it << " ; ";
+	std::cout << std::endl;
+}
 
 //VECTOR
 /*void	dovector( void )
