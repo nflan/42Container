@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 13:59:56 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 19:29:18 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,16 @@ namespace ft
 			typedef typename Type::node *			nodePTR;
 
 			rbiterator( void ): _r() {}
-			explicit rbiterator(const nodePTR & other_r, const Type * type): _r(other_r), _type(*type) {}
+			explicit rbiterator(const nodePTR & other_r, Type * type): _r(other_r), _type(type) {}
 			template <typename P>
-			rbiterator(const rbiterator<P, typename enable_if<is_same<P, typename Type::pointer>::key, Type>::type> & other) : _r(other.base()), _type(other._type) {}
+			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename Type::pointer>::value, Type>::type> & other) : _r(other.base()), _type(other._type)
+			{
+				std::cout << "copy iterator" << std::endl;
+			}
+			rbiterator(const rbiterator<Key, Type> & other) : _r(other.base()), _type(other._type)
+			{
+				std::cout << "copy iteratorrrr" << std::endl;
+			}
 			~rbiterator() {}
 
 			rbiterator &	operator=( const rbiterator & o )
@@ -46,30 +53,31 @@ namespace ft
 					this->_r = o.operator->();
 				return (*this);
 			}
-			reference	operator*( void ) const { if (this->_r) std::cout << this->_r->key << std::endl; return (*this->_r->key); }
+			reference	operator*( void ) const
+			{
+				return (*this->_r->key);
+			}
 			operator rbiterator<const value_type, Type>( void ) { return (rbiterator<const value_type, Type>(this->_r)); }
-			pointer		operator->( void ) const { return (*this->_r->key); }
+			pointer		operator->( void ) const { return (this->_r->key); }
 			
 			rbiterator &	operator++( void )
 			{
-				bool	mv = 0;
-				if (this->_r && this->_r->parent && !this->_r->right)
+				if (this->_r->key && this->_r->parent->key && this->_r->parent->key && !this->_r->right)
 				{
-					this->_r = this->_r->parent;
-					while (this->_r && this->_r == this->_r->parent->right)
+					while (this->_r->parent->key && this->_r == this->_r->parent->right)
+					{
 						this->_r = this->_r->parent;
-					mv = 1;
+						if (!this->_r->key)
+							return (*this);
+					}
+					this->_r = this->_r->parent;
 				}
-				else if (this->_r && this->_r->right)
+				else if (this->_r->key && this->_r->right)
 				{
 					this->_r = this->_r->right;
-					mv = 1;
-					if (this->_r->left)
-						while (this->_r->left)
-							this->_r = this->_r->left;
+					while (this->_r->left)
+						this->_r = this->_r->left;
 				}
-				if (!mv)
-					this->_r = NULL;
 				return (*this);
 			}
 			rbiterator	operator++( int )
@@ -80,24 +88,27 @@ namespace ft
 			}
 			rbiterator &	operator--( void )
 			{
-				bool	mv = 0;
-				if (this->_r && this->_r->parent && !this->_r->left)
+				if (!this->_r->key)
 				{
 					this->_r = this->_r->parent;
-					while (this && this == this->_r->parent->left)
-						this->_r = this->_r->parent;
-					mv = 1;
+					if (this->_r->right)
+						while (this->_r->right)
+							this->_r = this->_r->right;
+					return (*this);
 				}
-				else if (this->_r && this->_r->left)
+				if (this->_r->key && this->_r->parent->key && this->_r->parent->key && !this->_r->left)
+				{
+					while (this->_r->parent->key && this->_r == this->_r->parent->left)
+						this->_r = this->_r->parent;
+					this->_r = this->_r->parent;
+				}
+				else if (this->_r->key && this->_r->right)
 				{
 					this->_r = this->_r->left;
-					mv = 1;
 					if (this->_r->right)
 						while (this->_r->right)
 							this->_r = this->_r->right;
 				}
-				if (!mv)
-					this->_r = NULL;
 				return (*this);
 			}
 			rbiterator	operator--( int )
@@ -106,12 +117,30 @@ namespace ft
 				--(*this);
 				return (tmp);
 			}
-			value_type	base( void ) const { return (this->_r); }
+			nodePTR	base( void ) const { return (this->_r); }
 
 		private:
 			nodePTR	_r;
-			Type	_type;
+			Type*	_type;
 	};
+/*	template < class Key, class Type >
+	bool	operator==( const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs )
+	{
+		if (lhs->first == rhs->first && lhs->second == rhs->second)
+			return (true);
+		return (false);
+	}
+	template < class Key, class Type >
+	bool	operator!=( const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs ) { return (!(lhs == rhs)); }
+*/
+	template< class Key, class Type>
+	bool	operator!=(const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs) { return (lhs.base() != rhs.base()); }
+	template< class Key, class Type, class rKey, class rType>
+	bool	operator!=(const rbiterator<Key, Type>& lhs, const rbiterator<rKey, rType>& rhs) { return (lhs.base() != rhs.base()); }
+	template< class Key, class Type>
+	bool	operator==(const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs) { return (lhs.base() == rhs.base()); }
+	template< class Key, class Type, class rKey, class rType>
+	bool	operator==(const rbiterator<Key, Type>& lhs, const rbiterator<rKey, rType>& rhs) { return (lhs.base() == rhs.base()); }
 }
 
 #endif

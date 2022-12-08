@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 13:59:12 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 19:32:51 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ namespace ft
 			struct node
 			{
 				public:
-					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL) {}
+					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
+					{
+						Allocator	al;
+						key = al.allocate(1, 0);
+						al.construct(key,NULL);
+					}
 					node( value_type k ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
 					{
 						Allocator	al;
@@ -115,10 +120,18 @@ namespace ft
 
 			rbtree( void ): _TNULL(), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0)
 			{
+				_TNULL = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(_TNULL, NULL);
+				_root = NULL;
+				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _TNULL(), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
+				_TNULL = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(_TNULL, NULL);
+				_root = NULL;
+				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
 			~rbtree( void ) { this->_clear(this->_root); }
@@ -158,8 +171,8 @@ namespace ft
 					tmp = tmp->left;
 				return (const_iterator(tmp, this));
 			}
-			iterator				end( void ) { return (iterator(NULL, this)); }
-			const_iterator			end( void ) const { return (const_iterator(NULL, this)); }
+			iterator				end( void ) { return (iterator(this->_TNULL, this)); }
+			const_iterator			end( void ) const { return (const_iterator(this->_TNULL, this)); }
 			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
 			void					insert( const value_type & k )
 			{

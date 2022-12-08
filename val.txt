@@ -1,62 +1,33 @@
-==232071== Memcheck, a memory error detector
-==232071== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==232071== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==232071== Command: ./Container map
-==232071== 
-==232071== Invalid read of size 8
-==232071==    at 0x4050A7: ft::rbiterator<ft::pair<int const, int>, ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > > >::operator*() const (rbiterator.hpp:49)
-==232071==    by 0x4042B4: domap() (main.cpp:175)
-==232071==    by 0x402DC9: main (main.cpp:134)
-==232071==  Address 0x4de5ce8 is 8 bytes inside a block of size 40 free'd
-==232071==    at 0x484B8AF: operator delete(void*) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==232071==    by 0x405C0C: std::__new_allocator<ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node>::deallocate(ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node*, unsigned long) (new_allocator.h:158)
-==232071==    by 0x405B7F: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::_clear(ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node*) (rbtree.hpp:272)
-==232071==    by 0x405B23: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::_clear(ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node*) (rbtree.hpp:266)
-==232071==    by 0x405B23: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::_clear(ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node*) (rbtree.hpp:266)
-==232071==    by 0x405B23: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::_clear(ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node*) (rbtree.hpp:266)
-==232071==    by 0x405A9B: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::~rbtree() (rbtree.hpp:124)
-==232071==    by 0x405198: ft::rbiterator<ft::pair<int const, int>, ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > > >::~rbiterator() (rbiterator.hpp:41)
-==232071==    by 0x4042F6: domap() (main.cpp:174)
-==232071==    by 0x402DC9: main (main.cpp:134)
-==232071==  Block was alloc'd at
-==232071==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==232071==    by 0x40650C: std::__new_allocator<ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::node>::allocate(unsigned long, void const*) (new_allocator.h:137)
-==232071==    by 0x406210: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::insert(ft::pair<int const, int> const&) (rbtree.hpp:166)
-==232071==    by 0x404F9C: ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::insert(ft::pair<int const, int> const&) (map.hpp:99)
-==232071==    by 0x404134: domap() (main.cpp:164)
-==232071==    by 0x402DC9: main (main.cpp:134)
-==232071== 
-==232071== Invalid read of size 4
-==232071==    at 0x40453A: std::ostream& ft::operator<< <std::ostream, int const, int>(std::ostream&, ft::pair<int const, int> const*) (tools.hpp:162)
-==232071==    by 0x4050B9: ft::rbiterator<ft::pair<int const, int>, ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > > >::operator*() const (rbiterator.hpp:49)
-==232071==    by 0x4042B4: domap() (main.cpp:175)
-==232071==    by 0x402DC9: main (main.cpp:134)
-==232071==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
-==232071== 
-==232071== 
-==232071== Process terminating with default action of signal 11 (SIGSEGV)
-==232071==  Access not within mapped region at address 0x0
-==232071==    at 0x40453A: std::ostream& ft::operator<< <std::ostream, int const, int>(std::ostream&, ft::pair<int const, int> const*) (tools.hpp:162)
-==232071==    by 0x4050B9: ft::rbiterator<ft::pair<int const, int>, ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > > >::operator*() const (rbiterator.hpp:49)
-==232071==    by 0x4042B4: domap() (main.cpp:175)
-==232071==    by 0x402DC9: main (main.cpp:134)
-==232071==  If you believe this happened as a result of a stack
-==232071==  overflow in your program's main thread (unlikely but
-==232071==  possible), you can try to increase the size of the
-==232071==  main thread stack using the --main-stacksize= flag.
-==232071==  The main thread stack size used in this run was 8388608.
-==232071== 
-==232071== HEAP SUMMARY:
-==232071==     in use at exit: 73,856 bytes in 3 blocks
-==232071==   total heap usage: 68 allocs, 65 frees, 75,100 bytes allocated
-==232071== 
-==232071== LEAK SUMMARY:
-==232071==    definitely lost: 0 bytes in 0 blocks
-==232071==    indirectly lost: 0 bytes in 0 blocks
-==232071==      possibly lost: 0 bytes in 0 blocks
-==232071==    still reachable: 73,856 bytes in 3 blocks
-==232071==         suppressed: 0 bytes in 0 blocks
-==232071== Rerun with --leak-check=full to see details of leaked memory
-==232071== 
-==232071== For lists of detected and suppressed errors, rerun with: -s
-==232071== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==546355== Memcheck, a memory error detector
+==546355== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==546355== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==546355== Command: ./Container map
+==546355== 
+==546355== Invalid write of size 8
+==546355==    at 0x405D79: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::rbtree() (rbtree.hpp:124)
+==546355==    by 0x404D34: ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::map() (map.hpp:59)
+==546355==    by 0x403EE8: domap() (main.cpp:156)
+==546355==    by 0x402DB9: main (main.cpp:134)
+==546355==  Address 0x20 is not stack'd, malloc'd or (recently) free'd
+==546355== 
+==546355== 
+==546355== Process terminating with default action of signal 11 (SIGSEGV)
+==546355==  Access not within mapped region at address 0x20
+==546355==    at 0x405D79: ft::rbtree<ft::pair<int const, int>, ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::value_compare, std::allocator<ft::pair<int const, int> > >::rbtree() (rbtree.hpp:124)
+==546355==    by 0x404D34: ft::map<int, int, std::less<int>, std::allocator<ft::pair<int const, int> > >::map() (map.hpp:59)
+==546355==    by 0x403EE8: domap() (main.cpp:156)
+==546355==    by 0x402DB9: main (main.cpp:134)
+==546355==  If you believe this happened as a result of a stack
+==546355==  overflow in your program's main thread (unlikely but
+==546355==  possible), you can try to increase the size of the
+==546355==  main thread stack using the --main-stacksize= flag.
+==546355==  The main thread stack size used in this run was 8388608.
+==546355== 
+==546355== HEAP SUMMARY:
+==546355==     in use at exit: 0 bytes in 0 blocks
+==546355==   total heap usage: 2 allocs, 2 frees, 73,728 bytes allocated
+==546355== 
+==546355== All heap blocks were freed -- no leaks are possible
+==546355== 
+==546355== For lists of detected and suppressed errors, rerun with: -s
+==546355== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

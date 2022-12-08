@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:19:00 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 12:59:25 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 15:50:47 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ namespace ft
 	bool operator>=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (!(lhs < rhs)); }
 
 	template<class Os, typename T, typename U>
-	Os& operator<<(Os& os, const ft::pair<T, U> * co) 
+	Os& operator<<(Os& os, const ft::pair<T, U>* co) 
 	{
 		os << "{ " << co->first << "; " << co->second;
 		return os << " } ";

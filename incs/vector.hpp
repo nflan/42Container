@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/05 12:13:17 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 19:06:44 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ namespace ft
 					if (this->_tab)
 						this->_alloc.deallocate(this->_tab, this->capacity());
 					this->_capacity = other.size();
-					this->_tab = this->_alloc.allocate(this->capacity(), 0);
+					if (this->_capacity)
+						this->_tab = this->_alloc.allocate(this->capacity(), 0);
 				}
-				for (size_type i = 0; i < other.size(); i++)
-					this->_alloc.construct(&this->_tab[i], other._tab[i]);
+				if (this->_tab)
+					for (size_type i = 0; i < other.size(); i++)
+						this->_alloc.construct(&this->_tab[i], other._tab[i]);
 				return (*this);
 			}
 			void					assign( size_type count, const T& value )

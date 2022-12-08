@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 13:15:30 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 19:23:33 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,12 +167,15 @@ void	domap( void )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-//	printTree(map.getTree().getRoot(), NULL, false);
+	printTree(map.getTree().getRoot(), NULL, false);
 
 	std::cout << "Les iterateurs de l'arbre" << std::endl;
 	ft::map<int, int>::iterator it = map.begin();
-	for (size_t i = 0; i < 20; it++, i++)
-		*it;
+	for (; it != map.end(); it++)
+		std::cout << it->first << std::endl;
+	for (; it != map.begin(); it--)
+		if (it != map.end())
+			std::cout << it->first << std::endl;
 	std::cout << std::endl;
 }
 

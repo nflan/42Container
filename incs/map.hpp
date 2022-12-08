@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 13:24:53 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 17:14:01 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ namespace ft
 			value_compare	value_comp() const;
 
 			void	print() { this->_tree.print(); }
-			rbtree	getTree( void ) { return (_tree); }
+			rbtree&	getTree( void ) { return (_tree); }
 
 		private:
 			rbtree	_tree;
