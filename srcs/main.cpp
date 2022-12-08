@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/07 15:46:18 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:15:30 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void printTree(ft::rbtree<ft::pair<const int, int>, ft::map<int, int>::value_com
 		std::cout << "\033[0;90m";
 	else
 		std::cout << "\033[0;91m";
-	std::cout << " " << root->key<< "\033[0m" << std::endl;
+	std::cout << " " << root->key << "\033[0m" << std::endl;
 	if (prev)
 		prev->str = prev_str;
 	trunk->str = "         |";
@@ -167,12 +167,12 @@ void	domap( void )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	printTree(map.getTree().getRoot(), NULL, false);
+//	printTree(map.getTree().getRoot(), NULL, false);
 
 	std::cout << "Les iterateurs de l'arbre" << std::endl;
-	ft::map<int,int>::iterator it = map.begin();
+	ft::map<int, int>::iterator it = map.begin();
 	for (size_t i = 0; i < 20; it++, i++)
-		std::cout << *it << " ; ";
+		*it;
 	std::cout << std::endl;
 }
 

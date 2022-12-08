@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/07 16:12:44 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:59:12 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ namespace ft
 			typedef typename Allocator::const_reference					const_reference;
 			typedef typename Allocator::pointer							pointer;
 			typedef typename Allocator::const_pointer					const_pointer;
-			typedef typename ft::rbiterator<nodePTR, rbtree>			iterator;
-			typedef typename ft::rbiterator<const nodePTR, rbtree>		const_iterator;
+			typedef typename ft::rbiterator<value_type, rbtree>			iterator;
+			typedef typename ft::rbiterator<const value_type, rbtree>	const_iterator;
 			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
@@ -113,19 +113,13 @@ namespace ft
 					node *		parent;
 			};
 
-			rbtree( void ): _root(NULL), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
-			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _root(NULL), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0) {}
-			template <class InputIt>
-			rbtree( InputIt first, InputIt last, const Compare & comp = Compare(), const allocator_type & alloc = allocator_type() ): _root(NULL), _compare(comp), _allocnode(NAllocator()), _alloc(alloc), _size(0)
+			rbtree( void ): _TNULL(), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0)
 			{
-				insert(first, last);
+				_root = _TNULL;
 			}
-		//	rbtree( const node & n ): _root(n), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0) {}
-			rbtree( const rbtree & o ): _root(NULL), _compare(o._compare), _allocnode(o._allocnode), _alloc(o._alloc)
+			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _TNULL(), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
-		//		this->insert(o.begin(), o.end());
-				this->_root = o._root;
-				this-> _size = o._size;
+				_root = _TNULL;
 			}
 			~rbtree( void ) { this->_clear(this->_root); }
 
@@ -134,7 +128,6 @@ namespace ft
 				if (this == &o)
 					return (*this);
 				this->clear();
-				this->_root = NULL;
 				this->_allocnode = o._allocnode;
 				this->_alloc = o._alloc;
 				this->_compare = o._compare;
@@ -167,15 +160,16 @@ namespace ft
 			}
 			iterator				end( void ) { return (iterator(NULL, this)); }
 			const_iterator			end( void ) const { return (const_iterator(NULL, this)); }
-			size_type		max_size( void ) const { return (this->_alloc.max_size()); }
-			void	insert( const value_type & k )
+			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
+			void					insert( const value_type & k )
 			{
-				nodePTR	n;
-				n = this->_allocnode.allocate(1, 0);
+				nodePTR	n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, k);
+				n->left = this->_TNULL;
+				n->right = this->_TNULL;
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = NULL;
-				while (tmp != NULL)
+				while (tmp != this->_TNULL)
 				{
 					temp = tmp;
 					if (_compare(*n->key, *tmp->key))
@@ -230,6 +224,7 @@ namespace ft
 
 		private:
 			nodePTR		_root;
+			nodePTR		_TNULL;
 			key_compare	_compare;
 			NAllocator	_allocnode;
 			Allocator	_alloc;
@@ -271,7 +266,11 @@ namespace ft
 					_clear(root->left);
 					_clear(root->right);
 					this->_allocnode.destroy(root);
+					root->left = NULL;
+					root->right = NULL;
+					root->key = NULL;
 					this->_allocnode.deallocate(root, 1);
+					root = NULL;
 				}
 			}
 			void	_recolor( nodePTR & n )
@@ -332,7 +331,7 @@ namespace ft
 			{
 				nodePTR	y = n->right;
 				n->right = y->left;
-				if (y->left)
+				if (y->left != this->_TNULL)
 					y->left->parent = n;
 				y->parent = n->parent;
 				if (!n->parent)
@@ -348,7 +347,7 @@ namespace ft
 			{
 				nodePTR	y = n->left;
 				n->left = y->right;
-				if (y->right)
+				if (y->right != this->_TNULL)
 					y->right->parent = n;
 				y->parent = n->parent;
 				if (!n->parent)

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/07 16:29:25 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:24:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace ft
 			{
 				if (this == &other)
 					return (*this);
-				//coder deep copy
+				this->insert(this->begin(), this->end());
 				this->_tree = other._tree;
 				return (*this);
 			}
@@ -94,7 +94,7 @@ namespace ft
 			size_type	max_size( void ) const { return (this->_tree.max_size()); }
 
 			void						clear( void ) { this->tree.clear(); }
-			void	insert( const value_type& value )
+			void						insert( const value_type& value )
 			{
 				return (this->_tree.insert(value));
 			}
@@ -122,10 +122,10 @@ namespace ft
 			value_compare	value_comp() const;
 
 			void	print() { this->_tree.print(); }
-			ft::rbtree<value_type, value_compare, Allocator>	getTree( void ) { return (_tree); }
+			rbtree	getTree( void ) { return (_tree); }
 
 		private:
-			ft::rbtree<value_type, value_compare, Allocator>	_tree;
+			rbtree	_tree;
 	};
 	template< class Key, class T, class Compare, class Alloc >
 	void swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs ) { lhs.swap(rhs); }

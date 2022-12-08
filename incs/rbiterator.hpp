@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/07 16:25:16 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/08 13:59:56 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,21 @@ namespace ft
 	class rbiterator {
 		public:
 			typedef Key								value_type;
+			typedef Key								iterator_type;
 			typedef value_type&						reference;
 			typedef const value_type&				const_reference;
 			typedef value_type*						pointer;
 			typedef const value_type*				const_pointer;
-			typedef	std::bidirectional_iterator_tag	iterator_category;
+			typedef std::bidirectional_iterator_tag	iterator_category;
 			typedef typename std::ptrdiff_t			difference_type;
+			typedef typename Type::node				node;
+			typedef typename Type::node *			nodePTR;
 
 			rbiterator( void ): _r() {}
-			rbiterator( const rbiterator & o ): _r(o._r), _type(o._type) {}
-			rbiterator( const value_type & o, const Type & t ): _r(o), _type(t) {}
+			explicit rbiterator(const nodePTR & other_r, const Type * type): _r(other_r), _type(*type) {}
+			template <typename P>
+			rbiterator(const rbiterator<P, typename enable_if<is_same<P, typename Type::pointer>::key, Type>::type> & other) : _r(other.base()), _type(other._type) {}
+			~rbiterator() {}
 
 			rbiterator &	operator=( const rbiterator & o )
 			{
@@ -41,27 +46,27 @@ namespace ft
 					this->_r = o.operator->();
 				return (*this);
 			}
-			reference	operator*( void ) const { return (*this->_r->key); }
+			reference	operator*( void ) const { if (this->_r) std::cout << this->_r->key << std::endl; return (*this->_r->key); }
 			operator rbiterator<const value_type, Type>( void ) { return (rbiterator<const value_type, Type>(this->_r)); }
 			pointer		operator->( void ) const { return (*this->_r->key); }
 			
 			rbiterator &	operator++( void )
 			{
 				bool	mv = 0;
-				if (this && this->_r->parent && !this->_r->right)
+				if (this->_r && this->_r->parent && !this->_r->right)
 				{
-					this = this->_r->parent;
-					while (this && this == this->_r->parent->right)
-						this = this->_r->parent;
+					this->_r = this->_r->parent;
+					while (this->_r && this->_r == this->_r->parent->right)
+						this->_r = this->_r->parent;
 					mv = 1;
 				}
-				else if (this && this->_r->right)
+				else if (this->_r && this->_r->right)
 				{
-					this = this->_r->right;
+					this->_r = this->_r->right;
 					mv = 1;
 					if (this->_r->left)
 						while (this->_r->left)
-							this = this->_r->left;
+							this->_r = this->_r->left;
 				}
 				if (!mv)
 					this->_r = NULL;
@@ -76,20 +81,20 @@ namespace ft
 			rbiterator &	operator--( void )
 			{
 				bool	mv = 0;
-				if (this && this->_r->parent && !this->_r->left)
+				if (this->_r && this->_r->parent && !this->_r->left)
 				{
-					this = this->_r->parent;
+					this->_r = this->_r->parent;
 					while (this && this == this->_r->parent->left)
-						this = this->_r->parent;
+						this->_r = this->_r->parent;
 					mv = 1;
 				}
-				else if (this && this->_r->left)
+				else if (this->_r && this->_r->left)
 				{
-					this = this->_r->left;
+					this->_r = this->_r->left;
 					mv = 1;
 					if (this->_r->right)
 						while (this->_r->right)
-							this = this->_r->right;
+							this->_r = this->_r->right;
 				}
 				if (!mv)
 					this->_r = NULL;
@@ -104,8 +109,8 @@ namespace ft
 			value_type	base( void ) const { return (this->_r); }
 
 		private:
-			value_type	_r;
-			Type		_type;
+			nodePTR	_r;
+			Type	_type;
 	};
 }
 

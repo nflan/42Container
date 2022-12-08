@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2022/12/01 16:05:41 by nflan            ###   ########.fr        #
+#    Updated: 2022/12/08 14:00:12 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ OBJ_DIR =		obj
 OBJ_DIR_STD =		obj_std
 SRC_DIR =		srcs
 
-INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), vector stack viterator tools iterator reverse_viterator rbtree))
+INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), vector stack viterator tools iterator reverse_viterator rbtree rbiterator))
 SRC =			$(SRC_FT:%=$(SRC_DIR)/%.cpp)
 OBJ =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
 OBJ_STD =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR_STD)%.o)
