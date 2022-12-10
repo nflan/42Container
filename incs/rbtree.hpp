@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 19:32:51 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/10 17:35:24 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,7 @@ namespace ft
 			{
 				public:
 					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
-					{
-						Allocator	al;
-						key = al.allocate(1, 0);
-						al.construct(key,NULL);
-					}
+					{}
 					node( value_type k ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
 					{
 						Allocator	al;
@@ -118,23 +114,27 @@ namespace ft
 					node *		parent;
 			};
 
-			rbtree( void ): _TNULL(), _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0)
+			rbtree( void ): _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0)
 			{
+				Key	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
-				this->_allocnode.construct(_TNULL, NULL);
-				_root = NULL;
+				this->_allocnode.construct(_TNULL, test);
+				this->_alloc.destroy(_TNULL->key);
+				_TNULL->key = NULL;
 				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
-			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _TNULL(), _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
+			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
+				Key	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
-				this->_allocnode.construct(_TNULL, NULL);
-				_root = NULL;
+				this->_allocnode.construct(_TNULL, test);
+				this->_alloc.destroy(_TNULL->key);
+				_TNULL->key = NULL;
 				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
-			~rbtree( void ) { this->_clear(this->_root); }
+			~rbtree( void ) { this->_clear(this->_root); delete this->_TNULL; }
 
 			rbtree &	operator=( const rbtree & o )
 			{
@@ -181,7 +181,7 @@ namespace ft
 				n->left = this->_TNULL;
 				n->right = this->_TNULL;
 				nodePTR	tmp = this->_root;
-				nodePTR	temp = NULL;
+				nodePTR	temp = _TNULL;
 				while (tmp != this->_TNULL)
 				{
 					temp = tmp;
@@ -193,19 +193,20 @@ namespace ft
 						throw EqualException();
 				}
 				n->parent = temp;
+				std::cout << k.first << std::endl;
 				this->_size++;
-				if (!temp)
+				if (!temp->key)
 					this->_root = n;
 				else if (_compare(*n->key, *temp->key))
 					temp->left = n;
 				else
 					temp->right = n;
-				if (!n->parent)
+				if (!n->parent->key)
 				{
 					n->col = 1;
 					return ;
 				}
-				if (!n->parent->parent)
+				if (!n->parent->parent->key)
 					return ;
 				this->_recolor(n);
 			}
@@ -274,7 +275,7 @@ namespace ft
 			}
 			void	_clear(nodePTR root)
 			{
-				if (root)
+				if (root->key)
 				{
 					_clear(root->left);
 					_clear(root->right);

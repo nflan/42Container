@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 19:23:33 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/10 17:12:52 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void printnode(ft::rbtree<ft::pair<int,int> >::nodePTR & tmp)
 
 void printTree(ft::rbtree<ft::pair<const int, int>, ft::map<int, int>::value_compare >::nodePTR root, Trunk *prev, bool isLeft)
 {
-	if (root == NULL)
+	if (root->key == NULL)
 		return ;
 //    std::cout << "root : " << root->val.first << std::endl;
 	std::string prev_str = "         ";
