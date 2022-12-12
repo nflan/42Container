@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 16:49:11 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 18:39:05 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iostream>
 #include "tools.hpp"
 #include "rbiterator.hpp"
+#include "reverse_rbiterator.hpp"
 // 0 = red / 1 = black
 
 namespace ft
@@ -43,8 +44,8 @@ namespace ft
 			typedef typename Allocator::const_pointer					const_pointer;
 			typedef typename ft::rbiterator<value_type, rbtree>			iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>	const_iterator;
-			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+			typedef typename ft::reverse_rbiterator<iterator>			reverse_iterator;
+			typedef typename ft::reverse_rbiterator<const_iterator>		const_reverse_iterator;
 
 			struct node
 			{
@@ -164,7 +165,7 @@ namespace ft
 			{
 				nodePTR tmp = this->_root;
 				if (tmp)
-					while (tmp->left)
+					while (tmp->left->key)
 						tmp = tmp->left;
 				return (iterator(tmp, this));
 			}
@@ -172,12 +173,16 @@ namespace ft
 			{
 				nodePTR tmp = this->_root;
 				if (tmp)
-					while (tmp->left)
+					while (tmp->left->key)
 						tmp = tmp->left;
 				return (const_iterator(tmp, this));
 			}
 			iterator				end( void ) { return (iterator(this->_TNULL, this)); }
 			const_iterator			end( void ) const { return (const_iterator(this->_TNULL, this)); }
+			reverse_iterator		rbegin( void ) { return (reverse_iterator(this->end())); }
+			const_reverse_iterator	rbegin( void ) const { return (const_reverse_iterator(this->end())); }
+			reverse_iterator		rend( void ) { return (reverse_iterator(this->begin())); }
+			const_reverse_iterator	rend( void ) const { return (const_reverse_iterator(this->begin())); }
 			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
 			void					insert( const value_type & k )
 			{

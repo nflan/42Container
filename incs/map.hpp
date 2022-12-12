@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 17:14:01 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 18:39:49 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "tools.hpp"
 #include "rbtree.hpp"
 #include "rbiterator.hpp"
-//#include "reverse_miterator.hpp"
+#include "reverse_rbiterator.hpp"
 
 namespace ft
 {
@@ -41,8 +41,8 @@ namespace ft
 			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
 			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
-			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef typename ft::reverse_rbiterator<iterator>					reverse_iterator;
+			typedef typename ft::reverse_rbiterator<const_iterator>				const_reverse_iterator;
 
 			class value_compare: std::binary_function<value_type, value_type, bool>
 			{
@@ -84,10 +84,10 @@ namespace ft
 			const_iterator			begin( void ) const { return (this->_tree.begin()); }
 			iterator				end( void ) { return (this->_tree.end()); }
 			const_iterator			end( void ) const { return (this->_tree.end()); }
-			reverse_iterator		rbegin( void );
-			const_reverse_iterator	rbegin( void ) const;
-			reverse_iterator		rend( void );
-			const_reverse_iterator	rend( void ) const;
+			reverse_iterator		rbegin( void ) { return (this->_tree.rbegin()); }
+			const_reverse_iterator	rbegin( void ) const { return (this->_tree.rbegin()); }
+			reverse_iterator		rend( void ) { return (this->_tree.rend()); }
+			const_reverse_iterator	rend( void ) const { return (this->_tree.rend()); }
 
 			bool		empty( void ) const { return (this->begin() == this->end()); }
 			size_type	size( void ) const { return (this->_distance(this->begin(), this->end())); }

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 16:09:47 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 19:06:14 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ int	main( int ac, char **av )
 //RBTREE
 void	domap( void )
 {
+	{
 	std::cout << "Creation d'une pair avec int(2) et std::string('oui')" << std::endl << std::endl;
 	NAMESPACE::pair<int, std::string>	p = NAMESPACE::make_pair(2, "oui");
 	std::cout << "Creation d'une pair avec int(4) et std::string('et alors')" << std::endl;
@@ -151,10 +152,45 @@ void	domap( void )
 	std::cout << "Comparaison entre les 2 pairs" << std::endl;
 	compare(p, p2);
 	std::cout << std::endl;
+	}
 
-	//Creation et affichage arbre binaire
+	//Creation et affichage arbre binaire STD
+	{
+	std::map<int, int>		map;
+	std::vector<int>	v;
+	for (size_t i = 0; i < 20; i++)
+		v.push_back(i);
+	std::random_shuffle(v.begin(), v.end());
+	try
+	{
+		for (size_t i = 0; i < 20; i++)
+			map.insert(std::make_pair(v[i], v[i]));
+	}
+	catch ( std::exception & e )
+	{
+		std::cerr << e.what() << std::endl;
+	}
+
+	std::cout << "Les iterateurs de l'arbre STD" << std::endl;
+	std::map<int, int>::iterator it = map.begin();
+	for (; it != map.end(); it++)
+		std::cout << it->first << std::endl;
+	for (; it != map.begin(); it--)
+		if (it != map.end())
+			std::cout << it->first << std::endl;
+
+	std::cout << std::endl << "Les reverse iterateurs de l'arbre STD" << std::endl;
+	std::map<int, int>::reverse_iterator rit = map.rend();
+	for (; rit != map.rbegin(); rit--)
+		std::cout << rit->first << std::endl;
+	for (; rit != map.rend(); rit++)
+			std::cout << rit->first << std::endl;
+	std::cout << std::endl;
+	}
+
+	//Creation et affichage arbre binaire FT
+	{
 	ft::map<int, int>		map;
-	ft::map<int, int>::iterator itest = map.begin();
 	NAMESPACE::vector<int>	v;
 	for (size_t i = 0; i < 20; i++)
 		v.push_back(i);
@@ -172,16 +208,25 @@ void	domap( void )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-//	printTree(map.getTree().getRoot(), NULL, false);
 
-	std::cout << "Les iterateurs de l'arbre" << std::endl;
+	std::cout << "Les iterateurs de l'arbre FT" << std::endl;
 	ft::map<int, int>::iterator it = map.begin();
 	for (; it != map.end(); it++)
 		std::cout << it->first << std::endl;
 	for (; it != map.begin(); it--)
 		if (it != map.end())
 			std::cout << it->first << std::endl;
+
+	std::cout << std::endl << "Les reverse iterateurs de l'arbre FT" << std::endl;
+	ft::map<int, int>::reverse_iterator rit = map.rend();
+	for (; rit != map.rbegin(); rit--)
+		std::cout << rit->first << std::endl;
+	for (; rit != map.rend(); rit++)
+		if (rit != map.rbegin())
+			std::cout << rit->first << std::endl;
 	std::cout << std::endl;
+	}
+
 }
 
 //VECTOR

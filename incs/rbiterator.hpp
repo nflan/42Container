@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 19:29:18 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 18:25:10 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,8 @@ namespace ft
 			rbiterator( void ): _r() {}
 			explicit rbiterator(const nodePTR & other_r, Type * type): _r(other_r), _type(type) {}
 			template <typename P>
-			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename Type::pointer>::value, Type>::type> & other) : _r(other.base()), _type(other._type)
-			{
-				std::cout << "copy iterator" << std::endl;
-			}
-			rbiterator(const rbiterator<Key, Type> & other) : _r(other.base()), _type(other._type)
-			{
-				std::cout << "copy iteratorrrr" << std::endl;
-			}
+			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename Type::pointer>::value, Type>::type> & other) : _r(other.base()), _type(other._type) {}
+			rbiterator(const rbiterator<Key, Type> & other) : _r(other.base()), _type(other._type) {}
 			~rbiterator() {}
 
 			rbiterator &	operator=( const rbiterator & o )
@@ -62,9 +56,9 @@ namespace ft
 			
 			rbiterator &	operator++( void )
 			{
-				if (this->_r->key && this->_r->parent->key && this->_r->parent->key && !this->_r->right)
+				if (this->_r->key && this->_r->parent->key && !this->_r->right->key)
 				{
-					while (this->_r->parent->key && this->_r == this->_r->parent->right)
+					while (this->_r == this->_r->parent->right)
 					{
 						this->_r = this->_r->parent;
 						if (!this->_r->key)
@@ -72,10 +66,10 @@ namespace ft
 					}
 					this->_r = this->_r->parent;
 				}
-				else if (this->_r->key && this->_r->right)
+				else if (this->_r->key && this->_r->right->key)
 				{
 					this->_r = this->_r->right;
-					while (this->_r->left)
+					while (this->_r->left->key)
 						this->_r = this->_r->left;
 				}
 				return (*this);
@@ -90,23 +84,23 @@ namespace ft
 			{
 				if (!this->_r->key)
 				{
-					this->_r = this->_r->parent;
+					this->_r = this->_type->getRoot();
 					if (this->_r->right)
-						while (this->_r->right)
+						while (this->_r->right->key)
 							this->_r = this->_r->right;
 					return (*this);
 				}
-				if (this->_r->key && this->_r->parent->key && this->_r->parent->key && !this->_r->left)
+				if (this->_r->parent->key && !this->_r->left->key)
 				{
 					while (this->_r->parent->key && this->_r == this->_r->parent->left)
 						this->_r = this->_r->parent;
 					this->_r = this->_r->parent;
 				}
-				else if (this->_r->key && this->_r->right)
+				else if (this->_r->left->key)
 				{
 					this->_r = this->_r->left;
 					if (this->_r->right)
-						while (this->_r->right)
+						while (this->_r->right->key)
 							this->_r = this->_r->right;
 				}
 				return (*this);
