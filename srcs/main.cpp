@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/10 17:12:52 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 16:09:47 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void	domap( void )
 
 	//Creation et affichage arbre binaire
 	ft::map<int, int>		map;
+	ft::map<int, int>::iterator itest = map.begin();
 	NAMESPACE::vector<int>	v;
 	for (size_t i = 0; i < 20; i++)
 		v.push_back(i);
@@ -161,13 +162,17 @@ void	domap( void )
 	try
 	{
 		for (size_t i = 0; i < 20; i++)
+		{
 			map.insert(ft::make_pair(v[i], v[i]));
+			printTree(map.getTree().getRoot(), NULL, false);
+			std::cout << "--------------------------------------------" << std::endl;
+		}
 	}
 	catch ( std::exception & e )
 	{
 		std::cerr << e.what() << std::endl;
 	}
-	printTree(map.getTree().getRoot(), NULL, false);
+//	printTree(map.getTree().getRoot(), NULL, false);
 
 	std::cout << "Les iterateurs de l'arbre" << std::endl;
 	ft::map<int, int>::iterator it = map.begin();

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/10 17:35:24 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/12 16:49:11 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ namespace ft
 				_TNULL = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(_TNULL, test);
 				this->_alloc.destroy(_TNULL->key);
+				this->_alloc.deallocate(_TNULL->key, 1);
+				_TNULL->col = 1;
 				_TNULL->key = NULL;
 				_TNULL->parent = _root;
 				_root = _TNULL;
@@ -130,11 +132,16 @@ namespace ft
 				_TNULL = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(_TNULL, test);
 				this->_alloc.destroy(_TNULL->key);
+				_TNULL->col = 1;
 				_TNULL->key = NULL;
 				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
-			~rbtree( void ) { this->_clear(this->_root); delete this->_TNULL; }
+			~rbtree( void )
+			{
+				this->_clear(this->_root);
+				this->_allocnode.deallocate(this->_TNULL, 1);
+			}
 
 			rbtree &	operator=( const rbtree & o )
 			{
@@ -156,19 +163,17 @@ namespace ft
 			iterator				begin( void )
 			{
 				nodePTR tmp = this->_root;
-				if (!this->_root)
-					return (iterator(this->_root, this));
-				while (tmp->left)
-					tmp = tmp->left;
+				if (tmp)
+					while (tmp->left)
+						tmp = tmp->left;
 				return (iterator(tmp, this));
 			}
 			const_iterator			begin( void ) const
 			{
 				nodePTR tmp = this->_root;
-				if (!this->_root)
-					return (const_iterator(this->_root, this));
-				while (tmp->left)
-					tmp = tmp->left;
+				if (tmp)
+					while (tmp->left)
+						tmp = tmp->left;
 				return (const_iterator(tmp, this));
 			}
 			iterator				end( void ) { return (iterator(this->_TNULL, this)); }
@@ -214,7 +219,7 @@ namespace ft
 			{
 				(void)pos;
 				ft::pair<iterator, bool> ret = insert(value);
-				return (ret.first);
+				return (ret);
 			}
 			template< class InputIt >
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
@@ -227,7 +232,7 @@ namespace ft
 			class EqualException: public std::exception {
 				virtual const char* what() const throw()
 				{
-					return ("Error: same values in two different nodes!");
+					return ("Error: same index in two different nodes!");
 				}
 			};
 			key_compare		key_comp() const { return (_compare); }
@@ -275,16 +280,21 @@ namespace ft
 			}
 			void	_clear(nodePTR root)
 			{
+				bool	r = 0;
 				if (root->key)
 				{
 					_clear(root->left);
 					_clear(root->right);
+					if (root == this->_root)
+						r = 1;
 					this->_allocnode.destroy(root);
 					root->left = NULL;
 					root->right = NULL;
 					root->key = NULL;
 					this->_allocnode.deallocate(root, 1);
 					root = NULL;
+					if (r)
+						root = this->_TNULL;
 				}
 			}
 			void	_recolor( nodePTR & n )
@@ -348,7 +358,7 @@ namespace ft
 				if (y->left != this->_TNULL)
 					y->left->parent = n;
 				y->parent = n->parent;
-				if (!n->parent)
+				if (!n->parent->key)
 					this->_root = y;
 				else if (n == n->parent->left)
 					n->parent->left = y;
@@ -364,7 +374,7 @@ namespace ft
 				if (y->right != this->_TNULL)
 					y->right->parent = n;
 				y->parent = n->parent;
-				if (!n->parent)
+				if (!n->parent->key)
 					this->_root = y;
 				else if (n == n->parent->right)
 					n->parent->right = y;
