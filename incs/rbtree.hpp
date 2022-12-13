@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/13 17:45:57 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 19:13:30 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,24 +115,13 @@ namespace ft
 					node *		parent;
 			};
 
-			rbtree( void ): _alloc(Allocator()), _allocnode(NAllocator()), _size(0)
-			{
-				Key	test;
-				_TNULL = this->_allocnode.allocate(1, 0);
-				this->_allocnode.construct(_TNULL, test);
-				this->_alloc.destroy(_TNULL->key);
-				this->_alloc.deallocate(_TNULL->key, 1);
-				_TNULL->col = 1;
-				_TNULL->key = NULL;
-				_TNULL->parent = _root;
-				_root = _TNULL;
-			}
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
 				Key	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(_TNULL, test);
 				this->_alloc.destroy(_TNULL->key);
+				this->_alloc.deallocate(_TNULL->key, 1);
 				_TNULL->col = 1;
 				_TNULL->key = NULL;
 				_TNULL->parent = _root;
