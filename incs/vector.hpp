@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/08 19:06:44 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 17:28:42 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 #include <stdexcept>
 #include "tools.hpp"
 #include "viterator.hpp"
-#include "reverse_viterator.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
 	template < class T, class Allocator = std::allocator<T> >
-	class vector {
+	class vector
+	{
 		public:
 			typedef T												value_type;
 			typedef Allocator										allocator_type;
@@ -36,8 +37,8 @@ namespace ft
 			typedef typename Allocator::const_pointer				const_pointer;
 			typedef typename ft::viterator<T>						iterator;
 			typedef typename ft::viterator<const T>					const_iterator;
-			typedef typename ft::reverse_viterator<iterator>		reverse_iterator;
-			typedef typename ft::reverse_viterator<const_iterator>	const_reverse_iterator;
+			typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
 			//Default
 			vector( void ): _tab(NULL), _capacity(0), _size(0), _alloc(Allocator()) {}
@@ -587,6 +588,23 @@ namespace ft
 	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) && lhs != rhs); }
 	template< class T, class Allocator >
 	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) || lhs == rhs); }
+
+	template<class Os, typename T>
+	Os& operator<<(Os& os, const ft::vector<T> & co) 
+	{
+		os << "{ ";
+		for (size_t i = 0; i < co.size(); i++)
+			os << co.at(i) << "; ";
+		return os << " } ";
+	}
 }
+	template<class Os, typename T>
+	Os& operator<<(Os& os, const std::vector<T> & co) 
+	{
+		os << "{ ";
+		for (size_t i = 0; i < co.size(); i++)
+			os << co.at(i) << "; ";
+		return os << " } ";
+	}
 
 #endif

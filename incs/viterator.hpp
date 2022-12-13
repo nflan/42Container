@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 16:56:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/11/30 18:25:33 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 16:28:10 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ namespace ft
 	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() - rhs.base()); }
 	template<typename T>
 	viterator<T>	operator+(typename viterator<T>::difference_type n, const viterator<T>& lhs) { return (viterator<T>(lhs.base() + n)); }
+
 }
 
 #endif

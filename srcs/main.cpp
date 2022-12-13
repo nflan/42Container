@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 19:06:14 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 18:25:03 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../incs/stack.hpp"
 #include "../incs/iterator.hpp"
 #include "../incs/viterator.hpp"
+#include "../incs/rbiterator.hpp"
 #include "../incs/tools.hpp"
 #include "../incs/rbtree.hpp"
 #include "../incs/map.hpp"
@@ -38,7 +39,7 @@ Os& operator<<(Os& os, const ft::vector<T>& co)
 }*/
 
 void	dostack();
-//void	dovector();
+void	dovector();
 void	domap();
 template< typename T >
 void	compare(T c1, T c2);
@@ -128,7 +129,7 @@ int	main( int ac, char **av )
 			dostack();
 			break;
 		case (1):
-		//	dovector();
+			dovector();
 			break;
 		case (2):
 			domap();
@@ -182,6 +183,7 @@ void	domap( void )
 	std::cout << std::endl << "Les reverse iterateurs de l'arbre STD" << std::endl;
 	std::map<int, int>::reverse_iterator rit = map.rend();
 	for (; rit != map.rbegin(); rit--)
+		if (rit != map.rend())
 		std::cout << rit->first << std::endl;
 	for (; rit != map.rend(); rit++)
 			std::cout << rit->first << std::endl;
@@ -191,7 +193,7 @@ void	domap( void )
 	//Creation et affichage arbre binaire FT
 	{
 	ft::map<int, int>		map;
-	NAMESPACE::vector<int>	v;
+	ft::vector<int>	v;
 	for (size_t i = 0; i < 20; i++)
 		v.push_back(i);
 	std::random_shuffle(v.begin(), v.end());
@@ -200,8 +202,8 @@ void	domap( void )
 		for (size_t i = 0; i < 20; i++)
 		{
 			map.insert(ft::make_pair(v[i], v[i]));
-			printTree(map.getTree().getRoot(), NULL, false);
-			std::cout << "--------------------------------------------" << std::endl;
+//			printTree(map.getTree().getRoot(), NULL, false);
+//			std::cout << "--------------------------------------------" << std::endl;
 		}
 	}
 	catch ( std::exception & e )
@@ -220,17 +222,17 @@ void	domap( void )
 	std::cout << std::endl << "Les reverse iterateurs de l'arbre FT" << std::endl;
 	ft::map<int, int>::reverse_iterator rit = map.rend();
 	for (; rit != map.rbegin(); rit--)
+		if (rit != map.rend())
 		std::cout << rit->first << std::endl;
 	for (; rit != map.rend(); rit++)
-		if (rit != map.rbegin())
-			std::cout << rit->first << std::endl;
+		std::cout << rit->first << std::endl;
 	std::cout << std::endl;
 	}
 
 }
 
 //VECTOR
-/*void	dovector( void )
+void	dovector( void )
 {
 	std::cout << "Creation stack<int> c1 avec size = 0" << std::endl << std::endl;
 	//Constructeur par defaut
@@ -548,8 +550,8 @@ void	domap( void )
 		}
 		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
-		ft::reverse_viterator<ft::vector<int>::iterator>	rev_ite = c2.rbegin();
-		ft::reverse_viterator<ft::vector<int>::iterator>	rev_it = c2.rend();
+		ft::reverse_iterator<ft::vector<int>::iterator>	rev_ite = c2.rbegin();
+		ft::reverse_iterator<ft::vector<int>::iterator>	rev_it = c2.rend();
 		std::cout << "creation reverse iterator rbegin = " << *rev_ite << std::endl;
 		std::cout << "creation reverse iterator rend = " << *rev_it << std::endl;
 		std::cout << std::endl << "comparaison de rev_ite et rev_it" << std::endl;
@@ -573,7 +575,7 @@ void	domap( void )
 		std::cout << std::endl << "comparaison de rev_ite et rev_it" << std::endl;
 		compare(rev_ite, rev_it);
 	}
-}*/
+}
 
 template< typename T >
 void	compare(T c1, T c2)

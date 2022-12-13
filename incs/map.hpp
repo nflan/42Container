@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 18:39:49 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 16:26:58 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "tools.hpp"
 #include "rbtree.hpp"
 #include "rbiterator.hpp"
-#include "reverse_rbiterator.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -41,23 +41,23 @@ namespace ft
 			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
 			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
-			typedef typename ft::reverse_rbiterator<iterator>					reverse_iterator;
-			typedef typename ft::reverse_rbiterator<const_iterator>				const_reverse_iterator;
+			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
-			class value_compare: std::binary_function<value_type, value_type, bool>
+			class value_compare: public std::binary_function<value_type, value_type, bool>
 			{
+				friend class map;
 				public:
-					value_compare( void ): comp() {}
-					value_compare( Compare c ): comp(c) {}
 					bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
 					bool operator() (const key_type& x, const value_type& y) const { return comp(x, y.first); }
 					bool operator() (const value_type& x, const key_type& y) const { return comp(x.first, y); }
 				protected:
+					value_compare(const key_compare& c): comp(c) {}
 					Compare	comp;
 			};
 
-			map( void ): _tree() {}
-			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(NULL, comp, alloc) {}
+			map( void ): _tree(Compare(), Allocator()) {}
+			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(comp, alloc) {}
 			template< class InputIt >
 			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(NULL, comp, alloc)
 			{
@@ -150,7 +150,6 @@ namespace ft
 	bool	operator>( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) && lhs != rhs); }
 	template< class Key, class T, class Compare, class Alloc >
 	bool	operator>=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs ) { return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) || lhs == rhs); }
-
 }
 
 #endif

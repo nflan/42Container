@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 18:39:05 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 17:45:57 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <iostream>
 #include "tools.hpp"
 #include "rbiterator.hpp"
-#include "reverse_rbiterator.hpp"
+#include "iterator.hpp"
 // 0 = red / 1 = black
 
 namespace ft
@@ -44,8 +44,8 @@ namespace ft
 			typedef typename Allocator::const_pointer					const_pointer;
 			typedef typename ft::rbiterator<value_type, rbtree>			iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>	const_iterator;
-			typedef typename ft::reverse_rbiterator<iterator>			reverse_iterator;
-			typedef typename ft::reverse_rbiterator<const_iterator>		const_reverse_iterator;
+			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 			struct node
 			{
@@ -115,7 +115,7 @@ namespace ft
 					node *		parent;
 			};
 
-			rbtree( void ): _compare(Compare()), _allocnode(NAllocator()), _alloc(Allocator()), _size(0)
+			rbtree( void ): _alloc(Allocator()), _allocnode(NAllocator()), _size(0)
 			{
 				Key	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
@@ -203,7 +203,6 @@ namespace ft
 						throw EqualException();
 				}
 				n->parent = temp;
-				std::cout << k.first << std::endl;
 				this->_size++;
 				if (!temp->key)
 					this->_root = n;
@@ -223,7 +222,7 @@ namespace ft
 			iterator					insert( iterator pos, const value_type& value )
 			{
 				(void)pos;
-				ft::pair<iterator, bool> ret = insert(value);
+				iterator ret = insert(value);
 				return (ret);
 			}
 			template< class InputIt >
@@ -250,8 +249,8 @@ namespace ft
 			nodePTR		_root;
 			nodePTR		_TNULL;
 			key_compare	_compare;
-			NAllocator	_allocnode;
 			Allocator	_alloc;
+			NAllocator	_allocnode;
 			size_type	_size;
 
 			void	_initNullNode( nodePTR nod, nodePTR parent )
@@ -406,7 +405,8 @@ namespace ft
 				this->left_rotate(n);
 				this->left_rotate(gp);
 			}
-*/	};
+*/
+	};
 }
 
 #endif

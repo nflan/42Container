@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/12 18:25:10 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/13 18:22:07 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include <map>
 #include <set>
 #include "iterator.hpp"
-#include "rbtree.hpp"
 
 namespace ft
 {
-	template < class Key, class Type >
-	class rbiterator {
+	template < class Key, class rbtree >
+	class rbiterator
+	{
 		public:
 			typedef Key								value_type;
 			typedef Key								iterator_type;
@@ -31,14 +31,14 @@ namespace ft
 			typedef const value_type*				const_pointer;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 			typedef typename std::ptrdiff_t			difference_type;
-			typedef typename Type::node				node;
-			typedef typename Type::node *			nodePTR;
+			typedef typename rbtree::node			node;
+			typedef typename rbtree::node *			nodePTR;
 
 			rbiterator( void ): _r() {}
-			explicit rbiterator(const nodePTR & other_r, Type * type): _r(other_r), _type(type) {}
+			explicit rbiterator(const nodePTR & other_r, rbtree * type): _r(other_r), _type(type) {}
 			template <typename P>
-			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename Type::pointer>::value, Type>::type> & other) : _r(other.base()), _type(other._type) {}
-			rbiterator(const rbiterator<Key, Type> & other) : _r(other.base()), _type(other._type) {}
+			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename rbtree::pointer>::value, rbtree>::type> & other) : _r(other.base()), _type(other._type) {}
+			rbiterator(const rbiterator<Key, rbtree> & other) : _r(other.base()), _type(other._type) {}
 			~rbiterator() {}
 
 			rbiterator &	operator=( const rbiterator & o )
@@ -51,8 +51,8 @@ namespace ft
 			{
 				return (*this->_r->key);
 			}
-			operator rbiterator<const value_type, Type>( void ) { return (rbiterator<const value_type, Type>(this->_r)); }
-			pointer		operator->( void ) const { return (this->_r->key); }
+			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r)); }
+			pointer		operator->( void ) const { return (&(*(this->_r->key))); }
 			
 			rbiterator &	operator++( void )
 			{
@@ -115,26 +115,26 @@ namespace ft
 
 		private:
 			nodePTR	_r;
-			Type*	_type;
+			rbtree*	_type;
 	};
-/*	template < class Key, class Type >
-	bool	operator==( const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs )
+/*	template < class Key, class rbtree >
+	bool	operator==( const rbiterator<Key, rbtree>& lhs, const rbiterator<Key, rbtree>& rhs )
 	{
 		if (lhs->first == rhs->first && lhs->second == rhs->second)
 			return (true);
 		return (false);
 	}
-	template < class Key, class Type >
-	bool	operator!=( const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs ) { return (!(lhs == rhs)); }
+	template < class Key, class rbtree >
+	bool	operator!=( const rbiterator<Key, rbtree>& lhs, const rbiterator<Key, rbtree>& rhs ) { return (!(lhs == rhs)); }
 */
-	template< class Key, class Type>
-	bool	operator!=(const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs) { return (lhs.base() != rhs.base()); }
-	template< class Key, class Type, class rKey, class rType>
-	bool	operator!=(const rbiterator<Key, Type>& lhs, const rbiterator<rKey, rType>& rhs) { return (lhs.base() != rhs.base()); }
-	template< class Key, class Type>
-	bool	operator==(const rbiterator<Key, Type>& lhs, const rbiterator<Key, Type>& rhs) { return (lhs.base() == rhs.base()); }
-	template< class Key, class Type, class rKey, class rType>
-	bool	operator==(const rbiterator<Key, Type>& lhs, const rbiterator<rKey, rType>& rhs) { return (lhs.base() == rhs.base()); }
+	template< class Key, class rbtree>
+	bool	operator!=(const rbiterator<Key, rbtree>& lhs, const rbiterator<Key, rbtree>& rhs) { return (lhs.base() != rhs.base()); }
+	template< class Key, class rbtree, class rKey, class rrbtree>
+	bool	operator!=(const rbiterator<Key, rbtree>& lhs, const rbiterator<rKey, rrbtree>& rhs) { return (lhs.base() != rhs.base()); }
+	template< class Key, class rbtree>
+	bool	operator==(const rbiterator<Key, rbtree>& lhs, const rbiterator<Key, rbtree>& rhs) { return (lhs.base() == rhs.base()); }
+	template< class Key, class rbtree, class rKey, class rrbtree>
+	bool	operator==(const rbiterator<Key, rbtree>& lhs, const rbiterator<rKey, rrbtree>& rhs) { return (lhs.base() == rhs.base()); }
 }
 
 #endif
