@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 13:31:54 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:40:18 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ void	domap( void )
 
 	//Creation et affichage arbre binaire STD
 	{
+		std::cout << "STD PART" << std::endl << std::endl;
 		std::map<int, int>		map;
 		std::vector<int>	v;
 		for (size_t i = 0; i < 20; i++)
@@ -171,6 +172,9 @@ void	domap( void )
 		{
 			std::cerr << e.what() << std::endl;
 		}
+		//COUNT
+		std::cout << "15 is in std::map: " << (map.count(15) ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "21 is in std::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
 
 		std::cout << "Les iterateurs de l'arbre STD" << std::endl;
 		std::map<int, int>::iterator it = map.begin();
@@ -202,16 +206,30 @@ void	domap( void )
 		}
 
 	//FIND
-		std::cout << "Test find FT" << std::endl;
+		std::cout << "Test find STD" << std::endl;
 		std::cout << map.find(3)->second << std::endl;
 		if (map.find(21) != map.end())
 			std::cout << map.find(21)->second << std::endl;
 		else
 			std::cout << "map::find element not found" << std::endl;
+		std::cout << std::endl;
+
+	//VALUE_COMP
+		if (map.value_comp()(std::make_pair(2, 2), std::make_pair(3, 3)))
+			std::cout << "Fonction STD value_comp() 2;2 < 3;3" << std::endl;
+		else
+			std::cout << "Fonction STD value_comp() 3;3 > 2;2" << std::endl;
+	//KEY_COMP
+		if (map.key_comp()(3, 2))
+			std::cout << "Fonction STD value_comp() 3 > 2" << std::endl;
+		else
+			std::cout << "Fonction STD value_comp() 2 < 3" << std::endl;
 	}
 
+	std::cout << std::endl;
 	//Creation et affichage arbre binaire FT
 	{
+		std::cout << "FT PART" << std::endl << std::endl;
 		ft::map<int, int>		map;
 		ft::vector<int>	v;
 		for (size_t i = 0; i < 20; i++)
@@ -231,7 +249,9 @@ void	domap( void )
 			std::cerr << e.what() << std::endl;
 		}
 		//COUNT
-		std::cout << map.count(15) << std::endl;
+		std::cout << "15 is in ft::map: " << (map.count(15) ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "21 is in ft::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
+		std::cout << std::endl;
 
 		std::cout << "Les iterateurs de l'arbre FT" << std::endl;
 		ft::map<int, int>::iterator it = map.begin();
@@ -268,7 +288,20 @@ void	domap( void )
 			std::cout << map.find(21)->second << std::endl;
 		else
 			std::cout << "map::find element not found" << std::endl;
+		std::cout << std::endl;
+
+	//VALUE_COMP KEY_COMP
+		if (map.value_comp()(ft::make_pair(2, 2), ft::make_pair(3, 3)))
+			std::cout << "Fonction FT value_comp() 2;2 < 3;3" << std::endl;
+		else
+			std::cout << "Fonction FT value_comp() 3;3 > 2;2" << std::endl;
+	//VALUE_COMP KEY_COMP
+		if (map.key_comp()(3, 2))
+			std::cout << "Fonction FT value_comp() 3 > 2" << std::endl;
+		else
+			std::cout << "Fonction FT value_comp() 2 < 3" << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 //VECTOR

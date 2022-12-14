@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 13:42:55 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:10:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <map>
 #include <set>
 #include "iterator.hpp"
+#include "tools.hpp"
 
 namespace ft
 {
@@ -35,12 +36,12 @@ namespace ft
 			typedef typename rbtree::node *			nodePTR;
 
 			rbiterator( void ): _r() {}
-			explicit rbiterator(const nodePTR & other_r, rbtree * type): _r(other_r), _type(type) {}
+			explicit rbiterator(const nodePTR & other_r): _r(other_r) {}
 			template <typename P>
-			rbiterator(const rbiterator<P, typename ft::enable_if<is_same<P, typename rbtree::pointer>::value, rbtree>::type> & other) : _r(other.base()), _type(other._type) {}
-			rbiterator(const rbiterator<Key, rbtree> & other) : _r(other.base()), _type(other._type) {}
+			rbiterator(const rbiterator<P, typename enable_if<is_same<P, typename rbtree::pointer>::value, rbtree>::type> & other) : _r(other.base()) {}
 			~rbiterator() {}
 
+			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r)); }
 			rbiterator &	operator=( const rbiterator & o )
 			{
 				if (this != &o)
@@ -51,7 +52,6 @@ namespace ft
 			{
 				return (*this->_r->key);
 			}
-			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r, this->_type)); }
 			pointer		operator->( void ) const { return (&(*(this->_r->key))); }
 			
 			rbiterator &	operator++( void )
@@ -84,7 +84,7 @@ namespace ft
 			{
 				if (!this->_r->key)
 				{
-					this->_r = this->_type->getRoot();
+					this->_r = this->_r->parent;
 					if (this->_r->right)
 						while (this->_r->right->key)
 							this->_r = this->_r->right;
@@ -115,7 +115,6 @@ namespace ft
 
 		private:
 			nodePTR	_r;
-			rbtree*	_type;
 	};
 /*	template < class Key, class rbtree >
 	bool	operator==( const rbiterator<Key, rbtree>& lhs, const rbiterator<Key, rbtree>& rhs )

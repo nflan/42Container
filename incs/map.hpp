@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 13:32:03 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:55:43 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ namespace ft
 			}
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 			T&				at( const Key& key ) { return (this->_tree.at(key)); }
-			const T&				at( const Key& key ) const { return (this->_tree.at(key)); }
+			const T&		at( const Key& key ) const { return (this->_tree.at(key)); }
 			T&				operator[]( const Key& key );
 
 			iterator				begin( void ) { return (this->_tree.begin()); }
@@ -87,18 +87,15 @@ namespace ft
 			reverse_iterator		rend( void ) { return (this->_tree.rend()); }
 			const_reverse_iterator	rend( void ) const { return (this->_tree.rend()); }
 
-			bool		empty( void ) const { return (this->begin() == this->end()); }
-			size_type	size( void ) const { return (this->_distance(this->begin(), this->end())); }
-			size_type	max_size( void ) const { return (this->_tree.max_size()); }
+			bool					empty( void ) const { return (this->begin() == this->end()); }
+			size_type				size( void ) const { return (this->_distance(this->begin(), this->end())); }
+			size_type				max_size( void ) const { return (this->_tree.max_size()); }
 
 			void						clear( void ) { this->tree.clear(); }
-			void						insert( const value_type& value )
-			{
-				return (this->_tree.insert(value));
-			}
-			iterator					insert( iterator pos, const value_type& value );
+			void						insert( const value_type& value ) { return (this->_tree.insert(value)); }
+			iterator					insert( iterator pos, const value_type& value ) { return (this->_tree.insert(pos, value)); }
 			template< class InputIt >
-			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL );
+			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { this->_tree.insert(first, last); }
 			iterator					erase( iterator pos );
 			iterator					erase( iterator first, iterator last );
 			size_type					erase( const Key& key );
@@ -116,8 +113,8 @@ namespace ft
 			const_iterator								upper_bound( const Key& key ) const;
 
 			//OBSERVERS
-			key_compare		key_comp() const { return (this->_tree.key_comp()); }
-			value_compare	value_comp() const;
+			key_compare		key_comp() const { return (Compare()); }
+			value_compare	value_comp() const { return (this->_tree.value_comp()); }
 
 			void	print() { this->_tree.print(); }
 			rbtree&	getTree( void ) { return (_tree); }

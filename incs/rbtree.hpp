@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 13:45:18 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 15:54:48 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ namespace ft
 				this->_size = o._size;
 				return (*this);
 			}
-			allocator_type	get_allocator() const { return (this->_alloc); }
+			allocator_type				get_allocator() const { return (this->_alloc); }
 			Mapped_Type&				at( const Key& key )
 			{
 				iterator	tmp = this->find(key);
@@ -160,7 +160,6 @@ namespace ft
 					throw std::out_of_range("map::at");
 				return (tmp->second);
 			}
-//			out_of_range exception si jamais on trouve pas la cle.
 
 			iterator				begin( void )
 			{
@@ -168,7 +167,7 @@ namespace ft
 				if (tmp)
 					while (tmp->left->key)
 						tmp = tmp->left;
-				return (iterator(tmp, this));
+				return (iterator(tmp));
 			}
 			const_iterator			begin( void ) const
 			{
@@ -176,10 +175,10 @@ namespace ft
 				if (tmp)
 					while (tmp->left->key)
 						tmp = tmp->left;
-				return (const_iterator(tmp, this));
+				return (const_iterator(tmp));
 			}
-			iterator				end( void ) { return (iterator(this->_TNULL, this)); }
-			const_iterator			end( void ) const { return (const_iterator(this->_TNULL, this)); }
+			iterator				end( void ) { return (iterator(this->_TNULL)); }
+			const_iterator			end( void ) const { return (const_iterator(this->_TNULL)); }
 			reverse_iterator		rbegin( void ) { return (reverse_iterator(this->end())); }
 			const_reverse_iterator	rbegin( void ) const { return (const_reverse_iterator(this->end())); }
 			reverse_iterator		rend( void ) { return (reverse_iterator(this->begin())); }
@@ -232,16 +231,17 @@ namespace ft
 				for (; first != last; first++)
 					this->insert(*first);
 			}
+			iterator					erase( iterator pos );
+			iterator					erase( iterator first, iterator last );
+			size_type					erase( const Key& key );
 
-			//EXCEPTION
-			class EqualException: public std::exception {
-				virtual const char* what() const throw()
-				{
-					return ("Error: same index in two different nodes!");
-				}
-			};
-			key_compare		key_comp() const { return (_compare); }
-
+			//LOOKUP
+			size_type		count( const key_type& key ) const
+			{
+				if (this->find(key) == this->end())
+					return (0);
+				return (1);
+			}
 			iterator		find(const key_type& key)
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
@@ -253,9 +253,9 @@ namespace ft
 					else if (_compare(*tmp->key, k))
 						tmp = tmp->right;
 					else
-						return (iterator(tmp, this));
+						return (iterator(tmp));
 				}
-				return (iterator(_TNULL, this));
+				return (iterator(_TNULL));
 			}
 			const_iterator	find(const key_type& key) const
 			{
@@ -268,16 +268,19 @@ namespace ft
 					else if (_compare(*tmp->key, k))
 						tmp = tmp->right;
 					else
-						return (const_iterator(tmp, this));
+						return (const_iterator(tmp));
 				}
-				return (const_iterator(_TNULL, this));
+				return (const_iterator(_TNULL));
 			}
-			size_type		count( const key_type& key ) const
-			{
-				if (this->find(key) == this->end())
-					return (0);
-				return (1);
-			}
+			std::pair<iterator,iterator>				equal_range( const Key& key );
+			std::pair<const_iterator,const_iterator>	equal_range( const Key& key ) const;
+			iterator									lower_bound( const Key& key );
+			const_iterator								lower_bound( const Key& key ) const;
+			iterator									upper_bound( const Key& key );
+			const_iterator								upper_bound( const Key& key ) const;
+
+			//OBSERVERS
+			value_compare	value_comp() const { return (_compare); }
 
 			void	print( void ) { this->_print(this->_root, "", true); }
 			nodePTR	getRoot() { return (this->_root); }
@@ -290,6 +293,14 @@ namespace ft
 			NAllocator	_allocnode;
 			size_type	_size;
 
+			//EXCEPTION
+			class EqualException: public std::exception {
+				virtual const char* what() const throw()
+				{
+					return ("Error: same index in two different nodes!");
+				}
+			};
+
 			void	_initNullNode( nodePTR nod, nodePTR parent )
 			{
 				nod->col = 0;
@@ -297,27 +308,6 @@ namespace ft
 				nod->parent = parent;
 				nod->left = NULL;
 				nod->right = NULL;
-			}
-			void	_print(nodePTR root, std::string indent, bool last)
-			{
-				if (root)
-				{
-					std::cout << indent;
-					if (last)
-					{
-						std::cout << "R----";
-						indent += "   ";
-					}
-					else
-					{
-						std::cout << "L----";
-						indent += "|  ";
-					}
-					std::string sColor = root->col ? "RED" : "BLACK";
-					std::cout << root->key << "(" << sColor << ")" << std::endl;
-					_print(root->left, indent, false);
-					_print(root->right, indent, true);
-				}
 			}
 			void	_clear(nodePTR root)
 			{
@@ -390,6 +380,7 @@ namespace ft
 					if (n == this->_root)
 						break ;
 				}
+				this->_TNULL->parent = this->_root;
 				this->_root->col = 1;
 			}
 			void	_left_rotate( nodePTR n )
