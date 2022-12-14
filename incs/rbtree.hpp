@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 15:54:48 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 18:44:16 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ namespace ft
 			iterator		find(const key_type& key)
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
-				nodePTR tmp = this->_root;
+				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
 				{
 					if (_compare(k, *tmp->key))
@@ -260,7 +260,7 @@ namespace ft
 			const_iterator	find(const key_type& key) const
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
-				nodePTR tmp = this->_root;
+				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
 				{
 					if (_compare(k, *tmp->key))
@@ -272,12 +272,80 @@ namespace ft
 				}
 				return (const_iterator(_TNULL));
 			}
-			std::pair<iterator,iterator>				equal_range( const Key& key );
-			std::pair<const_iterator,const_iterator>	equal_range( const Key& key ) const;
-			iterator									lower_bound( const Key& key );
-			const_iterator								lower_bound( const Key& key ) const;
-			iterator									upper_bound( const Key& key );
-			const_iterator								upper_bound( const Key& key ) const;
+			ft::pair<iterator, iterator>				equal_range( const key_type& key );
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const;
+			iterator									lower_bound( const key_type& key )
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR	tmp = this->_root;
+				while (tmp != _TNULL && _compare(k, *tmp->key))
+				{
+					if (_compare(k, *tmp->key))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, k))
+						tmp = tmp->right;
+				}
+				return (iterator(tmp));
+			}
+			const_iterator								lower_bound( const key_type& key ) const
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR	tmp = this->_root;
+				while (tmp != _TNULL && _compare(k, *tmp->key))
+				{
+					if (_compare(k, *tmp->key))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, k))
+						tmp = tmp->right;
+					else
+						break;
+				}
+				return (const_iterator(tmp));
+			}
+			/*
+				bool	a = _compare(k, *tmp->key);
+				bool	b = !_compare(k, *tmp->key);
+				bool	c = _compare(*tmp->key, k);
+				bool	d = !_compare(*tmp->key, k);
+
+				std::cout << "a = " << a << "; b = " << b << "; c = " << c << "; d = " << d << std::endl;
+				When k == 10 && tmp->key == 12 -> a = 1; b = 0; c = 0; d = 1
+				When k == 21 && tmp->key == 12 -> a = 0; b = 1; c = 1; d = 0
+			*/
+			iterator									upper_bound( const key_type& key )
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR	tmp = this->_root;
+				while (tmp != _TNULL)
+				{
+					std::cout << tmp->key->first << std::endl;
+					if (tmp->left != _TNULL && _compare(k, *tmp->key) && _compare(*tmp->left->key, k) && (_compare(k, *tmp->left->key) || _compare(*tmp->left->key, k)))
+						tmp = tmp->left;
+					else if (tmp->right != _TNULL && _compare(*tmp->key, k) && _compare(k, *tmp->left->key) && (_compare(k, *tmp->right->key) || _compare(*tmp->right->key, k)))
+						tmp = tmp->right;
+					else
+						break;
+				}
+				std::cout << tmp->key->first << std::endl;
+				if (_compare(*tmp->key, k) || (!_compare(*tmp->key, k) && !_compare(k, *tmp->key)))
+					return (iterator(_TNULL));
+				return (iterator(tmp));
+			}
+			const_iterator								upper_bound( const key_type& key ) const
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR	tmp = this->_root;
+				while (tmp != _TNULL)
+				{
+					if (_compare(k, *tmp->key) && _compare(*tmp->left->key, k))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, k) && _compare(k, *tmp->right->key))
+						tmp = tmp->right;
+					else
+						break;
+				}
+				return (const_iterator(tmp));
+			}
 
 			//OBSERVERS
 			value_compare	value_comp() const { return (_compare); }

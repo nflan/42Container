@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 15:55:43 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 17:30:49 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,12 @@ namespace ft
 			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }
 			iterator									find( const Key& key ) { return (this->_tree.find(key)); }
 			const_iterator								find( const Key& key ) const { return (this->_tree.find(key)); }
-			std::pair<iterator,iterator>				equal_range( const Key& key );
-			std::pair<const_iterator,const_iterator>	equal_range( const Key& key ) const;
-			iterator									lower_bound( const Key& key );
-			const_iterator								lower_bound( const Key& key ) const;
-			iterator									upper_bound( const Key& key );
-			const_iterator								upper_bound( const Key& key ) const;
+			ft::pair<iterator, iterator>				equal_range( const key_type& key );
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const;
+			iterator									lower_bound( const key_type& key ) { return (this->_tree.lower_bound(key)); }
+			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound(key)); }
+			iterator									upper_bound( const key_type& key ) { return (this->_tree.upper_bound(key)); }
+			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound(key)); }
 
 			//OBSERVERS
 			key_compare		key_comp() const { return (Compare()); }

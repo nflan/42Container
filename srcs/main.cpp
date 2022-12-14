@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 15:40:18 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 17:39:22 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,30 @@ void	domap( void )
 			std::cout << "Fonction STD value_comp() 3 > 2" << std::endl;
 		else
 			std::cout << "Fonction STD value_comp() 2 < 3" << std::endl;
+
+		std::cout << std::endl;
+	//LOWER_BOUND
+		std::cout << "STD LOWER BOUND" << std::endl;
+		if (map.lower_bound(10) != map.end())
+			std::cout << map.lower_bound(10)->first << std::endl;
+		else
+			std::cout << "map::lower_bound element not found" << std::endl;
+		if (map.lower_bound(21) != map.end())
+			std::cout << map.lower_bound(21)->first << std::endl;
+		else
+			std::cout << "map::lower_bound element not found" << std::endl;
+
+		std::cout << std::endl;
+	//UPPER_BOUND
+		std::cout << "STD UPPER BOUND" << std::endl;
+		if (map.upper_bound(10) != map.end())
+			std::cout << map.upper_bound(10)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
+		if (map.upper_bound(21) != map.end())
+			std::cout << map.upper_bound(21)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
 	}
 
 	std::cout << std::endl;
@@ -240,7 +264,6 @@ void	domap( void )
 			for (size_t i = 0; i < 20; i++)
 			{
 				map.insert(ft::make_pair(v[i], v[i]));
-//			printTree(map.getTree().getRoot(), NULL, false);
 //			std::cout << "--------------------------------------------" << std::endl;
 			}
 		}
@@ -248,6 +271,7 @@ void	domap( void )
 		{
 			std::cerr << e.what() << std::endl;
 		}
+			printTree(map.getTree().getRoot(), NULL, false);
 		//COUNT
 		std::cout << "15 is in ft::map: " << (map.count(15) ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "21 is in ft::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
@@ -300,6 +324,30 @@ void	domap( void )
 			std::cout << "Fonction FT value_comp() 3 > 2" << std::endl;
 		else
 			std::cout << "Fonction FT value_comp() 2 < 3" << std::endl;
+
+		std::cout << std::endl;
+	//LOWER_BOUND
+		std::cout << "FT LOWER BOUND" << std::endl;
+		if (map.lower_bound(10) != map.end())
+			std::cout << map.lower_bound(10)->first << std::endl;
+		else
+			std::cout << "map::lower_bound element not found" << std::endl;
+		if (map.lower_bound(21) != map.end())
+			std::cout << map.lower_bound(21)->first << std::endl;
+		else
+			std::cout << "map::lower_bound element not found" << std::endl;
+
+		std::cout << std::endl;
+	//UPPER_BOUND
+		std::cout << "FT UPPER BOUND" << std::endl;
+		if (map.upper_bound(10) != map.end())
+			std::cout << map.upper_bound(10)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
+		if (map.upper_bound(21) != map.end())
+			std::cout << map.upper_bound(21)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
 	}
 	std::cout << std::endl;
 }
