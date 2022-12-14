@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/13 16:26:58 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 13:32:03 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace ft
 			typedef typename Allocator::const_reference							const_reference;
 			typedef typename Allocator::pointer									pointer;
 			typedef typename Allocator::const_pointer							const_pointer;
-			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
+			typedef typename ft::rbtree<key_type, mapped_type, value_type, value_compare, Allocator>	rbtree;
 			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
 			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
@@ -49,8 +49,6 @@ namespace ft
 				friend class map;
 				public:
 					bool operator() (const value_type& x, const value_type& y) const { return comp(x.first, y.first); }
-					bool operator() (const key_type& x, const value_type& y) const { return comp(x, y.first); }
-					bool operator() (const value_type& x, const key_type& y) const { return comp(x.first, y); }
 				protected:
 					value_compare(const key_compare& c): comp(c) {}
 					Compare	comp;
@@ -76,8 +74,8 @@ namespace ft
 				return (*this);
 			}
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
-			T&				at( const Key& key );
-			T&				at( const key_type& k ) const;
+			T&				at( const Key& key ) { return (this->_tree.at(key)); }
+			const T&				at( const Key& key ) const { return (this->_tree.at(key)); }
 			T&				operator[]( const Key& key );
 
 			iterator				begin( void ) { return (this->_tree.begin()); }
@@ -107,9 +105,9 @@ namespace ft
 			void						swap( map& other );
 
 			//LOOKUP
-			size_type									count( const Key& key ) const;
-			iterator									find( const Key& key );
-			const_iterator								find( const Key& key ) const;
+			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }
+			iterator									find( const Key& key ) { return (this->_tree.find(key)); }
+			const_iterator								find( const Key& key ) const { return (this->_tree.find(key)); }
 			std::pair<iterator,iterator>				equal_range( const Key& key );
 			std::pair<const_iterator,const_iterator>	equal_range( const Key& key ) const;
 			iterator									lower_bound( const Key& key );

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/13 19:13:30 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 13:45:18 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@
 
 namespace ft
 {
-	template < class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
+	template < class Key, class Mapped_Type, class Value_Type, class Compare = std::less<Key>, class Allocator = std::allocator<Value_Type> >
 	class rbtree
 	{
 		public:
 			struct	node;
 
 			typedef Key													key_type;
-			typedef Key													value_type;
+			typedef Value_Type											value_type;
 			typedef std::size_t											size_type;
 			typedef std::ptrdiff_t										difference_type;
 			typedef Compare												key_compare;
@@ -117,7 +117,7 @@ namespace ft
 
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
-				Key	test;
+				value_type	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(_TNULL, test);
 				this->_alloc.destroy(_TNULL->key);
@@ -146,8 +146,20 @@ namespace ft
 				return (*this);
 			}
 			allocator_type	get_allocator() const { return (this->_alloc); }
-//			T&				at( const Key& key ) { return (this->_;
-//			T&				at( const key_type& k ) const;
+			Mapped_Type&				at( const Key& key )
+			{
+				iterator	tmp = this->find(key);
+				if (tmp == this->end())
+					throw std::out_of_range("map::at");
+				return (tmp->second);
+			}
+			const Mapped_Type&			at( const Key& key ) const
+			{
+				const iterator	tmp = this->find(key);
+				if (tmp == this->end())
+					throw std::out_of_range("map::at");
+				return (tmp->second);
+			}
 //			out_of_range exception si jamais on trouve pas la cle.
 
 			iterator				begin( void )
@@ -230,8 +242,44 @@ namespace ft
 			};
 			key_compare		key_comp() const { return (_compare); }
 
+			iterator		find(const key_type& key)
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR tmp = this->_root;
+				while (tmp != _TNULL)
+				{
+					if (_compare(k, *tmp->key))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, k))
+						tmp = tmp->right;
+					else
+						return (iterator(tmp, this));
+				}
+				return (iterator(_TNULL, this));
+			}
+			const_iterator	find(const key_type& key) const
+			{
+				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				nodePTR tmp = this->_root;
+				while (tmp != _TNULL)
+				{
+					if (_compare(k, *tmp->key))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, k))
+						tmp = tmp->right;
+					else
+						return (const_iterator(tmp, this));
+				}
+				return (const_iterator(_TNULL, this));
+			}
+			size_type		count( const key_type& key ) const
+			{
+				if (this->find(key) == this->end())
+					return (0);
+				return (1);
+			}
+
 			void	print( void ) { this->_print(this->_root, "", true); }
-		//	void	print() { printTree(this->_root, NULL, false); }
 			nodePTR	getRoot() { return (this->_root); }
 
 		private:

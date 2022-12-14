@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 13:31:54 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 13:29:54 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,8 +230,8 @@ void	domap( void )
 		{
 			std::cerr << e.what() << std::endl;
 		}
-		//COUNT
-		std::cout << map.count(15) << std::endl;
+		//SIZE
+		std::cout << map.count() << std::endl;
 
 		std::cout << "Les iterateurs de l'arbre FT" << std::endl;
 		ft::map<int, int>::iterator it = map.begin();

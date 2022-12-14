@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/13 18:22:07 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/14 13:42:55 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ namespace ft
 			{
 				return (*this->_r->key);
 			}
-			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r)); }
+			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r, this->_type)); }
 			pointer		operator->( void ) const { return (&(*(this->_r->key))); }
 			
 			rbiterator &	operator++( void )

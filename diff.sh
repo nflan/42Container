@@ -23,10 +23,10 @@ valgrind ./Container vector 1> $dir/_ft_vector 2>> $dir/_ft_vector
 valgrind ./Container_std vector 1> $dir/_std_vector 2>> $dir/_std_vector
 
 #RBTREE
-\time -f "Total time: %E" ./Container rbtree > $dir/ft_rbtree
-\time -f "Total time: %E" ./Container_std rbtree > $dir/std_rbtree
-diff $dir/ft_rbtree $dir/std_rbtree
+\time -f "Total time: %E" ./Container map > $dir/ft_map
+\time -f "Total time: %E" ./Container_std map > $dir/std_map
+diff $dir/ft_map $dir/std_map
 echo "Diff rbtree done"
 
-valgrind ./Container rbtree 1> $dir/_ft_rbtree 2>> $dir/_ft_rbtree
-valgrind ./Container_std rbtree 1> $dir/_std_rbtree 2>> $dir/_std_rbtree
+valgrind ./Container map 1> $dir/_ft_map 2>> $dir/_ft_map
+valgrind ./Container_std map 1> $dir/_std_map 2>> $dir/_std_map
