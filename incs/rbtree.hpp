@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 15:14:38 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/15 17:41:42 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ namespace ft
 				return (tmp->second);
 			}
 
+			//ITERATORS
 			iterator				begin( void )
 			{
 				nodePTR tmp = this->_root;
@@ -183,7 +184,14 @@ namespace ft
 			const_reverse_iterator	rbegin( void ) const { return (const_reverse_iterator(this->end())); }
 			reverse_iterator		rend( void ) { return (reverse_iterator(this->begin())); }
 			const_reverse_iterator	rend( void ) const { return (const_reverse_iterator(this->begin())); }
-			size_type				max_size( void ) const { return (this->_alloc.max_size()); }
+
+			//CAPACITY
+			bool					empty( void ) const { return (this->_size ? false : true); }
+			size_type				size( void ) const { return (this->_size); }
+			size_type				max_size( void ) const { return (this->_allocnode.max_size()); }
+
+			//MODIFIERS
+			void					clear( void );
 			void					insert( const value_type & k )
 			{
 				nodePTR	n = this->_allocnode.allocate(1, 0);
@@ -220,9 +228,48 @@ namespace ft
 				this->_recolor(n);
 			}
 			iterator					insert( iterator pos, const value_type& value )
-			{
-				(void)pos;
-				iterator ret = insert(value);
+			{ //VERIFIER SI PAS DECONNANT D'INSERT A LA POSITION DONNEE, SINON REPRENDRE L'INSERT BASIQUE
+				iterator ret = this->begin();
+				if (!pos.base()->parent->key)
+					insert(value);
+				else if (_compare(*pos.base()->parent->key, value) && _compare(value, *pos.base()->key))
+				{
+					nodePTR	n = this->_allocnode.allocate(1, 0);
+					this->_allocnode.construct(n, value);
+					n->left = this->_TNULL;
+					n->right = this->_TNULL;
+					nodePTR	tmp = pos.base();
+					nodePTR	temp = _TNULL;
+					while (tmp != this->_TNULL)
+					{
+						temp = tmp;
+						if (_compare(*n->key, *tmp->key))
+							tmp = tmp->left;
+						else if (_compare(*tmp->key, *n->key))
+							tmp = tmp->right;
+						else
+							throw EqualException();
+					}
+					n->parent = temp;
+					this->_size++;
+					if (!temp->key)
+						this->_root = n;
+					else if (_compare(*n->key, *temp->key))
+						temp->left = n;
+					else
+						temp->right = n;
+					if (!n->parent->key)
+					{
+						n->col = 1;
+						return (iterator(n));
+					}
+					if (!n->parent->parent->key)
+						return (iterator(n));
+					this->_recolor(n);
+					return (pos);
+				}
+				else
+					insert(value);
 				return (ret);
 			}
 			template< class InputIt >
@@ -272,8 +319,8 @@ namespace ft
 				}
 				return (const_iterator(_TNULL));
 			}
-			ft::pair<iterator, iterator>				equal_range( const key_type& key );
-			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const;
+			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
 			iterator									lower_bound( const key_type& key )
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
@@ -294,7 +341,6 @@ namespace ft
 					return (iterator(_TNULL));
 				return (iterator(temp));
 			}
-
 			const_iterator								lower_bound( const key_type& key ) const
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
@@ -315,16 +361,6 @@ namespace ft
 					return (const_iterator(_TNULL));
 				return (const_iterator(temp));
 			}
-			/*
-				bool	a = _compare(k, *tmp->key);
-				bool	b = !_compare(k, *tmp->key);
-				bool	c = _compare(*tmp->key, k);
-				bool	d = !_compare(*tmp->key, k);
-
-				std::cout << "a = " << a << "; b = " << b << "; c = " << c << "; d = " << d << std::endl;
-				When k == 10 && tmp->key == 12 -> a = 1; b = 0; c = 0; d = 1
-				When k == 21 && tmp->key == 12 -> a = 0; b = 1; c = 1; d = 0
-			*/
 			iterator									upper_bound( const key_type& key )
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);

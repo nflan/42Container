@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 15:15:40 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/15 17:43:05 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,22 +160,52 @@ void	domap( void )
 		std::cout << "STD PART" << std::endl << std::endl;
 		std::map<int, int>		map;
 		std::vector<int>	v;
+
+		//CAPACITY
+		std::cout << "TEST CAPACITY" << std::endl;
+		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "Map size ? " << map.size() << std::endl;
+		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << std::endl;
+
+		//FILLING
 		for (size_t i = 0; i < 20; i++)
 			v.push_back(i);
 		std::random_shuffle(v.begin(), v.end());
 		try
 		{
 			for (size_t i = 0; i < 20; i++)
-				map.insert(std::make_pair(v[i], v[i]));
+				if (i != 12)
+					map.insert(std::make_pair(v[i], v[i]));
 		}
 		catch ( std::exception & e )
 		{
 			std::cerr << e.what() << std::endl;
 		}
+
+		{
+			//COPY WITH ITERATORS
+			std::cout << "COPY WITH ITERATORS" << std::endl;
+			std::map<int, int>		map2;
+			map2.insert(map.begin(), map.end());
+			std::cout << "Map2 size ? " << map2.size() << std::endl;
+			std::cout << "Map content : ";
+			for (std::map<int, int>::iterator it = map.begin(); it != map.end(); it++)
+				std::cout << it->first << "; ";
+			std::cout << std::endl << std::endl; 
+		}
+
+
+		//CAPACITY
+		std::cout << "TEST CAPACITY" << std::endl;
+		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "Map size ? " << map.size() << std::endl;
+		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << std::endl;
+
 		//COUNT
 		std::cout << "15 is in std::map: " << (map.count(15) ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "21 is in std::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
-
 		std::cout << "Les iterateurs de l'arbre STD" << std::endl;
 		std::map<int, int>::iterator it = map.begin();
 		for (; it != map.end(); it++)
@@ -256,6 +286,27 @@ void	domap( void )
 			std::cout << map.upper_bound(-3)->first << std::endl;
 		else
 			std::cout << "map::upper_bound element not found" << std::endl;
+
+		std::cout << std::endl;
+	//EQUAL BOUND
+		std::cout << "STD EQUAL RANGE" << std::endl;
+		{
+			std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator>	p1 = map.equal_range(-1);
+			if (p1.first == map.begin())
+				std::cout << "p1.first is iterator to first not-less than -1" << std::endl;
+			else
+				std::cout << "unexpected p1.first" << std::endl;
+			std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator>	p2 = map.equal_range(5);
+			if (p2.first == map.begin())
+				std::cout << "p2.first is iterator to first not-less than 5" << std::endl;
+			else
+				std::cout << "unexpected p2.first" << std::endl;
+			std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator>	p3 = map.equal_range(15);
+			if (p3.first == map.begin())
+				std::cout << "p3.first is iterator to first not-less than 15" << std::endl;
+			else
+				std::cout << "unexpected p3.first" << std::endl;
+		}
 	}
 
 	std::cout << std::endl;
@@ -264,6 +315,15 @@ void	domap( void )
 		std::cout << "FT PART" << std::endl << std::endl;
 		ft::map<int, int>		map;
 		ft::vector<int>	v;
+
+		//CAPACITY
+		std::cout << "TEST CAPACITY" << std::endl;
+		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "Map size ? " << map.size() << std::endl;
+		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << std::endl;
+
+		//FILLING
 		for (size_t i = 0; i < 20; i++)
 			v.push_back(i);
 		std::random_shuffle(v.begin(), v.end());
@@ -271,7 +331,8 @@ void	domap( void )
 		{
 			for (size_t i = 0; i < 20; i++)
 			{
-				map.insert(ft::make_pair(v[i], v[i]));
+				if (i != 12)
+					map.insert(ft::make_pair(v[i], v[i]));
 //			std::cout << "--------------------------------------------" << std::endl;
 			}
 		}
@@ -279,7 +340,33 @@ void	domap( void )
 		{
 			std::cerr << e.what() << std::endl;
 		}
-			printTree(map.getTree().getRoot(), NULL, false);
+		printTree(map.getTree().getRoot(), NULL, false);
+
+		{
+			//COPY WITH ITERATORS
+			std::cout << "COPY WITH ITERATORS" << std::endl;
+			ft::map<int, int>		map2;
+			map2.insert(map.begin(), map.end());
+			std::cout << "Map2 size ? " << map2.size() << std::endl;
+			std::cout << "Map content : ";
+			for (ft::map<int, int>::iterator it = map.begin(); it != map.end(); it++)
+				std::cout << it->first << "; ";
+			std::cout << std::endl << std::endl; 
+		}
+		
+		//INSERT WITH POSITION
+		std::cout << "INSERT WITH POSITION" << std::endl;
+		std::cout << "insert 12 a position + 12 = " << map.insert(map.find(11), ft::make_pair(v[12], v[12]))->first << std::endl;
+		printTree(map.getTree().getRoot(), NULL, false);
+
+
+		//CAPACITY
+		std::cout << "TEST CAPACITY" << std::endl;
+		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
+		std::cout << "Map size ? " << map.size() << std::endl;
+		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << std::endl;
+
 		//COUNT
 		std::cout << "15 is in ft::map: " << (map.count(15) ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "21 is in ft::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
@@ -364,6 +451,27 @@ void	domap( void )
 			std::cout << map.upper_bound(-3)->first << std::endl;
 		else
 			std::cout << "map::upper_bound element not found" << std::endl;
+
+		std::cout << std::endl;
+	//EQUAL BOUND
+		std::cout << "FT EQUAL RANGE" << std::endl;
+		{
+			ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>	p1 = map.equal_range(-1);
+			if (p1.first == map.begin())
+				std::cout << "p1.first is iterator to first not-less than -1" << std::endl;
+			else
+				std::cout << "unexpected p1.first" << std::endl;
+			ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>	p2 = map.equal_range(5);
+			if (p2.first == map.begin())
+				std::cout << "p2.first is iterator to first not-less than 5" << std::endl;
+			else
+				std::cout << "unexpected p2.first" << std::endl;
+			ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>	p3 = map.equal_range(15);
+			if (p3.first == map.begin())
+				std::cout << "p3.first is iterator to first not-less than 15" << std::endl;
+			else
+				std::cout << "unexpected p3.first" << std::endl;
+		}
 	}
 	std::cout << std::endl;
 }
