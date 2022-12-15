@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 13:41:44 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/15 15:14:38 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,28 +278,20 @@ namespace ft
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
 				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_root;
+				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
 				{
+					if (!_compare(*tmp->key, k) && !_compare(k, *tmp->key))
+						return (iterator(tmp));
+					if (!_compare(*tmp->key, k))
+						temp = tmp;
 					if (_compare(k, *tmp->key))
-					{
 						tmp = tmp->left;
-						if (tmp == this->_TNULL)
-							return (iterator(this->_TNULL));
-						if (_compare(k, *temp->key))
-							temp = tmp;
-					}
-					else if (_compare(*tmp->key, k))
-					{
-						tmp = tmp->right;
-						if (tmp == this->_TNULL)
-							return (iterator(this->_TNULL));
-						if (_compare(*temp->key, k))
-							temp = tmp;
-					}
 					else
 						tmp = tmp->right;
 				}
+				if (!temp->key)
+					return (iterator(_TNULL));
 				return (iterator(temp));
 			}
 
@@ -307,28 +299,20 @@ namespace ft
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
 				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_root;
+				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
 				{
+					if (!_compare(*tmp->key, k) && !_compare(k, *tmp->key))
+						return (const_iterator(tmp));
+					if (!_compare(*tmp->key, k))
+						temp = tmp;
 					if (_compare(k, *tmp->key))
-					{
 						tmp = tmp->left;
-						if (tmp == this->_TNULL)
-							return (const_iterator(this->_TNULL));
-						if (_compare(k, *temp->key))
-							temp = tmp;
-					}
-					else if (_compare(*tmp->key, k))
-					{
-						tmp = tmp->right;
-						if (tmp == this->_TNULL)
-							return (const_iterator(this->_TNULL));
-						if (_compare(*temp->key, k))
-							temp = tmp;
-					}
 					else
 						tmp = tmp->right;
 				}
+				if (!temp->key)
+					return (const_iterator(_TNULL));
 				return (const_iterator(temp));
 			}
 			/*
@@ -345,60 +329,36 @@ namespace ft
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
 				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_root;
+				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
 				{
+					if (!_compare(*tmp->key, k) && !(!_compare(*tmp->key, k) && !_compare(k, *tmp->key)))
+						temp = tmp;
 					if (_compare(k, *tmp->key))
-					{
 						tmp = tmp->left;
-						if (tmp == this->_TNULL)
-							return (iterator(this->_TNULL));
-						if (_compare(k, *temp->key))
-							if (_compare(k, *tmp->key) || _compare(*tmp->key, k))
-								temp = tmp;
-					}
-					else if (_compare(*tmp->key, k))
-					{
-						tmp = tmp->right;
-						if (tmp == this->_TNULL)
-							return (iterator(this->_TNULL));
-						if (_compare(*temp->key, k))
-							if (_compare(k, *tmp->key) || _compare(*tmp->key, k))
-								temp = tmp;
-					}
 					else
 						tmp = tmp->right;
 				}
+				if (!temp->key)
+					return (iterator(_TNULL));
 				return (iterator(temp));
 			}
 			const_iterator								upper_bound( const key_type& key ) const
 			{
 				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
 				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_root;
+				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
 				{
+					if (!_compare(*tmp->key, k) && !(!_compare(*tmp->key, k) && !_compare(k, *tmp->key)))
+						temp = tmp;
 					if (_compare(k, *tmp->key))
-					{
 						tmp = tmp->left;
-						if (tmp == this->_TNULL)
-							return (const_iterator(this->_TNULL));
-						if (_compare(k, *temp->key))
-							if (_compare(k, *tmp->key) || _compare(*tmp->key, k))
-								temp = tmp;
-					}
-					else if (_compare(*tmp->key, k))
-					{
-						tmp = tmp->right;
-						if (tmp == this->_TNULL)
-							return (const_iterator(this->_TNULL));
-						if (_compare(*temp->key, k))
-							if (_compare(k, *tmp->key) || _compare(*tmp->key, k))
-								temp = tmp;
-					}
 					else
 						tmp = tmp->right;
 				}
+				if (!temp->key)
+					return (const_iterator(_TNULL));
 				return (const_iterator(temp));
 			}
 

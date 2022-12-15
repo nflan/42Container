@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 17:39:22 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/15 15:15:40 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,6 +236,10 @@ void	domap( void )
 			std::cout << map.lower_bound(21)->first << std::endl;
 		else
 			std::cout << "map::lower_bound element not found" << std::endl;
+		if (map.upper_bound(-3) != map.end())
+			std::cout << map.upper_bound(-3)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
 
 		std::cout << std::endl;
 	//UPPER_BOUND
@@ -246,6 +250,10 @@ void	domap( void )
 			std::cout << "map::upper_bound element not found" << std::endl;
 		if (map.upper_bound(21) != map.end())
 			std::cout << map.upper_bound(21)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
+		if (map.upper_bound(-3) != map.end())
+			std::cout << map.upper_bound(-3)->first << std::endl;
 		else
 			std::cout << "map::upper_bound element not found" << std::endl;
 	}
@@ -336,6 +344,10 @@ void	domap( void )
 			std::cout << map.lower_bound(21)->first << std::endl;
 		else
 			std::cout << "map::lower_bound element not found" << std::endl;
+		if (map.upper_bound(-3) != map.end())
+			std::cout << map.upper_bound(-3)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
 
 		std::cout << std::endl;
 	//UPPER_BOUND
@@ -346,6 +358,10 @@ void	domap( void )
 			std::cout << "map::upper_bound element not found" << std::endl;
 		if (map.upper_bound(21) != map.end())
 			std::cout << map.upper_bound(21)->first << std::endl;
+		else
+			std::cout << "map::upper_bound element not found" << std::endl;
+		if (map.upper_bound(-3) != map.end())
+			std::cout << map.upper_bound(-3)->first << std::endl;
 		else
 			std::cout << "map::upper_bound element not found" << std::endl;
 	}
