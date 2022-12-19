@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 17:23:57 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/19 17:15:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,26 +57,21 @@ namespace ft
 			map( void ): _tree(Compare(), Allocator()) {}
 			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(comp, alloc) {}
 			template< class InputIt >
-			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(NULL, comp, alloc)
-			{
-				for (; first != last; first++)
-					this->insert(*first);
-			}
-			map( const map& other ) { *this = other; }
+			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(first, last, comp, alloc) {}
+			map( const map& other ): _tree(Compare(), Allocator()) { *this = other; }
 			~map() {}
 
 			map &	operator=( const map& other )
 			{
 				if (this == &other)
 					return (*this);
-				this->insert(this->begin(), this->end());
 				this->_tree = other._tree;
 				return (*this);
 			}
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 			T&				at( const Key& key ) { return (this->_tree.at(key)); }
 			const T&		at( const Key& key ) const { return (this->_tree.at(key)); }
-			T&				operator[]( const Key& key );
+			T&				operator[]( const Key& key ) { return (this->_tree[key]); }
 
 			iterator				begin( void ) { return (this->_tree.begin()); }
 			const_iterator			begin( void ) const { return (this->_tree.begin()); }
@@ -93,15 +88,15 @@ namespace ft
 			size_type				max_size( void ) const { return (this->_tree.max_size()); }
 
 			//MODIFIERS
-			void						clear( void ) { this->tree.clear(); }
-			void						insert( const value_type& value ) { return (this->_tree.insert(value)); }
+			void						clear( void ) { this->_tree.clear(); }
+			ft::pair<iterator, bool>	insert( const value_type& value ) { return (this->_tree.insert(value)); }
 			iterator					insert( iterator pos, const value_type& value ) { return (this->_tree.insert(pos, value)); }
 			template< class InputIt >
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { this->_tree.insert(first, last); }
-			iterator					erase( iterator pos );
-			iterator					erase( iterator first, iterator last );
-			size_type					erase( const Key& key );
-			void						swap( map& other );
+			void						erase( iterator pos ) { return (this->_tree.erase(pos)); }
+			void						erase( iterator first, iterator last ) { return (this->_tree.erase(first, last)); }
+			size_type					erase( const Key& key ) { return (this->_tree.erase(key)); }
+			void						swap( map& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
 			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }

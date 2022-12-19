@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 17:41:42 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/19 19:09:47 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ namespace ft
 							al.destroy(this->key);
 							al.deallocate(this->key, 1);
 							this->key = NULL;
+							this->left = NULL;
+							this->right = NULL;
+							this->parent = NULL;
 						}
 					}
 
@@ -117,9 +120,8 @@ namespace ft
 
 			explicit rbtree( const Compare& comp, const Allocator& alloc = Allocator() ): _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
 			{
-				value_type	test;
 				_TNULL = this->_allocnode.allocate(1, 0);
-				this->_allocnode.construct(_TNULL, test);
+				this->_allocnode.construct(_TNULL, value_type());
 				this->_alloc.destroy(_TNULL->key);
 				this->_alloc.deallocate(_TNULL->key, 1);
 				_TNULL->col = 1;
@@ -127,9 +129,35 @@ namespace ft
 				_TNULL->parent = _root;
 				_root = _TNULL;
 			}
+			template< class InputIt >
+			rbtree( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _compare(comp), _alloc(alloc), _allocnode(NAllocator()), _size(0)
+			{
+				_TNULL = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(_TNULL, value_type());
+				this->_alloc.destroy(_TNULL->key);
+				this->_alloc.deallocate(_TNULL->key, 1);
+				_TNULL->col = 1;
+				_TNULL->key = NULL;
+				_TNULL->parent = _root;
+				_root = _TNULL;
+				for (; first != last; first++)
+					insert(*first);
+			}
+			rbtree( const rbtree& other ): _compare(other._compare), _alloc(other._alloc), _allocnode(other._allocnode), _size(0)
+			{
+				_TNULL = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(_TNULL, value_type());
+				this->_alloc.destroy(_TNULL->key);
+				this->_alloc.deallocate(_TNULL->key, 1);
+				_TNULL->col = 1;
+				_TNULL->key = NULL;
+				_TNULL->parent = _root;
+				_root = _TNULL;
+				*this = other;
+			}
 			~rbtree( void )
 			{
-				this->_clear(this->_root);
+				this->clear();
 				this->_allocnode.deallocate(this->_TNULL, 1);
 			}
 
@@ -138,13 +166,32 @@ namespace ft
 				if (this == &o)
 					return (*this);
 				this->clear();
+				this->_allocnode.deallocate(this->_TNULL, 1);
 				this->_allocnode = o._allocnode;
 				this->_alloc = o._alloc;
 				this->_compare = o._compare;
-				this->insert(o.begin(), o.end());
-				this->_size = o._size;
+				this->_TNULL = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(_TNULL, value_type());
+				this->_alloc.destroy(_TNULL->key);
+				this->_alloc.deallocate(_TNULL->key, 1);
+				this->_TNULL->col = 1;
+				this->_TNULL->key = NULL;
+				this->_TNULL->parent = this->_root;
+				this->_root = this->_TNULL;
+				this->_deep_cp(o._root);
 				return (*this);
 			}
+		private:
+				void	_deep_cp(nodePTR root)
+				{
+					if (root->key)
+					{
+						this->insert(*root->key);
+						this->_deep_cp(root->left);
+						this->_deep_cp(root->right);
+					}
+				}
+		public:
 			allocator_type				get_allocator() const { return (this->_alloc); }
 			Mapped_Type&				at( const Key& key )
 			{
@@ -155,25 +202,39 @@ namespace ft
 			}
 			const Mapped_Type&			at( const Key& key ) const
 			{
-				const iterator	tmp = this->find(key);
+				const_iterator	tmp = this->find(key);
 				if (tmp == this->end())
 					throw std::out_of_range("map::at");
 				return (tmp->second);
+			}
+			Mapped_Type&				operator[]( const Key& key )
+			{
+				iterator	it = this->find(key);
+				if (it != end())
+					return (it->second);
+				Mapped_Type	m;
+				value_type	n(key, m);
+				this->insert(n);
+				return (this->find(key)->second);
 			}
 
 			//ITERATORS
 			iterator				begin( void )
 			{
+				if (this->_root == this->_TNULL)
+					return (iterator(this->_TNULL));
 				nodePTR tmp = this->_root;
-				if (tmp)
+				if (tmp && tmp->key)
 					while (tmp->left->key)
 						tmp = tmp->left;
 				return (iterator(tmp));
 			}
 			const_iterator			begin( void ) const
 			{
+				if (this->_root == this->_TNULL)
+					return (const_iterator(this->_TNULL));
 				nodePTR tmp = this->_root;
-				if (tmp)
+				if (tmp && tmp->key)
 					while (tmp->left->key)
 						tmp = tmp->left;
 				return (const_iterator(tmp));
@@ -191,8 +252,8 @@ namespace ft
 			size_type				max_size( void ) const { return (this->_allocnode.max_size()); }
 
 			//MODIFIERS
-			void					clear( void );
-			void					insert( const value_type & k )
+			void					clear( void ) { this->_clear(this->_root), _size = 0; }
+			ft::pair<iterator, bool>		insert( const value_type & k )
 			{
 				nodePTR	n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, k);
@@ -208,7 +269,11 @@ namespace ft
 					else if (_compare(*tmp->key, *n->key))
 						tmp = tmp->right;
 					else
-						throw EqualException();
+					{
+						this->_allocnode.destroy(n);
+						this->_allocnode.deallocate(n, 1);
+						return (ft::make_pair(iterator(tmp), false));
+					}
 				}
 				n->parent = temp;
 				this->_size++;
@@ -221,56 +286,56 @@ namespace ft
 				if (!n->parent->key)
 				{
 					n->col = 1;
-					return ;
+					return (ft::make_pair(iterator(n), true));
 				}
 				if (!n->parent->parent->key)
-					return ;
-				this->_recolor(n);
+					return (ft::make_pair(iterator(n), true));
+				iterator	it(n);
+				this->_insertfix(n);
+				return (ft::make_pair(it, true));
 			}
 			iterator					insert( iterator pos, const value_type& value )
 			{ //VERIFIER SI PAS DECONNANT D'INSERT A LA POSITION DONNEE, SINON REPRENDRE L'INSERT BASIQUE
-				iterator ret = this->begin();
-				if (!pos.base()->parent->key)
-					insert(value);
-				else if (_compare(*pos.base()->parent->key, value) && _compare(value, *pos.base()->key))
+				nodePTR	n = this->_allocnode.allocate(1, 0);
+				this->_allocnode.construct(n, value);
+				n->left = this->_TNULL;
+				n->right = this->_TNULL;
+				nodePTR	tmp = this->_root;
+				nodePTR	temp = _TNULL;
+				if (pos.base()->parent->key && ((_compare(*pos.base()->parent->key, value) && _compare(value, *pos.base()->key)) || (_compare(value, *pos.base()->parent->key) && _compare(*pos.base()->key, value))))
+					tmp = pos.base()->parent;
+				while (tmp != this->_TNULL)
 				{
-					nodePTR	n = this->_allocnode.allocate(1, 0);
-					this->_allocnode.construct(n, value);
-					n->left = this->_TNULL;
-					n->right = this->_TNULL;
-					nodePTR	tmp = pos.base();
-					nodePTR	temp = _TNULL;
-					while (tmp != this->_TNULL)
-					{
-						temp = tmp;
-						if (_compare(*n->key, *tmp->key))
-							tmp = tmp->left;
-						else if (_compare(*tmp->key, *n->key))
-							tmp = tmp->right;
-						else
-							throw EqualException();
-					}
-					n->parent = temp;
-					this->_size++;
-					if (!temp->key)
-						this->_root = n;
-					else if (_compare(*n->key, *temp->key))
-						temp->left = n;
+					temp = tmp;
+					if (_compare(*n->key, *tmp->key))
+						tmp = tmp->left;
+					else if (_compare(*tmp->key, *n->key))
+						tmp = tmp->right;
 					else
-						temp->right = n;
-					if (!n->parent->key)
 					{
-						n->col = 1;
-						return (iterator(n));
+						this->_allocnode.destroy(n);
+						this->_allocnode.deallocate(n, 1);
+						return (iterator(tmp));
 					}
-					if (!n->parent->parent->key)
-						return (iterator(n));
-					this->_recolor(n);
-					return (pos);
 				}
+				n->parent = temp;
+				this->_size++;
+				if (!temp->key)
+					this->_root = n;
+				else if (_compare(*n->key, *temp->key))
+					temp->left = n;
 				else
-					insert(value);
-				return (ret);
+					temp->right = n;
+				if (!n->parent->key)
+				{
+					n->col = 1;
+					return (iterator(n));
+				}
+				if (!n->parent->parent->key)
+					return (iterator(n));
+				iterator	it(n);
+				this->_insertfix(n);
+				return (it);
 			}
 			template< class InputIt >
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
@@ -278,9 +343,56 @@ namespace ft
 				for (; first != last; first++)
 					this->insert(*first);
 			}
-			iterator					erase( iterator pos );
-			iterator					erase( iterator first, iterator last );
-			size_type					erase( const Key& key );
+			void						erase( iterator pos )
+			{
+				nodePTR	todel = this->_root;
+				while (todel != _TNULL)
+				{
+					if (_compare(*pos, *todel->key))
+						todel = todel->left;
+					else if (_compare(*todel->key, *pos))
+						todel = todel->right;
+					else
+						break ;
+				}
+				bool	color = todel->col;
+				nodePTR	x;
+				nodePTR	y;
+				if (todel->left == _TNULL)
+				{
+					x = todel->right;
+					this->_transplant(x, todel);
+				}
+				else if (todel->right == _TNULL)
+				{
+					x = todel->left;
+					this->_transplant(x, todel);
+				}
+				else
+				{
+					y = todel->right->left;
+					color = y->col;
+					x = y->right;
+					if (y == todel->right || y == todel->left)
+						x->parent = y;
+					else
+						this->_transplant(y, y->right);
+					this->_transplant(todel, y);
+					y->col = color;
+				}
+				delete (todel);
+				if (color)
+					_deletefix(x);
+			}
+			void						erase( iterator first, iterator last ) { (void)first, (void)last; }
+			size_type					erase( const Key& key ) { (void)key; return (0); }
+			void						swap( rbtree& other )
+			{
+				ft::swap(this->_compare, other._compare);
+				ft::swap(this->_TNULL, other._TNULL);
+				ft::swap(this->_root, other._root);
+				ft::swap(this->_size, other._size);
+			}
 
 			//LOOKUP
 			size_type		count( const key_type& key ) const
@@ -291,7 +403,7 @@ namespace ft
 			}
 			iterator		find(const key_type& key)
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
 				{
@@ -306,7 +418,7 @@ namespace ft
 			}
 			const_iterator	find(const key_type& key) const
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
 				{
@@ -323,7 +435,7 @@ namespace ft
 			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
 			iterator									lower_bound( const key_type& key )
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
@@ -343,7 +455,7 @@ namespace ft
 			}
 			const_iterator								lower_bound( const key_type& key ) const
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
@@ -363,7 +475,7 @@ namespace ft
 			}
 			iterator									upper_bound( const key_type& key )
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
@@ -381,7 +493,7 @@ namespace ft
 			}
 			const_iterator								upper_bound( const key_type& key ) const
 			{
-				ft::pair<Key, Mapped_Type>	k = ft::make_pair(key, 0);
+				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;
 				while (tmp != this->_TNULL)
@@ -431,23 +543,20 @@ namespace ft
 			void	_clear(nodePTR root)
 			{
 				bool	r = 0;
-				if (root->key)
+				if (root && root->key)
 				{
 					_clear(root->left);
 					_clear(root->right);
 					if (root == this->_root)
 						r = 1;
 					this->_allocnode.destroy(root);
-					root->left = NULL;
-					root->right = NULL;
-					root->key = NULL;
 					this->_allocnode.deallocate(root, 1);
 					root = NULL;
 					if (r)
-						root = this->_TNULL;
+						this->_root = this->_TNULL;
 				}
 			}
-			void	_recolor( nodePTR & n )
+			void	_insertfix( nodePTR & n )
 			{
 				nodePTR	u;
 				while (n->parent->col == 0)
@@ -501,6 +610,80 @@ namespace ft
 				}
 				this->_TNULL->parent = this->_root;
 				this->_root->col = 1;
+			}
+			void	_deletefix( nodePTR n )
+			{
+				nodePTR	w;
+				while (n != this->_root && n->col)
+				{
+					if (n == n->parent->left)
+					{
+						w = n->parent->right;
+						if (!w->col)
+						{
+							w->col = 1;
+							n->parent->col = 0;
+							this->_left_rotate(n->parent);
+							w = n->parent->right;
+						}
+						if (w->left->col && w->right->col)
+						{
+							w->col = 0;
+							n = n->parent;
+						}
+						else if (w->right->col)
+						{
+							w->left->col = 1;
+							w->col = 0;
+							this->_right_rotate(w);
+							w = n->parent->right;
+						}
+						w->col = n->parent->col;
+						n->parent->col = 1;
+						w->right->col = 1;
+						this->_left_rotate(n->parent);
+						this->_root = n;
+					}
+					else
+					{
+						w = n->parent->left;
+						if (!w->col)
+						{
+							w->col = 1;
+							n->parent->col = 0;
+							this->_right_rotate(n->parent);
+							w = n->parent->left;
+						}
+						if (w->left->col && w->right->col)
+						{
+							w->col = 0;
+							n = n->parent;
+						}
+						else if (w->left->col)
+						{
+							w->right->col = 1;
+							w->col = 0;
+							this->_left_rotate(w);
+							w = n->parent->left;
+						}
+						w->col = n->parent->col;
+						n->parent->col = 1;
+						w->left->col = 1;
+						this->_right_rotate(n->parent);
+						n = this->_root;
+					}
+				}
+				n->col = 1;
+			}
+			void	_transplant( nodePTR f, nodePTR s)
+			{
+				if (!f->parent->key)
+					this->_root = s;
+				else if (f == f->parent->left)
+					s->parent->left = f;
+				else
+					s->parent->right = f;
+				s->parent = f->parent;
 			}
 			void	_left_rotate( nodePTR n )
 			{

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/15 17:43:05 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/19 18:49:39 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,11 +155,15 @@ void	domap( void )
 		std::cout << std::endl;
 	}
 
+	NAMESPACE::vector<int>	v;
+	for (size_t i = 0; i < 20; i++)
+		v.push_back(i);
+	std::random_shuffle(v.begin(), v.end());
+	NAMESPACE::vector<int>	v2(v);
 	//Creation et affichage arbre binaire STD
 	{
 		std::cout << "STD PART" << std::endl << std::endl;
 		std::map<int, int>		map;
-		std::vector<int>	v;
 
 		//CAPACITY
 		std::cout << "TEST CAPACITY" << std::endl;
@@ -169,19 +173,13 @@ void	domap( void )
 		std::cout << std::endl;
 
 		//FILLING
+		std::cout << "inserting: " << std::endl;
 		for (size_t i = 0; i < 20; i++)
-			v.push_back(i);
-		std::random_shuffle(v.begin(), v.end());
-		try
 		{
-			for (size_t i = 0; i < 20; i++)
-				if (i != 12)
-					map.insert(std::make_pair(v[i], v[i]));
+			if (v[i] != 12)
+				std::cout << "v[i] = " << v[i] << " -> " << map.insert(std::make_pair(v[i], v[i])).first->first << "; ";
 		}
-		catch ( std::exception & e )
-		{
-			std::cerr << e.what() << std::endl;
-		}
+		std::cout << std::endl;
 
 		{
 			//COPY WITH ITERATORS
@@ -195,12 +193,19 @@ void	domap( void )
 			std::cout << std::endl << std::endl; 
 		}
 
+		//INSERT WITH POSITION
+		std::cout << "INSERT WITH POSITION" << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(13), std::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(13), std::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 alors que deja cree = " << (map.insert(std::make_pair(12, 12)).second ? "TRUE" : "FALSE") << std::endl;
+		std::cout << std::endl;
+
 
 		//CAPACITY
 		std::cout << "TEST CAPACITY" << std::endl;
 		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "Map size ? " << map.size() << std::endl;
-		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << "Map max::size ? " << map.max_size() << std::endl;
 		std::cout << std::endl;
 
 		//COUNT
@@ -208,20 +213,25 @@ void	domap( void )
 		std::cout << "21 is in std::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "Les iterateurs de l'arbre STD" << std::endl;
 		std::map<int, int>::iterator it = map.begin();
+		std::cout << "map.begin() -> map.end(): ";
 		for (; it != map.end(); it++)
-			std::cout << it->first << std::endl;
+			std::cout << it->first << "; ";
+		std::cout << std::endl << "map.end() -> map.begin(): ";
 		for (; it != map.begin(); it--)
 			if (it != map.end())
-				std::cout << it->first << std::endl;
+				std::cout << it->first << "; ";
+		std::cout << std::endl;
 
 		std::cout << std::endl << "Les reverse iterateurs de l'arbre STD" << std::endl;
 		std::map<int, int>::reverse_iterator rit = map.rend();
+		std::cout << "map.rend() -> map.rbegin(): ";
 		for (; rit != map.rbegin(); rit--)
 			if (rit != map.rend())
-			std::cout << rit->first << std::endl;
+				std::cout << rit->first << "; ";
+		std::cout << std::endl << "map.rbegin() -> map.rend(): ";
 		for (; rit != map.rend(); rit++)
-				std::cout << rit->first << std::endl;
-		std::cout << std::endl;
+			std::cout << rit->first << "; ";
+		std::cout << std::endl << std::endl;
 
 	//AT
 		std::cout << "Test at STD" << std::endl;
@@ -307,6 +317,17 @@ void	domap( void )
 			else
 				std::cout << "unexpected p3.first" << std::endl;
 		}
+		std::cout << std::endl;
+
+		//ERASE WITH POSITION ITERATOR
+		std::cout << "ERASE WITH POSITION ITERATOR" << std::endl;
+		std::cout << "erase position 10 -> ";
+		map.erase(map.find(10));
+		if (map.find(10) != map.end())
+			std::cout << "key 10 non erase" << std::endl;
+		else
+			std::cout << "key 10 erased" << std::endl;
+		std::cout << std::endl;
 	}
 
 	std::cout << std::endl;
@@ -314,32 +335,25 @@ void	domap( void )
 	{
 		std::cout << "FT PART" << std::endl << std::endl;
 		ft::map<int, int>		map;
-		ft::vector<int>	v;
 
 		//CAPACITY
 		std::cout << "TEST CAPACITY" << std::endl;
 		std::cout << "Is map empty ? " << (map.empty() ? "TRUE" : "FALSE") << std::endl;
 		std::cout << "Map size ? " << map.size() << std::endl;
-		std::cout << "Map max::sisze ? " << map.max_size() << std::endl;
+		std::cout << "Map max::size ? " << map.max_size() << std::endl;
 		std::cout << std::endl;
 
 		//FILLING
+		std::cout << "inserting: " << std::endl;
 		for (size_t i = 0; i < 20; i++)
-			v.push_back(i);
-		std::random_shuffle(v.begin(), v.end());
-		try
 		{
-			for (size_t i = 0; i < 20; i++)
+			if (v2[i] != 12)
 			{
-				if (i != 12)
-					map.insert(ft::make_pair(v[i], v[i]));
-//			std::cout << "--------------------------------------------" << std::endl;
+				std::cout << "v2[i] = " << v2[i] << " -> " << map.insert(ft::make_pair(v2[i], v2[i])).first->first << "; ";
 			}
+//			std::cout << "--------------------------------------------" << std::endl;
 		}
-		catch ( std::exception & e )
-		{
-			std::cerr << e.what() << std::endl;
-		}
+		std::cout << std::endl;
 		printTree(map.getTree().getRoot(), NULL, false);
 
 		{
@@ -356,7 +370,10 @@ void	domap( void )
 		
 		//INSERT WITH POSITION
 		std::cout << "INSERT WITH POSITION" << std::endl;
-		std::cout << "insert 12 a position + 12 = " << map.insert(map.find(11), ft::make_pair(v[12], v[12]))->first << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(11), ft::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(11), ft::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 alors que deja cree = " << (map.insert(ft::make_pair(12, 12)).second ? "TRUE" : "FALSE") << std::endl;
+		std::cout << std::endl;
 		printTree(map.getTree().getRoot(), NULL, false);
 
 
@@ -373,21 +390,33 @@ void	domap( void )
 		std::cout << std::endl;
 
 		std::cout << "Les iterateurs de l'arbre FT" << std::endl;
+		//INSERT WITH POSITION
+		std::cout << "INSERT WITH POSITION" << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(11), ft::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 a position 12 = " << map.insert(map.find(11), ft::make_pair(12, 12))->first << std::endl;
+		std::cout << "insert 12 alors que deja cree = " << (map.insert(ft::make_pair(12, 12)).second ? "TRUE" : "FALSE") << std::endl;
+		std::cout << std::endl;
+		printTree(map.getTree().getRoot(), NULL, false);
 		ft::map<int, int>::iterator it = map.begin();
+		std::cout << "map.begin() -> map.end(): ";
 		for (; it != map.end(); it++)
-			std::cout << it->first << std::endl;
+			std::cout << it->first << "; ";
+		std::cout << std::endl << "map.end() -> map.begin(): ";
 		for (; it != map.begin(); it--)
 			if (it != map.end())
-				std::cout << it->first << std::endl;
+				std::cout << it->first << "; ";
+		std::cout << std::endl;
 
 		std::cout << std::endl << "Les reverse iterateurs de l'arbre FT" << std::endl;
 		ft::map<int, int>::reverse_iterator rit = map.rend();
+		std::cout << "map.rend() -> map.rbegin(): ";
 		for (; rit != map.rbegin(); rit--)
 			if (rit != map.rend())
-				std::cout << rit->first << std::endl;
+				std::cout << rit->first << "; ";
+		std::cout << std::endl << "map.rbegin() -> map.rend(): ";
 		for (; rit != map.rend(); rit++)
-			std::cout << rit->first << std::endl;
-		std::cout << std::endl;
+			std::cout << rit->first << "; ";
+		std::cout << std::endl << std::endl;
 
 		//AT
 		std::cout << "Test at FT" << std::endl;
@@ -472,6 +501,18 @@ void	domap( void )
 			else
 				std::cout << "unexpected p3.first" << std::endl;
 		}
+		std::cout << std::endl;
+
+		//ERASE WITH POSITION ITERATOR
+		std::cout << "ERASE WITH POSITION ITERATOR" << std::endl;
+		std::cout << "erase position 10 -> ";
+		map.erase(map.find(10));
+		if (map.find(10) != map.end())
+			std::cout << "key 10 non erase" << std::endl;
+		else
+			std::cout << "key 10 erased" << std::endl;
+		std::cout << std::endl;
+		printTree(map.getTree().getRoot(), NULL, false);
 	}
 	std::cout << std::endl;
 }

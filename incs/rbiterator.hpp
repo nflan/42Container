@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/14 15:10:53 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/19 16:41:58 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ namespace ft
 			rbiterator &	operator=( const rbiterator & o )
 			{
 				if (this != &o)
-					this->_r = o.operator->();
+					this->_r = o._r;
 				return (*this);
 			}
 			reference	operator*( void ) const
@@ -72,6 +72,8 @@ namespace ft
 					while (this->_r->left->key)
 						this->_r = this->_r->left;
 				}
+				else if (this->_r->key && !this->_r->parent->key)
+					this->_r = this->_r->parent;
 				return (*this);
 			}
 			rbiterator	operator++( int )
