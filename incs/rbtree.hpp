@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/19 19:09:47 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/20 19:08:56 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,7 @@ namespace ft
 				return (ft::make_pair(it, true));
 			}
 			iterator					insert( iterator pos, const value_type& value )
-			{ //VERIFIER SI PAS DECONNANT D'INSERT A LA POSITION DONNEE, SINON REPRENDRE L'INSERT BASIQUE
+			{
 				nodePTR	n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, value);
 				n->left = this->_TNULL;
@@ -346,6 +346,8 @@ namespace ft
 			void						erase( iterator pos )
 			{
 				nodePTR	todel = this->_root;
+				if (pos == this->end())
+					return ;
 				while (todel != _TNULL)
 				{
 					if (_compare(*pos, *todel->key))
@@ -355,37 +357,101 @@ namespace ft
 					else
 						break ;
 				}
-				bool	color = todel->col;
+				if (todel == _TNULL)
+					return ;
 				nodePTR	x;
-				nodePTR	y;
+				nodePTR	y = todel;
+				bool	color = y->col;
+				this->_size--;
 				if (todel->left == _TNULL)
 				{
 					x = todel->right;
-					this->_transplant(x, todel);
+					this->_transplant(todel, todel->right);
 				}
 				else if (todel->right == _TNULL)
 				{
 					x = todel->left;
-					this->_transplant(x, todel);
+					this->_transplant(todel, todel->left);
 				}
 				else
 				{
-					y = todel->right->left;
+					y = this->_minimum(todel->right);
 					color = y->col;
 					x = y->right;
-					if (y == todel->right || y == todel->left)
+					if (y->parent == todel)
 						x->parent = y;
 					else
+					{
 						this->_transplant(y, y->right);
+						y->right = todel->right;
+						y->right->parent = y;
+					}
 					this->_transplant(todel, y);
+					y->left = todel->left;
+					y->left->parent = y;
 					y->col = color;
 				}
 				delete (todel);
 				if (color)
 					_deletefix(x);
 			}
-			void						erase( iterator first, iterator last ) { (void)first, (void)last; }
-			size_type					erase( const Key& key ) { (void)key; return (0); }
+			void						erase( iterator first, iterator last )
+			{
+				for (; first != last; first++)
+					this->erase(first);
+			}
+			size_type					erase( const Key& key )
+			{
+				value_type	k(key, Mapped_Type());
+				nodePTR	todel = this->_root;
+				while (todel != _TNULL)
+				{
+					if (_compare(k, *todel->key))
+						todel = todel->left;
+					else if (_compare(*todel->key, k))
+						todel = todel->right;
+					else
+						break ;
+				}
+				if (todel == _TNULL)
+					return (0);
+				nodePTR	x;
+				nodePTR	y = todel;
+				bool	color = y->col;
+				this->_size--;
+				if (todel->left == _TNULL)
+				{
+					x = todel->right;
+					this->_transplant(todel, todel->right);
+				}
+				else if (todel->right == _TNULL)
+				{
+					x = todel->left;
+					this->_transplant(todel, todel->left);
+				}
+				else
+				{
+					y = this->_minimum(todel->right);
+					color = y->col;
+					x = y->right;
+					if (y->parent == todel)
+						x->parent = y;
+					else
+					{
+						this->_transplant(y, y->right);
+						y->right = todel->right;
+						y->right->parent = y;
+					}
+					this->_transplant(todel, y);
+					y->left = todel->left;
+					y->left->parent = y;
+					y->col = color;
+				}
+				delete (todel);
+				if (color)
+					_deletefix(x);
+				return (1);
+			}
 			void						swap( rbtree& other )
 			{
 				ft::swap(this->_compare, other._compare);
@@ -638,11 +704,14 @@ namespace ft
 							this->_right_rotate(w);
 							w = n->parent->right;
 						}
-						w->col = n->parent->col;
-						n->parent->col = 1;
-						w->right->col = 1;
-						this->_left_rotate(n->parent);
-						this->_root = n;
+						else
+						{
+							w->col = n->parent->col;
+							n->parent->col = 1;
+							w->right->col = 1;
+							this->_left_rotate(n->parent);
+							n = this->_root;
+						}
 					}
 					else
 					{
@@ -666,24 +735,34 @@ namespace ft
 							this->_left_rotate(w);
 							w = n->parent->left;
 						}
-						w->col = n->parent->col;
-						n->parent->col = 1;
-						w->left->col = 1;
-						this->_right_rotate(n->parent);
-						n = this->_root;
+						else
+						{
+							w->col = n->parent->col;
+							n->parent->col = 1;
+							w->left->col = 1;
+							this->_right_rotate(n->parent);
+							n = this->_root;
+						}
 					}
 				}
 				n->col = 1;
+			}
+			nodePTR _minimum( nodePTR node )
+			{
+				while (node->left->key)
+					node = node->left;
+				return (node);
 			}
 			void	_transplant( nodePTR f, nodePTR s)
 			{
 				if (!f->parent->key)
 					this->_root = s;
 				else if (f == f->parent->left)
-					s->parent->left = f;
+					f->parent->left = s;
 				else
-					s->parent->right = f;
+					f->parent->right = s;
 				s->parent = f->parent;
+				this->_TNULL->parent = this->_root;
 			}
 			void	_left_rotate( nodePTR n )
 			{

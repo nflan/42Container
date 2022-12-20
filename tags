@@ -359,6 +359,7 @@ _initNullNode	incs/rbtree.hpp	/^			void	_initNullNode( nodePTR nod, nodePTR pare
 _insertfix	incs/rbtree.hpp	/^			void	_insertfix( nodePTR & n )$/;"	f	class:ft::rbtree	typeref:typename:void
 _left_rotate	incs/rbtree.hpp	/^			void	_left_rotate( nodePTR n )$/;"	f	class:ft::rbtree	typeref:typename:void
 _map	containers_test/srcs/map/comp.cpp	/^typedef TESTED_NAMESPACE::map<T1, T2> _map;$/;"	t	typeref:typename:TESTED_NAMESPACE::map<T1,T2>	file:
+_minimum	incs/rbtree.hpp	/^			nodePTR _minimum( nodePTR node )$/;"	f	class:ft::rbtree	typeref:typename:nodePTR
 _multimap	containers_test/srcs/multimap/comp.cpp	/^typedef TESTED_NAMESPACE::multimap<T1, T2> _multimap;$/;"	t	typeref:typename:TESTED_NAMESPACE::multimap<T1,T2>	file:
 _multiset	containers_test/srcs/multiset/comp.cpp	/^typedef TESTED_NAMESPACE::multiset<T1> _multiset;$/;"	t	typeref:typename:TESTED_NAMESPACE::multiset<T1>	file:
 _new_capacity	incs/vector.hpp	/^			size_type		_new_capacity(size_type count)$/;"	f	class:ft::vector	typeref:typename:size_type
@@ -376,6 +377,7 @@ _size	incs/rbtree.hpp	/^			size_type	_size;$/;"	m	class:ft::rbtree	typeref:typen
 _size	incs/vector.hpp	/^			size_type		_size;$/;"	m	class:ft::vector	typeref:typename:size_type
 _tab	incs/vector.hpp	/^			pointer			_tab;$/;"	m	class:ft::vector	typeref:typename:pointer
 _time	bench/main.cpp	/^		struct timeval _time;$/;"	m	class:Clock	typeref:struct:timeval	file:
+_transplant	incs/rbtree.hpp	/^			void	_transplant( nodePTR f, nodePTR s)$/;"	f	class:ft::rbtree	typeref:typename:void
 _tree	incs/map.hpp	/^			rbtree	_tree;$/;"	m	class:ft::map	typeref:typename:rbtree
 _verbose	containers_test/srcs/base.hpp	/^		bool		_verbose;$/;"	m	class:foo	typeref:typename:bool
 abc	termine_moi/tests/tests/vector/max_size.cpp	/^struct abc {$/;"	s	file:
@@ -551,8 +553,8 @@ equal_range	incs/rbtree.hpp	/^			ft::pair<iterator, iterator>				equal_range( co
 erase	incs/map.hpp	/^			size_type					erase( const Key& key ) { return (this->_tree.erase(key)); }$/;"	f	class:ft::map	typeref:typename:size_type
 erase	incs/map.hpp	/^			void						erase( iterator first, iterator last ) { return (this->_tree.erase(first, last)); }$/;"	f	class:ft::map	typeref:typename:void
 erase	incs/map.hpp	/^			void						erase( iterator pos ) { return (this->_tree.erase(pos)); }$/;"	f	class:ft::map	typeref:typename:void
-erase	incs/rbtree.hpp	/^			size_type					erase( const Key& key ) { (void)key; return (0); }$/;"	f	class:ft::rbtree	typeref:typename:size_type
-erase	incs/rbtree.hpp	/^			void						erase( iterator first, iterator last ) { (void)first, (void)last; }$/;"	f	class:ft::rbtree	typeref:typename:void
+erase	incs/rbtree.hpp	/^			size_type					erase( const Key& key )$/;"	f	class:ft::rbtree	typeref:typename:size_type
+erase	incs/rbtree.hpp	/^			void						erase( iterator first, iterator last )$/;"	f	class:ft::rbtree	typeref:typename:void
 erase	incs/rbtree.hpp	/^			void						erase( iterator pos )$/;"	f	class:ft::rbtree	typeref:typename:void
 erase	incs/vector.hpp	/^			iterator				erase( iterator first, iterator last )$/;"	f	class:ft::vector	typeref:typename:iterator
 erase	incs/vector.hpp	/^			iterator				erase( iterator pos )$/;"	f	class:ft::vector	typeref:typename:iterator

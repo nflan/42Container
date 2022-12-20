@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/19 18:49:39 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/20 18:09:38 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -511,8 +511,17 @@ void	domap( void )
 			std::cout << "key 10 non erase" << std::endl;
 		else
 			std::cout << "key 10 erased" << std::endl;
-		std::cout << std::endl;
 		printTree(map.getTree().getRoot(), NULL, false);
+		std::cout << std::endl << "--------------------------------" << std::endl << std::endl;
+		map.erase(--map.end());
+		printTree(map.getTree().getRoot(), NULL, false);
+		std::cout << std::endl << "--------------------------------" << std::endl << std::endl;
+		map.erase(++map.begin());
+		printTree(map.getTree().getRoot(), NULL, false);
+		std::cout << std::endl << "--------------------------------" << std::endl << std::endl;
+		map.erase(map.begin());
+		printTree(map.getTree().getRoot(), NULL, false);
+		std::cout << std::endl;
 	}
 	std::cout << std::endl;
 }
