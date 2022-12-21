@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/20 19:08:56 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/21 17:53:35 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,7 +359,198 @@ namespace ft
 				}
 				if (todel == _TNULL)
 					return ;
-				nodePTR	x;
+				if (todel == _root && _size == 1)
+					_eraseSoloRoot();
+				else if (todel->left != _TNULL && todel->right != _TNULL)
+				{
+					std::cout << std::endl << "ERASE ESSOR" << std::endl << std::endl;
+					_eraseEssor(todel);
+				}
+				else if (todel->left == _TNULL && todel->right != _TNULL)
+				{
+					std::cout << std::endl << "CASE 3" << std::endl << std::endl;
+					_transplant(todel, todel->right);
+				}
+				else if (todel->right == _TNULL && todel->left != _TNULL)
+				{
+					std::cout << std::endl << "CASE 4" << std::endl << std::endl;
+					_transplant(todel, todel->left);
+				}
+				else if (!todel->col && todel->right == _TNULL && todel->left == _TNULL)
+				{
+					std::cout << std::endl << "CASE 5" << std::endl << std::endl;
+				}
+				else if (todel->col && todel->right == _TNULL && todel->left != _TNULL)
+				{
+					std::cout << std::endl << "CASE 6" << std::endl << std::endl;
+					todel->left->col = 1;
+					_transplant(todel, todel->left);
+				}
+				else if (todel->col && todel->left == _TNULL && todel->right != _TNULL)
+				{
+					std::cout << std::endl << "CASE 7" << std::endl << std::endl;
+					todel->right->col = 1;
+					_transplant(todel, todel->right);
+				}
+				else if (todel != this->_root && todel->col && todel->right == _TNULL && todel->left == _TNULL)
+				{
+					std::cout << std::endl << "CASE ERASE SO HAAAARD" << std::endl << std::endl;
+					_eraseHard(todel);
+					return;
+				}
+		//		delete (todel);
+			}
+		private:
+			void					_eraseHard( nodePTR todel )
+			{
+				nodePTR	p = todel->parent;
+				bool	dir = _whichChild(todel);
+				bool	first = 1;
+				nodePTR	s;
+				nodePTR	c;
+				nodePTR	d;
+
+				if (!dir)
+					p->left = _TNULL;
+				else if (dir)
+					p->right = _TNULL;
+				
+				while (p == todel->parent)
+				{
+					if (!first)
+						dir = _whichChild(todel);
+					first = 0;
+					if (todel == todel->parent->left)
+					{
+						s = todel->right;
+						d = s->right;
+						c = s->left;
+					}
+					else if (todel == todel->parent->right)
+					{
+						s = todel->left;
+						d = s->left;
+						c = s->right;
+					}
+					if (!s->col)
+						goto Case_D3;
+					if (d != _TNULL && !d->col)
+						goto Case_D6;
+					if (c != _TNULL && !c->col)
+						goto Case_D5;
+					if (!p->col)
+						goto Case_D4;
+					goto Case_D1;
+					Case_D1: // (P+C+S+D black):
+						s->col = 0;
+						todel = p; // new current node (maybe the root)
+					// iterate 1 black level
+					//   (= 1 tree level) higher
+				}
+				goto Case_D2;
+				Case_D2:
+					return;
+				Case_D3: // S red && P+C+D black:
+					if (todel == todel->parent->left)
+						_left_rotate(p); // P may be the root
+					else if (todel == todel->parent->right)
+						_right_rotate(p);
+					p->col = 0;
+					s->col = 1;
+					s = c; // != NIL
+					// now: P red && S black
+					d = _child(s, 1 - dir); // distant nephew
+					if (d != _TNULL && !d->col)
+						goto Case_D6;      // D red && S black
+					c = _child(s, dir); // close   nephew
+					if (c != _TNULL && !c->col)
+						goto Case_D5;      // C red && S+D black
+				// Otherwise C+D considered black.
+				// fall through to Case_D4
+				Case_D4:
+					s->col = 0;
+					p->col = 1;
+					return;
+				Case_D5:
+					if (dir)
+						_left_rotate(s);
+					else if (!dir)
+						_right_rotate(s);
+					s->col = 0;
+					c->col = 1;
+					d = s;
+					s = c;
+				Case_D6:
+					if (dir)
+						_right_rotate(p);
+					else if (!dir)
+						_left_rotate(p);
+					s->col = p->col;
+					p->col = 1;
+					d->col = 1;
+					return ;
+			}
+			bool					_whichChild( nodePTR n ) //LEFT == 0 RIGHT == 1
+			{
+				if (n == n->parent->left)
+					return (0);
+				return (1);
+			}
+			nodePTR					_child( nodePTR n, bool lr )
+			{
+				nodePTR	y = n->left;
+				if (lr)
+					y = n->right;
+				return (y);
+			}
+			nodePTR					_sibling( nodePTR n )
+			{
+				nodePTR	y;
+				if (n == n->parent->left)
+					y = n->parent->right;
+				else
+					y = n->parent->left;
+				return (y);
+			}
+			void					_eraseEssor( nodePTR todel )
+			{
+				nodePTR	y = _successor(todel);
+				std::cout << "y->key->first = " << y->key->first << std::endl;
+				if (y->parent != todel)
+				{
+					std::cout << "Normalement je rentre ici car plus d'un parent" << std::endl;
+					_transplant(y, y->right);
+					std::cout << "y->key->first = " << y->key->first << std::endl;
+					y->right = todel->right;
+					y->right->parent = y;
+				}
+				_transplant(todel, y);
+				std::cout << "todel->key->first = " << todel->key->first << " et y->key->first = " << y->key->first << std::endl;
+				y->left = todel->left;
+				y->left->parent = y;
+			}
+			nodePTR					_predecessor( nodePTR n )
+			{
+				n = n->left;
+				while (n->right->key)
+					n = n->right;
+				return (n);
+			}
+			nodePTR					_successor( nodePTR n )
+			{
+				n = n->right;
+				while (n->left->key)
+					n = n->left;
+				return (n);
+			}
+			void					_eraseSoloRoot( void )
+			{
+				delete (_root);
+				_root = _TNULL;
+				_size--;
+			}
+		public:
+/*				nodePTR	x;
 				nodePTR	y = todel;
 				bool	color = y->col;
 				this->_size--;
@@ -394,7 +585,7 @@ namespace ft
 				delete (todel);
 				if (color)
 					_deletefix(x);
-			}
+			}*/
 			void						erase( iterator first, iterator last )
 			{
 				for (; first != last; first++)
@@ -469,6 +660,8 @@ namespace ft
 			}
 			iterator		find(const key_type& key)
 			{
+				if (!_size)
+					return (iterator(_TNULL));
 				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
@@ -484,6 +677,8 @@ namespace ft
 			}
 			const_iterator	find(const key_type& key) const
 			{
+				if (!_size)
+					return (const_iterator(_TNULL));
 				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
@@ -753,15 +948,15 @@ namespace ft
 					node = node->left;
 				return (node);
 			}
-			void	_transplant( nodePTR f, nodePTR s)
+			void	_transplant( nodePTR u, nodePTR v)
 			{
-				if (!f->parent->key)
-					this->_root = s;
-				else if (f == f->parent->left)
-					f->parent->left = s;
+				if (u->parent == _TNULL)
+					this->_root = v;
+				else if (u == u->parent->left)
+					u->parent->left = v;
 				else
-					f->parent->right = s;
-				s->parent = f->parent;
+					u->parent->right = v;
+				v->parent = u->parent;
 				this->_TNULL->parent = this->_root;
 			}
 			void	_left_rotate( nodePTR n )

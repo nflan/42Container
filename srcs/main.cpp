@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/20 18:09:38 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/21 17:30:24 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void printTree(ft::rbtree<int, int, ft::pair<const int, int>, ft::map<int, int>:
 
 int	main( int ac, char **av )
 {
-	srand (time(NULL));
+//	srand (time(NULL));
 	int	i = 0;
 	if (ac != 2)
 		return (std::cout << "nb args invalid" << std::endl, 1);
