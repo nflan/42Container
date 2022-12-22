@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/22 18:33:31 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:52:14 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ namespace ft
 			typedef typename Allocator::pointer														pointer;
 			typedef typename Allocator::const_pointer												const_pointer;
 			typedef typename ft::rbtree<key_type, key_type, value_type, value_compare, Allocator>	rbtree;
-			typedef typename ft::rbiterator<value_type, rbtree>										iterator;
+	//		typedef typename ft::rbiterator<value_type, rbtree>										iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>								const_iterator;
-			//typedef const_iterator					iterator;
+			typedef const_iterator					iterator;
 			typedef typename ft::reverse_iterator<iterator>											reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 
@@ -58,9 +58,7 @@ namespace ft
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 
 			//ITERATORS
-			iterator				begin( void ) { return (this->_tree.begin()); }
 			const_iterator			begin( void ) const { return (this->_tree.begin()); }
-			iterator				end( void ) { return (this->_tree.end()); }
 			const_iterator			end( void ) const { return (this->_tree.end()); }
 			reverse_iterator		rbegin( void ) { return (this->_tree.rbegin()); }
 			const_reverse_iterator	rbegin( void ) const { return (this->_tree.rbegin()); }
@@ -85,13 +83,9 @@ namespace ft
 
 			//LOOKUP
 			size_type									count( const Key& key ) const { return (this->_tree.count_set(key)); }
-			iterator									find( const Key& key ) { return (this->_tree.find_set(key)); }
 			const_iterator								find( const Key& key ) const { return (this->_tree.find_set(key)); }
-			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (this->_tree.equal_range_set(key)); }
 			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range_set(key)); }
-			iterator									lower_bound( const key_type& key ) { return (this->_tree.lower_bound_set(key)); }
 			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound_set(key)); }
-			iterator									upper_bound( const key_type& key ) { return (this->_tree.upper_bound_set(key)); }
 			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound_set(key)); }
 
 			//OBSERVERS

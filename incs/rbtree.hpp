@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/22 17:55:56 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:50:21 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,7 @@ namespace ft
 				this->_insertfix(n);
 				return (ft::make_pair(it, true));
 			}
-			iterator					insert( iterator pos, const value_type& value )
+			iterator					insert( const_iterator pos, const value_type& value )
 			{
 				nodePTR	n = this->_allocnode.allocate(1, 0);
 				this->_allocnode.construct(n, value);
@@ -636,22 +636,6 @@ namespace ft
 					return (0);
 				return (1);
 			}
-			iterator		find_set(const key_type& key)
-			{
-				if (!_size)
-					return (iterator(_TNULL));
-				nodePTR	tmp = this->_root;
-				while (tmp != _TNULL)
-				{
-					if (_compare(key, *tmp->key))
-						tmp = tmp->left;
-					else if (_compare(*tmp->key, key))
-						tmp = tmp->right;
-					else
-						return (iterator(tmp));
-				}
-				return (iterator(_TNULL));
-			}
 			const_iterator	find_set(const key_type& key) const
 			{
 				if (!_size)
@@ -668,27 +652,7 @@ namespace ft
 				}
 				return (const_iterator(_TNULL));
 			}
-			ft::pair<iterator, iterator>				equal_range_set( const key_type& key ) { return (ft::make_pair(lower_bound_set(key), upper_bound_set(key))); }
 			ft::pair<const_iterator, const_iterator>	equal_range_set( const key_type& key ) const { return (ft::make_pair(lower_bound_set(key), upper_bound_set(key))); }
-			iterator									lower_bound_set( const key_type& key )
-			{
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, key) && !_compare(key, *tmp->key))
-						return (iterator(tmp));
-					if (!_compare(*tmp->key, key))
-						temp = tmp;
-					if (_compare(key, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (iterator(_TNULL));
-				return (iterator(temp));
-			}
 			const_iterator								lower_bound_set( const key_type& key ) const
 			{
 				nodePTR	tmp = this->_root;
@@ -707,23 +671,6 @@ namespace ft
 				if (!temp->key)
 					return (const_iterator(_TNULL));
 				return (const_iterator(temp));
-			}
-			iterator									upper_bound_set( const key_type& key )
-			{
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, key) && !(!_compare(*tmp->key, key) && !_compare(key, *tmp->key)))
-						temp = tmp;
-					if (_compare(key, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (iterator(_TNULL));
-				return (iterator(temp));
 			}
 			const_iterator								upper_bound_set( const key_type& key ) const
 			{
