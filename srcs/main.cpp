@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/21 17:30:24 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:29:18 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "../incs/tools.hpp"
 #include "../incs/rbtree.hpp"
 #include "../incs/map.hpp"
+#include "../incs/set.hpp"
 #include <sstream>
 #include <iostream>
 #include <stack>
@@ -389,7 +390,6 @@ void	domap( void )
 		std::cout << "21 is in ft::map: " << (map.count(21) ? "TRUE" : "FALSE") << std::endl;
 		std::cout << std::endl;
 
-		std::cout << "Les iterateurs de l'arbre FT" << std::endl;
 		//INSERT WITH POSITION
 		std::cout << "INSERT WITH POSITION" << std::endl;
 		std::cout << "insert 12 a position 12 = " << map.insert(map.find(11), ft::make_pair(12, 12))->first << std::endl;
@@ -397,6 +397,8 @@ void	domap( void )
 		std::cout << "insert 12 alors que deja cree = " << (map.insert(ft::make_pair(12, 12)).second ? "TRUE" : "FALSE") << std::endl;
 		std::cout << std::endl;
 		printTree(map.getTree().getRoot(), NULL, false);
+
+		std::cout << "Les iterateurs de l'arbre FT" << std::endl;
 		ft::map<int, int>::iterator it = map.begin();
 		std::cout << "map.begin() -> map.end(): ";
 		for (; it != map.end(); it++)
@@ -524,6 +526,37 @@ void	domap( void )
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
+
+	std::cout << "------------------- YOUHOU --------------------" << std::endl;
+
+	ft::map<int, int>		mapp;
+
+	mapp.insert(mapp.end(), ft::make_pair(64, 64));
+	mapp.insert(mapp.end(), ft::make_pair(100, 100));
+	printTree(mapp.getTree().getRoot(), NULL, false);
+	std::cout << "begin() = " << mapp.begin()->first << std::endl;
+	std::cout << "++begin() = " << (++mapp.begin())->first << std::endl;
+	std::cout << "--end() = " << (--mapp.end())->first << std::endl;
+
+
+	//SET
+	{
+		ft::set<int>	st;
+
+		ft::set<int>::const_iterator ite = st.begin();
+	//	*ite = 42; // < -- error
+		std::cout << std::endl;
+	}
+	{
+		ft::set<int> const st;
+		ft::set<int>::iterator it = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+
+		(void)it;
+		std::set<int> const std;
+		std::set<int>::iterator itt = std.begin();
+
+		(void)itt;
+	}
 }
 
 //VECTOR

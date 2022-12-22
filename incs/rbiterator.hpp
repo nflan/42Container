@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 12:00:52 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/20 15:26:25 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/22 18:30:28 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ namespace ft
 				if (!this->_r->key)
 				{
 					this->_r = this->_r->parent;
-					if (this->_r->right->key)
+					if (this->_r->right)
 						while (this->_r->right->key)
 							this->_r = this->_r->right;
 					return (*this);

@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/19 17:15:53 by nflan            ###   ########.fr       */
+/*   Updated: 2022/12/22 17:50:48 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,13 @@ namespace ft
 				return (*this);
 			}
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
+
+			//ELEMENT ACCESS
 			T&				at( const Key& key ) { return (this->_tree.at(key)); }
 			const T&		at( const Key& key ) const { return (this->_tree.at(key)); }
 			T&				operator[]( const Key& key ) { return (this->_tree[key]); }
 
+			//ITERATORS
 			iterator				begin( void ) { return (this->_tree.begin()); }
 			const_iterator			begin( void ) const { return (this->_tree.begin()); }
 			iterator				end( void ) { return (this->_tree.end()); }
@@ -99,15 +102,15 @@ namespace ft
 			void						swap( map& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
-			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }
-			iterator									find( const Key& key ) { return (this->_tree.find(key)); }
-			const_iterator								find( const Key& key ) const { return (this->_tree.find(key)); }
-			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (this->_tree.equal_range(key)); }
-			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range(key)); }
-			iterator									lower_bound( const key_type& key ) { return (this->_tree.lower_bound(key)); }
-			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound(key)); }
-			iterator									upper_bound( const key_type& key ) { return (this->_tree.upper_bound(key)); }
-			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound(key)); }
+			size_type									count( const Key& key ) const { return (this->_tree.count_map(key)); }
+			iterator									find( const Key& key ) { return (this->_tree.find_map(key)); }
+			const_iterator								find( const Key& key ) const { return (this->_tree.find_map(key)); }
+			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (this->_tree.equal_range_map(key)); }
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range_map(key)); }
+			iterator									lower_bound( const key_type& key ) { return (this->_tree.lower_bound_map(key)); }
+			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound_map(key)); }
+			iterator									upper_bound( const key_type& key ) { return (this->_tree.upper_bound_map(key)); }
+			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound_map(key)); }
 
 			//OBSERVERS
 			key_compare		key_comp() const { return (Compare()); }
