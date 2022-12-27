@@ -64,7 +64,7 @@ void showTrunks(Trunk *p)
 	std::cout << p->str;
 }
 
-void printnode(ft::rbtree<int, int, ft::pair<int,int> >::nodePTR & tmp)
+void printnode(ft::rbtree<ft::pair<int,int> >::nodePTR & tmp)
 {
 	if (!tmp)
 	{
@@ -78,7 +78,7 @@ void printnode(ft::rbtree<int, int, ft::pair<int,int> >::nodePTR & tmp)
 	std::cout << "Key : " << tmp->key << " | Val : " << tmp->key << "\033[0m" << std::endl;
 }
 
-void printTree(ft::rbtree<int, int, ft::pair<const int, int>, ft::map<int, int>::value_compare >::nodePTR root, Trunk *prev, bool isLeft)
+void printTree(ft::rbtree<ft::pair<const int, int>, ft::map<int, int>::value_compare >::nodePTR root, Trunk *prev, bool isLeft)
 {
 	if (root->key == NULL)
 		return ;

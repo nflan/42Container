@@ -38,7 +38,7 @@ namespace ft
 			typedef typename Allocator::const_reference							const_reference;
 			typedef typename Allocator::pointer									pointer;
 			typedef typename Allocator::const_pointer							const_pointer;
-			typedef typename ft::rbtree<key_type, mapped_type, value_type, value_compare, Allocator>	rbtree;
+			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
 			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
 			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
@@ -71,9 +71,9 @@ namespace ft
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 
 			//ELEMENT ACCESS
-			T&				at( const Key& key ) { return (this->_tree.at(key)); }
-			const T&		at( const Key& key ) const { return (this->_tree.at(key)); }
-			T&				operator[]( const Key& key ) { return (this->_tree[key]); }
+			T&				at( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
+			const T&		at( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
+			T&				operator[]( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree[k]).second); }
 
 			//ITERATORS
 			iterator				begin( void ) { return (this->_tree.begin()); }
@@ -98,19 +98,19 @@ namespace ft
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { this->_tree.insert(first, last); }
 			void						erase( iterator pos ) { return (this->_tree.erase(pos)); }
 			void						erase( iterator first, iterator last ) { return (this->_tree.erase(first, last)); }
-			size_type					erase( const Key& key ) { return (this->_tree.erase(key)); }
+			size_type					erase( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.erase(k)); }
 			void						swap( map& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
-			size_type									count( const Key& key ) const { return (this->_tree.count_map(key)); }
-			iterator									find( const Key& key ) { return (this->_tree.find_map(key)); }
-			const_iterator								find( const Key& key ) const { return (this->_tree.find_map(key)); }
-			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (this->_tree.equal_range_map(key)); }
-			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range_map(key)); }
-			iterator									lower_bound( const key_type& key ) { return (this->_tree.lower_bound_map(key)); }
-			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound_map(key)); }
-			iterator									upper_bound( const key_type& key ) { return (this->_tree.upper_bound_map(key)); }
-			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound_map(key)); }
+			size_type									count( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.count(k)); }
+			iterator									find( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
+			const_iterator								find( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
+			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.equal_range(k)); }
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.equal_range(k)); }
+			iterator									lower_bound( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.lower_bound(k)); }
+			const_iterator								lower_bound( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.lower_bound(k)); }
+			iterator									upper_bound( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.upper_bound(k)); }
+			const_iterator								upper_bound( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.upper_bound(k)); }
 
 			//OBSERVERS
 			key_compare		key_comp() const { return (Compare()); }

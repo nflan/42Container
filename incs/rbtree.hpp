@@ -23,13 +23,13 @@
 
 namespace ft
 {
-	template < class Key, class Mapped_Type, class Value_Type, class Compare = std::less<Key>, class Allocator = std::allocator<Value_Type> >
+	template < class Value_Type, class Compare = std::less<Value_Type>, class Allocator = std::allocator<Value_Type> >
 	class rbtree
 	{
 		public:
 			struct	node;
 
-			typedef Key													key_type;
+			typedef Value_Type											key_type;
 			typedef Value_Type											value_type;
 			typedef std::size_t											size_type;
 			typedef std::ptrdiff_t										difference_type;
@@ -193,29 +193,27 @@ namespace ft
 			allocator_type				get_allocator() const { return (this->_alloc); }
 
 			//ELEMENT ACCESS
-			Mapped_Type&				at( const Key& key )
+			value_type&				at( const key_type& key )
 			{
-				iterator	tmp = this->find_map(key);
+				iterator	tmp = this->find(key);
 				if (tmp == this->end())
 					throw std::out_of_range("map::at");
-				return (tmp->second);
+				return (*tmp);
 			}
-			const Mapped_Type&			at( const Key& key ) const
+			const value_type&			at( const key_type& key ) const
 			{
-				const_iterator	tmp = this->find_map(key);
+				const_iterator	tmp = this->find(key);
 				if (tmp == this->end())
 					throw std::out_of_range("map::at");
-				return (tmp->second);
+				return (*tmp);
 			}
-			Mapped_Type&				operator[]( const Key& key )
+			value_type&				operator[]( const key_type& key )
 			{
-				iterator	it = this->find_map(key);
+				iterator	it = this->find(key);
 				if (it != end())
-					return (it->second);
-				Mapped_Type	m;
-				value_type	n(key, m);
-				this->insert(n);
-				return (this->find_map(key)->second);
+					return (*it);
+				this->insert(key);
+				return (*this->find(key));
 			}
 
 			//ITERATORS
@@ -400,58 +398,7 @@ namespace ft
 					this->erase(it);
 				}
 			}
-			size_type					erase( const Key& key )
-			{
-				value_type	k(key, Mapped_Type());
-				nodePTR	todel = this->_root;
-				while (todel != _TNULL)
-				{
-					if (_compare(k, *todel->key))
-						todel = todel->left;
-					else if (_compare(*todel->key, k))
-						todel = todel->right;
-					else
-						break ;
-				}
-				if (todel == _TNULL)
-					return (0);
-				if (todel == _root && _size == 1)
-				{
-					_eraseSoloRoot();
-					return (1);
-				}
-				else if (todel->left != _TNULL && todel->right != _TNULL)
-					_eraseEssor(todel);
-				else if (todel->left == _TNULL && todel->right != _TNULL)
-					_transplant(todel, todel->right);
-				else if (todel->right == _TNULL && todel->left != _TNULL)
-					_transplant(todel, todel->left);
-				else if (!todel->col && todel->right == _TNULL && todel->left == _TNULL)
-				{
-					if (_whichChild(todel))
-						todel->parent->right = _TNULL;
-					else
-						todel->parent->left = _TNULL;
-				}
-				else if (todel->col && todel->right == _TNULL && todel->left != _TNULL)
-				{
-					todel->left->col = 1;
-					_transplant(todel, todel->left);
-				}
-				else if (todel->col && todel->left == _TNULL && todel->right != _TNULL)
-				{
-					todel->right->col = 1;
-					_transplant(todel, todel->right);
-				}
-				else if (todel != this->_root && todel->col && todel->right == _TNULL && todel->left == _TNULL)
-					_eraseHard(todel);
-				delete (todel);
-				_size--;
-				this->_root->parent = this->_TNULL;
-				this->_TNULL->parent = this->_root;
-				return (1);
-			}
-			size_type					erase_set( const Key& key )
+			size_type					erase( const key_type& key )
 			{
 				nodePTR	todel = this->_root;
 				while (todel != _TNULL)
@@ -509,134 +456,29 @@ namespace ft
 				ft::swap(this->_size, other._size);
 			}
 
-			//LOOKUP MAP
-			size_type		count_map( const key_type& key ) const
+			size_type		count( const key_type& key ) const
 			{
-				if (this->find_map(key) == this->end())
+				if (this->find(key) == this->end())
 					return (0);
 				return (1);
 			}
-			iterator		find_map(const key_type& key)
+			iterator		find(const key_type& key)
 			{
 				if (!_size)
 					return (iterator(_TNULL));
-				value_type	k(key, Mapped_Type());
 				nodePTR	tmp = this->_root;
 				while (tmp != _TNULL)
 				{
-					if (_compare(k, *tmp->key))
+					if (_compare(key, *tmp->key))
 						tmp = tmp->left;
-					else if (_compare(*tmp->key, k))
+					else if (_compare(*tmp->key, key))
 						tmp = tmp->right;
 					else
 						return (iterator(tmp));
 				}
 				return (iterator(_TNULL));
 			}
-			const_iterator	find_map(const key_type& key) const
-			{
-				if (!_size)
-					return (const_iterator(_TNULL));
-				value_type	k(key, Mapped_Type());
-				nodePTR	tmp = this->_root;
-				while (tmp != _TNULL)
-				{
-					if (_compare(k, *tmp->key))
-						tmp = tmp->left;
-					else if (_compare(*tmp->key, k))
-						tmp = tmp->right;
-					else
-						return (const_iterator(tmp));
-				}
-				return (const_iterator(_TNULL));
-			}
-			ft::pair<iterator, iterator>				equal_range_map( const key_type& key ) { return (ft::make_pair(lower_bound_map(key), upper_bound_map(key))); }
-			ft::pair<const_iterator, const_iterator>	equal_range_map( const key_type& key ) const { return (ft::make_pair(lower_bound_map(key), upper_bound_map(key))); }
-			iterator									lower_bound_map( const key_type& key )
-			{
-				value_type	k(key, Mapped_Type());
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, k) && !_compare(k, *tmp->key))
-						return (iterator(tmp));
-					if (!_compare(*tmp->key, k))
-						temp = tmp;
-					if (_compare(k, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (iterator(_TNULL));
-				return (iterator(temp));
-			}
-			const_iterator								lower_bound_map( const key_type& key ) const
-			{
-				value_type	k(key, Mapped_Type());
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, k) && !_compare(k, *tmp->key))
-						return (const_iterator(tmp));
-					if (!_compare(*tmp->key, k))
-						temp = tmp;
-					if (_compare(k, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (const_iterator(_TNULL));
-				return (const_iterator(temp));
-			}
-			iterator									upper_bound_map( const key_type& key )
-			{
-				value_type	k(key, Mapped_Type());
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, k) && !(!_compare(*tmp->key, k) && !_compare(k, *tmp->key)))
-						temp = tmp;
-					if (_compare(k, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (iterator(_TNULL));
-				return (iterator(temp));
-			}
-			const_iterator								upper_bound_map( const key_type& key ) const
-			{
-				value_type	k(key, Mapped_Type());
-				nodePTR	tmp = this->_root;
-				nodePTR	temp = this->_TNULL;
-				while (tmp != this->_TNULL)
-				{
-					if (!_compare(*tmp->key, k) && !(!_compare(*tmp->key, k) && !_compare(k, *tmp->key)))
-						temp = tmp;
-					if (_compare(k, *tmp->key))
-						tmp = tmp->left;
-					else
-						tmp = tmp->right;
-				}
-				if (!temp->key)
-					return (const_iterator(_TNULL));
-				return (const_iterator(temp));
-			}
-
-			//LOOKUP SET
-			size_type		count_set( const key_type& key ) const
-			{
-				if (this->find_set(key) == this->end())
-					return (0);
-				return (1);
-			}
-			const_iterator	find_set(const key_type& key) const
+			const_iterator	find(const key_type& key) const
 			{
 				if (!_size)
 					return (const_iterator(_TNULL));
@@ -652,8 +494,28 @@ namespace ft
 				}
 				return (const_iterator(_TNULL));
 			}
-			ft::pair<const_iterator, const_iterator>	equal_range_set( const key_type& key ) const { return (ft::make_pair(lower_bound_set(key), upper_bound_set(key))); }
-			const_iterator								lower_bound_set( const key_type& key ) const
+			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (ft::make_pair(lower_bound(key), upper_bound(key))); }
+			iterator									lower_bound( const key_type& key )
+			{
+				nodePTR	tmp = this->_root;
+				nodePTR	temp = this->_TNULL;
+				while (tmp != this->_TNULL)
+				{
+					if (!_compare(*tmp->key, key) && !_compare(key, *tmp->key))
+						return (iterator(tmp));
+					if (!_compare(*tmp->key, key))
+						temp = tmp;
+					if (_compare(key, *tmp->key))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				if (!temp->key)
+					return (iterator(_TNULL));
+				return (iterator(temp));
+			}
+			const_iterator								lower_bound( const key_type& key ) const
 			{
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;
@@ -672,7 +534,24 @@ namespace ft
 					return (const_iterator(_TNULL));
 				return (const_iterator(temp));
 			}
-			const_iterator								upper_bound_set( const key_type& key ) const
+			iterator									upper_bound( const key_type& key )
+			{
+				nodePTR	tmp = this->_root;
+				nodePTR	temp = this->_TNULL;
+				while (tmp != this->_TNULL)
+				{
+					if (!_compare(*tmp->key, key) && !(!_compare(*tmp->key, key) && !_compare(key, *tmp->key)))
+						temp = tmp;
+					if (_compare(key, *tmp->key))
+						tmp = tmp->left;
+					else
+						tmp = tmp->right;
+				}
+				if (!temp->key)
+					return (iterator(_TNULL));
+				return (iterator(temp));
+			}
+			const_iterator								upper_bound( const key_type& key ) const
 			{
 				nodePTR	tmp = this->_root;
 				nodePTR	temp = this->_TNULL;

@@ -34,10 +34,10 @@ namespace ft
 			typedef const value_type &																const_reference;
 			typedef typename Allocator::pointer														pointer;
 			typedef typename Allocator::const_pointer												const_pointer;
-			typedef typename ft::rbtree<key_type, key_type, value_type, value_compare, Allocator>	rbtree;
+			typedef typename ft::rbtree<value_type, value_compare, Allocator>						rbtree;
 	//		typedef typename ft::rbiterator<value_type, rbtree>										iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>								const_iterator;
-			typedef const_iterator					iterator;
+			typedef const_iterator																	iterator;
 			typedef typename ft::reverse_iterator<iterator>											reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 
@@ -78,15 +78,15 @@ namespace ft
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { this->_tree.insert(first, last); }
 			void						erase( iterator pos ) { return (this->_tree.erase(pos)); }
 			void						erase( iterator first, iterator last ) { return (this->_tree.erase(first, last)); }
-			size_type					erase( const Key& key ) { return (this->_tree.erase_set(key)); }
+			size_type					erase( const Key& key ) { return (this->_tree.erase(key)); }
 			void						swap( set& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
-			size_type									count( const Key& key ) const { return (this->_tree.count_set(key)); }
-			const_iterator								find( const Key& key ) const { return (this->_tree.find_set(key)); }
-			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range_set(key)); }
-			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound_set(key)); }
-			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound_set(key)); }
+			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }
+			const_iterator								find( const Key& key ) const { return (this->_tree.find(key)); }
+			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range(key)); }
+			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound(key)); }
+			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound(key)); }
 
 			//OBSERVERS
 			key_compare		key_comp() const { return (Compare()); }
