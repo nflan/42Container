@@ -34,9 +34,11 @@ namespace ft
 			typedef const value_type &																const_reference;
 			typedef typename Allocator::pointer														pointer;
 			typedef typename Allocator::const_pointer												const_pointer;
+		private:
 			typedef typename ft::rbtree<value_type, value_compare, Allocator>						rbtree;
-	//		typedef typename ft::rbiterator<value_type, rbtree>										iterator;
+		public:
 			typedef typename ft::rbiterator<const value_type, rbtree>								const_iterator;
+	//		typedef typename ft::rbiterator<value_type, rbtree>								iterator;
 			typedef const_iterator																	iterator;
 			typedef typename ft::reverse_iterator<iterator>											reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>									const_reverse_iterator;
@@ -76,8 +78,8 @@ namespace ft
 			iterator					insert( iterator pos, const value_type& value ) { return (this->_tree.insert(pos, value)); }
 			template< class InputIt >
 			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ) { this->_tree.insert(first, last); }
-			void						erase( iterator pos ) { return (this->_tree.erase(pos)); }
-			void						erase( iterator first, iterator last ) { return (this->_tree.erase(first, last)); }
+			void						erase( iterator pos ) { this->_tree.erase(pos); }
+			void						erase( iterator first, iterator last ) { this->_tree.erase(first, last); }
 			size_type					erase( const Key& key ) { return (this->_tree.erase(key)); }
 			void						swap( set& other ) { this->_tree.swap(other._tree); }
 

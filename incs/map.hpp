@@ -38,7 +38,9 @@ namespace ft
 			typedef typename Allocator::const_reference							const_reference;
 			typedef typename Allocator::pointer									pointer;
 			typedef typename Allocator::const_pointer							const_pointer;
+		private:
 			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
+		public:
 			typedef typename ft::rbiterator<value_type, rbtree>					iterator;
 			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
 			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;

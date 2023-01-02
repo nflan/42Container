@@ -332,12 +332,12 @@ namespace ft
 				return (it);
 			}
 			template< class InputIt >
-			void						insert( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
+			void						insert( InputIt first, InputIt last )
 			{
 				for (; first != last; first++)
 					this->insert(*first);
 			}
-			void						erase( iterator pos )
+			void						erase( const_iterator pos )
 			{
 				nodePTR	todel = this->_root;
 				if (pos == this->end())
@@ -388,10 +388,10 @@ namespace ft
 				this->_TNULL->parent = this->_root;
 				_size--;
 			}
-			void						erase( iterator first, iterator last )
+			void						erase( const_iterator first, const_iterator last )
 			{
-				iterator	it;
-				for (; first != last;)
+				const_iterator	it;
+				while (first != last)
 				{
 					it = first;
 					first++;

@@ -24,16 +24,16 @@ namespace ft
 	class rbiterator
 	{
 		public:
-			typedef Key								value_type;
-			typedef Key								iterator_type;
-			typedef value_type&						reference;
-			typedef const value_type&				const_reference;
-			typedef value_type*						pointer;
-			typedef const value_type*				const_pointer;
-			typedef std::bidirectional_iterator_tag	iterator_category;
-			typedef typename std::ptrdiff_t			difference_type;
-			typedef typename rbtree::node			node;
-			typedef typename rbtree::node *			nodePTR;
+			typedef Key									value_type;
+			typedef Key									iterator_type;
+			typedef value_type&							reference;
+			typedef const value_type&					const_reference;
+			typedef value_type*							pointer;
+			typedef const value_type*					const_pointer;
+			typedef std::bidirectional_iterator_tag		iterator_category;
+			typedef typename rbtree::difference_type	difference_type;
+			typedef typename rbtree::node				node;
+			typedef typename rbtree::nodePTR			nodePTR;
 
 			rbiterator( void ): _r() {}
 			explicit rbiterator(const nodePTR & other_r): _r(other_r) {}
@@ -41,17 +41,15 @@ namespace ft
 			rbiterator(const rbiterator<P, typename enable_if<is_same<P, typename rbtree::pointer>::value, rbtree>::type> & other) : _r(other.base()) {}
 			~rbiterator() {}
 
-			operator rbiterator<const value_type, rbtree>( void ) { return (rbiterator<const value_type, rbtree>(this->_r)); }
+			operator rbiterator<const value_type, rbtree>( void ) const { return (rbiterator<const value_type, rbtree>(this->_r)); }
 			rbiterator &	operator=( const rbiterator & o )
 			{
 				if (this != &o)
 					this->_r = o._r;
 				return (*this);
 			}
-			reference	operator*( void ) const
-			{
-				return (*this->_r->key);
-			}
+			reference	operator*( void ) const { return (*this->_r->key); }
+			pointer		operator->( void ) { return (&(*(this->_r->key))); }
 			pointer		operator->( void ) const { return (&(*(this->_r->key))); }
 			
 			rbiterator &	operator++( void )
@@ -113,7 +111,7 @@ namespace ft
 				--(*this);
 				return (tmp);
 			}
-			nodePTR	base( void ) const { return (this->_r); }
+			const nodePTR	base( void ) const { return (this->_r); }
 
 		private:
 			nodePTR	_r;
