@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/22 18:43:10 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/03 12:45:12 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,9 @@ namespace ft
 					Compare	comp;
 			};
 
-			map( void ): _tree(Compare(), Allocator()) {}
-			explicit map( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(comp, alloc) {}
+			explicit map( const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type() ): _tree(comp, alloc) {}
 			template< class InputIt >
-			map( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(first, last, comp, alloc) {}
+			map( InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(first, last, comp, alloc) {}
 			map( const map& other ): _tree(Compare(), Allocator()) { *this = other; }
 			~map() {}
 
@@ -73,9 +72,9 @@ namespace ft
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 
 			//ELEMENT ACCESS
-			T&				at( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
-			const T&		at( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
-			T&				operator[]( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree[k]).second); }
+			mapped_type&		at( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
+			const mapped_type&	at( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree.at(k)).second); }
+			mapped_type&		operator[]( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return ((this->_tree[k]).second); }
 
 			//ITERATORS
 			iterator				begin( void ) { return (this->_tree.begin()); }
@@ -104,9 +103,9 @@ namespace ft
 			void						swap( map& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
-			size_type									count( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.count(k)); }
-			iterator									find( const Key& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
-			const_iterator								find( const Key& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
+			size_type									count( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.count(k)); }
+			iterator									find( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
+			const_iterator								find( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.find(k)); }
 			ft::pair<iterator, iterator>				equal_range( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.equal_range(k)); }
 			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { const value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.equal_range(k)); }
 			iterator									lower_bound( const key_type& key ) { value_type k = ft::make_pair(key, mapped_type()); return (this->_tree.lower_bound(k)); }

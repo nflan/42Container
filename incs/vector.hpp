@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/13 17:28:42 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/03 19:28:34 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,13 @@ namespace ft
 			typedef typename Allocator::const_reference				const_reference;
 			typedef typename Allocator::pointer						pointer;
 			typedef typename Allocator::const_pointer				const_pointer;
-			typedef typename ft::viterator<T>						iterator;
-			typedef typename ft::viterator<const T>					const_iterator;
+			typedef typename ft::viterator<value_type>						iterator;
+			typedef typename ft::viterator<const value_type>					const_iterator;
 			typedef typename ft::reverse_iterator<iterator>			reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			
-			//Default
-			vector( void ): _tab(NULL), _capacity(0), _size(0), _alloc(Allocator()) {}
-			//Copy
-			vector( const vector & v ): _tab(NULL), _capacity(0), _size(0), _alloc(v._alloc) { *this = v; }
-			explicit vector( const Allocator & alloc ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc) {}
-			explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): _tab(NULL), _capacity(count), _size(count), _alloc(alloc)
+			explicit vector( const allocator_type & alloc = allocator_type() ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc) {}
+			explicit vector( size_type count, const value_type& value = value_type(), const allocator_type& alloc = allocator_type()): _tab(NULL), _capacity(count), _size(count), _alloc(alloc)
 			{
 				if (count > alloc.max_size())
 					throw std::length_error("vector: max_size overflow");
@@ -56,9 +52,8 @@ namespace ft
 						this->_alloc.construct(&this->_tab[i], value);
 				}
 			}
-			//Range
 			template< class InputIt >
-			vector( InputIt first, InputIt last, const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc)
+			vector( InputIt first, InputIt last, const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tab(NULL), _capacity(0), _size(0), _alloc(alloc)
 			{
 				difference_type	dif = this->_distance(first, last);
 				if (dif == -1)
@@ -79,8 +74,8 @@ namespace ft
 					for (size_type i = 0; first != last; i++, first++)
 						this->_alloc.construct(this->_tab + i, *first);
 				}
-					
 			}
+			vector( const vector & v ): _tab(NULL), _capacity(0), _size(0), _alloc(v._alloc) { *this = v; }
 			~vector( void )
 			{
 				this->clear();
@@ -108,13 +103,23 @@ namespace ft
 						this->_alloc.construct(&this->_tab[i], other._tab[i]);
 				return (*this);
 			}
-			void					assign( size_type count, const T& value )
+			void					assign( size_type count, const value_type& value )
 			{
-				this->clear();
-				if (count == 0)
+				size_type	i = 0;
+				if (count <= 0)
 					return ;
 				if (count > this->max_size())
 					throw std::length_error("vector: max_size overflow");
+				if (count < this->capacity())
+				{
+					for (; i < this->size(); i++)
+						this->_tab[i] = value;
+					for (; i < count; i++)
+						this->_alloc.construct(&this->_tab[i], value);
+					this->_size = count;
+					return ;
+				}
+				this->clear();
 				this->_size = count;
 				if (this->capacity() < count)
 				{
@@ -123,13 +128,14 @@ namespace ft
 					this->_tab = this->_alloc.allocate(count, 0);
 					this->_capacity = count;
 				}
-				for (size_type i = 0; i < count; i++)
+				for (; i < count; i++)
 					this->_alloc.construct(&this->_tab[i], value);
 			}
 			template< class InputIt >
 			void					assign( InputIt first, InputIt last, typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL )
 			{
 				difference_type	dif = this->_distance(first, last);
+				size_type	i = 0;
 				this->clear();
 				if (dif == -1 || !dif)
 				{
@@ -142,6 +148,15 @@ namespace ft
 				}
 				else if (static_cast<size_type>(dif) > this->max_size())
 					throw std::length_error("vector: max_size overflow");
+				if (static_cast<size_type>(dif) < this->capacity())
+				{
+					for (; i < this->size() && first != last; i++, first++)
+						this->_tab[i] = *first;
+					for (; i < static_cast<size_type>(dif) && first != last; i++, first++)
+						this->_alloc.construct(&this->_tab[i], *first);
+					this->_size = static_cast<size_type>(dif);
+					return ;
+				}
 				if (this->capacity() < static_cast<size_type>(dif))
 				{
 					if (this->_tab)
@@ -149,7 +164,7 @@ namespace ft
 					this->_tab = this->_alloc.allocate(dif, 0);
 					this->_capacity = static_cast<size_type>(dif);
 				}
-				for (size_type i = 0; first != last; i++, first++)
+				for (; first != last; i++, first++)
 					this->_alloc.construct(&this->_tab[i], *first);
 				this->_size = static_cast<size_type>(dif);
 			}
@@ -172,7 +187,7 @@ namespace ft
 			bool					empty( void ) const { return (this->_size ? false : true ); }
 			void					reserve (size_type n)
 			{ 
-				if (n <= this->_capacity)
+				if (n <= this->capacity())
 					return ;
 				else if (n > this->max_size())
 					throw std::length_error("Impossible to reserve this size");
@@ -193,20 +208,20 @@ namespace ft
 			}
 
 			//ELEMENT ACCESS
-			reference				at(size_type pos)
+			reference				at( size_type pos )
 			{
 				if (pos >= 0 && pos < this->size())
 					return (this->_tab[pos]);
 				throw std::out_of_range("Out of range");
 			}
-			const_reference			at(size_type pos) const
+			const_reference			at( size_type pos ) const
 			{
 				if (pos >= 0 && pos < this->size())
 					return (this->_tab[pos]);
 				throw std::out_of_range("Out of range");
 			}
-			reference				operator[](size_type pos) { return (this->_tab[pos]); }
-			const_reference			operator[](size_type pos) const { return (this->_tab[pos]); }
+			reference				operator[]( size_type pos ) { return (this->_tab[pos]); }
+			const_reference			operator[]( size_type pos ) const { return (this->_tab[pos]); }
 			reference				front( void ) { return (*this->_tab); }
 			const_reference			front( void ) const { return (*this->_tab); }
 			reference				back( void )
@@ -231,9 +246,8 @@ namespace ft
 					this->_alloc.destroy(&this->_tab[this->size()]);
 				this->_size = 0;
 			}
-			iterator insert( iterator pos, const T& value )
+			iterator insert( iterator pos, const value_type& value )
 			{
-				//vector temporaire par iterator pour conserver les valeurs apres ce qu'on veut ajouter puis pop back, construct value, push back tmp??
 				iterator	ite = this->end();
 				if (!this->capacity() || pos == this->end())
 				{
@@ -279,7 +293,7 @@ namespace ft
 				this->_size++;
 				return (ite);
 			}
-			iterator insert( iterator pos, size_type count, const T& value )
+			iterator insert( iterator pos, size_type count, const value_type& value )
 			{
 				if (count < 0 || pos < this->begin() || count > this->_alloc.max_size())
 					throw std::length_error("vector::_M_fill_insert");
@@ -420,7 +434,7 @@ namespace ft
 					this->pop_back();
 				return (first);
 			}
-			void					push_back(const value_type& val)
+			void					push_back( const value_type& val )
 			{
 				if (this->_size == this->_capacity)
 				{
@@ -455,7 +469,7 @@ namespace ft
 					this->_alloc.destroy(&this->_tab[this->size()]);
 				}
 			}
-			void					resize( size_type count, T value = T() )
+			void					resize( size_type count, value_type value = value_type() )
 			{
 				if (count > this->max_size())
 					throw std::length_error("vector::_M_fill_insert");
@@ -588,23 +602,5 @@ namespace ft
 	bool	operator>( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) && lhs != rhs); }
 	template< class T, class Allocator >
 	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) || lhs == rhs); }
-
-	template<class Os, typename T>
-	Os& operator<<(Os& os, const ft::vector<T> & co) 
-	{
-		os << "{ ";
-		for (size_t i = 0; i < co.size(); i++)
-			os << co.at(i) << "; ";
-		return os << " } ";
-	}
 }
-	template<class Os, typename T>
-	Os& operator<<(Os& os, const std::vector<T> & co) 
-	{
-		os << "{ ";
-		for (size_t i = 0; i < co.size(); i++)
-			os << co.at(i) << "; ";
-		return os << " } ";
-	}
-
 #endif

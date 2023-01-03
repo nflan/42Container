@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/22 18:50:21 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/03 15:32:08 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -582,14 +582,6 @@ namespace ft
 			Allocator	_alloc;
 			NAllocator	_allocnode;
 			size_type	_size;
-
-			//EXCEPTION
-			class EqualException: public std::exception {
-				virtual const char* what() const throw()
-				{
-					return ("Error: same index in two different nodes!");
-				}
-			};
 
 			void	_deep_cp(nodePTR root)
 			{

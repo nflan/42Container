@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:19:00 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/19 17:16:44 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/03 13:00:23 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,14 +162,6 @@ namespace ft
 		pt	tmp = l;
 		l = r;
 		r = tmp;
-	}
-	
-	//Surcharge operator <<
-	template<class Os, typename T, typename U>
-	Os& operator<<(Os& os, const ft::pair<T, U>* co) 
-	{
-		os << "{ " << co->first << "; " << co->second;
-		return os << " } ";
 	}
 }
 

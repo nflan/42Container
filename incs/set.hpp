@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2022/12/22 18:52:14 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/03 12:39:53 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,28 @@ namespace ft
 	struct set
 	{
 		public:
-			typedef Key																				key_type;
-			typedef Key																				value_type;
-			typedef std::size_t																		size_type;
-			typedef std::ptrdiff_t																	difference_type;
-			typedef Compare																			key_compare;
-			typedef Compare																			value_compare;
-			typedef Allocator																		allocator_type;
-			typedef value_type &																	reference;
-			typedef const value_type &																const_reference;
-			typedef typename Allocator::pointer														pointer;
-			typedef typename Allocator::const_pointer												const_pointer;
+			typedef Key															key_type;
+			typedef Key															value_type;
+			typedef std::size_t													size_type;
+			typedef std::ptrdiff_t												difference_type;
+			typedef Compare														key_compare;
+			typedef Compare														value_compare;
+			typedef Allocator													allocator_type;
+			typedef typename Allocator::reference								reference;
+			typedef typename Allocator::const_reference							const_reference;
+			typedef typename Allocator::pointer									pointer;
+			typedef typename Allocator::const_pointer							const_pointer;
 		private:
-			typedef typename ft::rbtree<value_type, value_compare, Allocator>						rbtree;
+			typedef typename ft::rbtree<value_type, value_compare, Allocator>	rbtree;
 		public:
-			typedef typename ft::rbiterator<const value_type, rbtree>								const_iterator;
-	//		typedef typename ft::rbiterator<value_type, rbtree>								iterator;
-			typedef const_iterator																	iterator;
-			typedef typename ft::reverse_iterator<iterator>											reverse_iterator;
-			typedef typename ft::reverse_iterator<const_iterator>									const_reverse_iterator;
+			typedef typename ft::rbiterator<const value_type, rbtree>			const_iterator;
+			typedef const_iterator												iterator;
+			typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
-			set( void ): _tree(Compare(), Allocator()) {}
-			explicit set( const Compare& comp, const Allocator& alloc = Allocator() ): _tree(comp, alloc) {}
+			explicit set( const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type() ): _tree(comp, alloc) {}
 			template< class InputIt >
-			set( InputIt first, InputIt last, const Compare& comp = Compare(), const Allocator& alloc = Allocator(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(first, last, comp, alloc) {}
+			set( InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(), typename enable_if<!is_integral<InputIt>::value,InputIt>::type* = NULL ): _tree(first, last, comp, alloc) {}
 			set( const set& other ): _tree(Compare(), Allocator()) { *this = other; }
 			~set() {}
 
@@ -60,7 +58,9 @@ namespace ft
 			allocator_type	get_allocator( void ) const { return (this->_tree.get_allocator()); }
 
 			//ITERATORS
+			iterator				begin( void ) { return (this->_tree.begin()); }
 			const_iterator			begin( void ) const { return (this->_tree.begin()); }
+			iterator				end( void ) { return (this->_tree.end()); }
 			const_iterator			end( void ) const { return (this->_tree.end()); }
 			reverse_iterator		rbegin( void ) { return (this->_tree.rbegin()); }
 			const_reverse_iterator	rbegin( void ) const { return (this->_tree.rbegin()); }
@@ -84,14 +84,14 @@ namespace ft
 			void						swap( set& other ) { this->_tree.swap(other._tree); }
 
 			//LOOKUP
-			size_type									count( const Key& key ) const { return (this->_tree.count(key)); }
-			const_iterator								find( const Key& key ) const { return (this->_tree.find(key)); }
-			ft::pair<const_iterator, const_iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range(key)); }
-			const_iterator								lower_bound( const key_type& key ) const { return (this->_tree.lower_bound(key)); }
-			const_iterator								upper_bound( const key_type& key ) const { return (this->_tree.upper_bound(key)); }
+			size_type						count( const Key& key ) const { return (this->_tree.count(key)); }
+			iterator						find( const Key& key ) const { return (this->_tree.find(key)); }
+			ft::pair<iterator, iterator>	equal_range( const key_type& key ) const { return (this->_tree.equal_range(key)); }
+			iterator						lower_bound( const key_type& key ) const { return (this->_tree.lower_bound(key)); }
+			iterator						upper_bound( const key_type& key ) const { return (this->_tree.upper_bound(key)); }
 
 			//OBSERVERS
-			key_compare		key_comp() const { return (Compare()); }
+			key_compare		key_comp() const { return (key_compare()); }
 			value_compare	value_comp() const { return (this->_tree.value_comp()); }
 
 		private:
