@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/03 18:45:01 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/04 19:29:03 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -618,11 +618,9 @@ void	dovector( color c )
 
 		std::cout << c.b << "c2.insert(c2.end() - 3, 10, -2): " << c.rt << c2 << std::endl;
 		c2.insert(c2.end() - 3, static_cast<size_t>(10), static_cast<const int>(-2));
-		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
 		std::cout << c.b <<  "c2.insert(c2.end(), 2, 100): " << c.rt << c2 << std::endl;
 		c2.insert(c2.end(), static_cast<size_t>(100), static_cast<const int>(100));
-		std::cout << "c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
 		std::cout << std::endl << c.m << "Creation d'un vector avec iterators begin + 2 / end - 2 de c2" << c.rt << std::endl;
 		NAMESPACE::vector<int> c3(c2.begin() + 2, c2.end() - 2);
