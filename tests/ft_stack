@@ -1,0 +1,60 @@
+[33m-----------SWAP------------[39m
+
+[35mCreation stack<int> c1[39m
+
+c1 Empty: true
+[34mpush(5) on c1[39m
+[34mpush(2) on c1[39m
+c1 size = 2
+
+[35mcreation de c2 par copie de c1[39m
+
+c2 Empty: false
+[34mpush(5) on c2[39m
+c2 size = 3
+[34mpop() on c2[39m
+c2 size = 2
+[34mpop() on c2[39m
+c2 size = 1
+c1 size = 2
+[34mpop() on c2[39m
+c2 size = 0
+[34mpop() on c2[39m
+c1 top() = 2
+
+[35mOperators avec c1 == c2[39m
+c1 size = 2
+c2 size = 2
+
+c1 == c2 ?	true
+c1 != c2 ?	false
+c1 < c2 ?	false
+c1 <= c2 ?	true
+c1 > c2 ?	false
+c1 >= c2 ?	true
+
+[35mOperators avec c1 > c2[39m
+[34mpop on c2[39m
+c1 size = 2
+c2 size = 1
+
+c1 == c2 ?	false
+c1 != c2 ?	true
+c1 < c2 ?	false
+c1 <= c2 ?	false
+c1 > c2 ?	true
+c1 >= c2 ?	true
+
+[35mOperators avec c1 < c2[39m
+[34mpush(2) on c2[39m
+[34mpush(2) on c2[39m
+c1 size = 2
+c2 size = 3
+
+c1 == c2 ?	false
+c1 != c2 ?	true
+c1 < c2 ?	true
+c1 <= c2 ?	true
+c1 > c2 ?	false
+c1 >= c2 ?	false
+

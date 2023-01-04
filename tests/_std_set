@@ -1,0 +1,72 @@
+[33m-----------SET------------[39m
+
+[32mTEST CAPACITY[39m
+Is set empty ? TRUE
+Set size ? 0
+Set max::sisze ? 230584300921369395
+
+[32mTEST INSERT[39m
+v[i] = 0 -> 0; v[i] = 19 -> 19; v[i] = 11 -> 11; v[i] = 13 -> 13; v[i] = 5 -> 5; v[i] = 7 -> 7; v[i] = 18 -> 18; v[i] = 2 -> 2; v[i] = 8 -> 8; v[i] = 10 -> 10; v[i] = 1 -> 1; v[i] = 9 -> 9; v[i] = 4 -> 4; v[i] = 6 -> 6; v[i] = 15 -> 15; v[i] = 17 -> 17; v[i] = 14 -> 14; v[i] = 16 -> 16; v[i] = 3 -> 3; 
+[32mTEST COPY WITH ITERATORS[39m
+set2 size ? 19
+set content : 0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 13; 14; 15; 16; 17; 18; 19; 
+
+[32mTEST INSERT WITH POSITION[39m
+insert 12 a position 12 = 12
+insert 12 a position 12 = 12
+insert 12 alors que deja cree = FALSE
+
+[32mTEST CAPACITY[39m
+Is set empty ? FALSE
+set size ? 20
+set max::size ? 230584300921369395
+
+[32mTEST COUNT[39m
+15 is in set: TRUE
+21 is in set: FALSE
+
+[35mLes iterateurs de l'arbre[39m
+set.begin() -> set.end(): 0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19; 
+set.end() -> set.begin(): 19; 18; 17; 16; 15; 14; 13; 12; 11; 10; 9; 8; 7; 6; 5; 4; 3; 2; 1; 
+
+[35mLes reverse iterateurs de l'arbre[39m
+set.rend() -> set.rbegin(): 0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 
+set.rbegin() -> set.rend(): 19; 18; 17; 16; 15; 14; 13; 12; 11; 10; 9; 8; 7; 6; 5; 4; 3; 2; 1; 0; 
+
+[32mTEST FIND[39m
+3
+set::find element not found
+
+[32mTEST VALUE_COMPARE[39m
+Fonction value_comp() 3;3 > 2;2
+[32mTEST KEY_COMPARE[39m
+Fonction key_comp() 2 < 3
+
+[32mTEST LOWER_BOUND[39m
+10
+set::lower_bound element not found
+0
+
+[32mTEST UPPER BOUND[39m
+11
+set::upper_bound element not found
+0
+
+[32mTEST EQUAL RANGE[39m
+p1.first is iterator to first not-less than -1
+unexpected p2.first
+unexpected p3.first
+
+[32mTEST ERASE WITH POSITION ITERATOR[39m
+erase position 10 -> key 10 erased
+
+
+==192052== 
+==192052== HEAP SUMMARY:
+==192052==     in use at exit: 0 bytes in 0 blocks
+==192052==   total heap usage: 48 allocs, 48 frees, 82,788 bytes allocated
+==192052== 
+==192052== All heap blocks were freed -- no leaks are possible
+==192052== 
+==192052== For lists of detected and suppressed errors, rerun with: -s
+==192052== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
