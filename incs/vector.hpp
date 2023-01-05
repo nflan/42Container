@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/05 10:41:34 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 12:49:44 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,20 +294,17 @@ namespace ft
 				size_type	i = 0;
 				if (this->size() + count <= this->capacity())
 				{
-					for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
-					{}
-					size_type	front = this->size() - 1 + count;
-					size_type	backward = this->size() - 1;
-					size_type	c = count;
-					for (; c > 0 && front > 0 && backward > 0; c--, front--, backward--)
-						this->_alloc.construct(&this->_tab[front], this->_tab[backward]);
-					for (size_type again = c; again > 0; again--)
-						this->push_back(value);
-					for (backward = this->size(); backward > i && backward - count > 0; backward--)
-						this->_tab[backward] = this->_tab[backward - count];
-					this->_size += count - c;
-					for (; count > 0; i++, count--)
-						this->_tab[i] = value;
+					iterator	ite = this->end() - 1;
+					size_type	j = 0;
+					for (; ite >= pos && ite + count >= this->end(); ite--)
+						this->_alloc.construct(&*ite + count, *ite);
+					for (; ite >= pos; ite--)
+						*(ite + count) = *ite;
+					for (; pos + j < this->end() && j < count; j++)
+						*(pos + j) = value;
+					for (; j < count; j++)
+						this->_alloc.construct(&*pos + j, value);
+					this->_size += count;
 					return (pos);
 				}
 				tab = this->_alloc.allocate(this->size() + count, 0);
@@ -380,8 +377,6 @@ namespace ft
 				size_type	tmp = this->_new_capacity(count);
 				if (tmp <= this->capacity())
 				{
-					for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
-					{}
 					iterator	ite = this->end() - 1;
 					size_type	j = 0;
 					for (; ite >= pos && ite + count >= this->end(); ite--)
