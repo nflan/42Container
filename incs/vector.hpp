@@ -6,17 +6,14 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 12:18:36 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/04 19:18:03 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 10:41:34 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
-#include <memory>
-#include <iostream>
-#include <vector>
+
 #include <iterator>
-#include <stdexcept>
 #include "tools.hpp"
 #include "viterator.hpp"
 #include "iterator.hpp"
@@ -107,7 +104,7 @@ namespace ft
 			{
 				size_type	i = 0;
 				if (count > this->max_size())
-					throw std::length_error("vector: max_size overflow");
+					throw std::length_error("vector:assign");
 				if (count < this->capacity())
 				{
 					for (; i < this->size() && i < count; i++)
@@ -147,7 +144,7 @@ namespace ft
 					return ;
 				}
 				else if (static_cast<size_type>(dif) > this->max_size())
-					throw std::length_error("vector: max_size overflow");
+					throw std::length_error("vector:assign");
 				if (static_cast<size_type>(dif) < this->capacity())
 				{
 					for (; i < this->size() && first != last; i++, first++)
@@ -255,7 +252,7 @@ namespace ft
 				else if (this->size() == this->capacity())
 				{
 					if (this->capacity() * 2 > this->max_size())
-						throw std::length_error("vector: max_size overflow");
+						throw std::length_error("vector::_M_fill_insert");
 					pointer	tab = this->_alloc.allocate(this->capacity() * 2, 0);
 					for (; it != pos; it++, i++)
 					{
@@ -313,22 +310,19 @@ namespace ft
 						this->_tab[i] = value;
 					return (pos);
 				}
-				else
+				tab = this->_alloc.allocate(this->size() + count, 0);
+				for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
 				{
-					tab = this->_alloc.allocate(this->size() + count, 0);
-					for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
-					{
-						this->_alloc.construct(&tab[i], this->_tab[i]);
-						this->_alloc.destroy(&this->_tab[i]);
-					}
-					size_type	previ = i;
-					for (size_type c = count; c > 0; c--, i++)
-						this->_alloc.construct(&tab[i], value);
-					for (; previ < this->size(); previ++, i++)
-					{
-						this->_alloc.construct(&tab[i], this->_tab[previ]);
-						this->_alloc.destroy(&this->_tab[previ]);
-					}
+					this->_alloc.construct(&tab[i], this->_tab[i]);
+					this->_alloc.destroy(&this->_tab[i]);
+				}
+				size_type	previ = i;
+				for (size_type c = count; c > 0; c--, i++)
+					this->_alloc.construct(&tab[i], value);
+				for (; previ < this->size(); previ++, i++)
+				{
+					this->_alloc.construct(&tab[i], this->_tab[previ]);
+					this->_alloc.destroy(&this->_tab[previ]);
 				}
 				if (this->capacity())
 					this->_alloc.deallocate(this->_tab, this->capacity());
@@ -401,41 +395,27 @@ namespace ft
 					this->_size += count;
 					return (pos);
 				}
-				else if (tmp > this->capacity())
+				pointer	tab = this->_alloc.allocate(tmp, 0);
+				size_type	temp = this->size();
+				for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
 				{
-					pointer	tab = this->_alloc.allocate(tmp, 0);
-					size_type	temp = this->size();
-					for (iterator it = this->begin(); it != pos && it != this->end(); it++, i++)
-					{
-						this->_alloc.construct(&tab[i], this->_tab[i]);
-						this->_alloc.destroy(&this->_tab[i]);
-					}
-					iterator ret(tab + i);
-					for (; first != last; first++, i++)
-						this->_alloc.construct(&tab[i], *first);
-					for (; pos != this->end(); pos++, i++)
-					{
-						this->_alloc.construct(&tab[i], *pos);
-						this->_alloc.destroy(&*pos);
-					}
-					if (this->capacity())
-						this->_alloc.deallocate(this->data(), this->capacity());
-					this->_capacity = tmp;
-					this->_tab = tab;
-					this->_size = temp + d;
-					return (ret);
+					this->_alloc.construct(&tab[i], this->_tab[i]);
+					this->_alloc.destroy(&this->_tab[i]);
 				}
-				iterator	it = pos;
-				for (; it != this->end() && i < static_cast<size_type>(d); it++, i++)
+				iterator ret(tab + i);
+				for (; first != last; first++, i++)
+					this->_alloc.construct(&tab[i], *first);
+				for (; pos != this->end(); pos++, i++)
 				{
-					this->_alloc.construct(&this->_tab[this->size() + i], *it);
-					this->_alloc.destroy(&*it);
+					this->_alloc.construct(&tab[i], *pos);
+					this->_alloc.destroy(&*pos);
 				}
-				it = pos;
-				for (; first != last; first++, it++)
-					this->_alloc.construct(&*it, *first);
-				this->_size += i;
-				return (pos);
+				if (this->capacity())
+					this->_alloc.deallocate(this->data(), this->capacity());
+				this->_capacity = tmp;
+				this->_tab = tab;
+				this->_size = temp + d;
+				return (ret);
 			}
 			iterator				erase( iterator pos )
 			{
@@ -637,4 +617,5 @@ namespace ft
 	template< class T, class Allocator >
 	bool	operator>=( const vector< T, Allocator >& lhs, const vector< T, Allocator >& rhs )	{ return (!(ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end())) || lhs == rhs); }
 }
+
 #endif

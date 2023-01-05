@@ -6,16 +6,14 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/03 15:32:08 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 11:08:00 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBTREE_HPP
 #define RBTREE_HPP
 
-#include <set>
-#include <map>
-#include <iostream>
+#include <iterator>
 #include "tools.hpp"
 #include "rbiterator.hpp"
 #include "iterator.hpp"

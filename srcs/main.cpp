@@ -6,7 +6,7 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 14:32:18 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/04 19:29:03 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 12:05:45 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@
 #include "../incs/map.hpp"
 #include "../incs/set.hpp"
 #include "../incs/color.hpp"
+#include <stack>
+#include <map>
+#include <vector>
+#include <set>
 #include <sstream>
 #include <iostream>
-#include <stack>
 #include <string>
 #include <algorithm>
 
@@ -30,9 +33,16 @@
 #define	NAMESPACE ft
 #endif
 
-//Surcharge operator <<
-	template<class Os, typename T>
-Os& operator<<(Os& os, const NAMESPACE::vector<T> & co) 
+//void	printing( color c );
+void	dostack(color);
+void	dovector(color);
+void	domap(color);
+void	doset(color);
+template< typename T >
+void	compare(T c1, T c2);
+
+template<class Os, typename T>
+Os& operator<<(Os& os, const NAMESPACE::vector<T> & co)
 {
 	os << "{ ";
 	for (size_t i = 0; i < co.size(); i++)
@@ -43,13 +53,6 @@ Os& operator<<(Os& os, const NAMESPACE::vector<T> & co)
 	}
 	return os << " } ";
 }
-
-void	dostack(color);
-void	dovector(color);
-void	domap(color);
-void	doset(color);
-template< typename T >
-void	compare(T c1, T c2);
 
 int	main( int ac, char **av )
 {
@@ -64,8 +67,8 @@ int	main( int ac, char **av )
 	std::string	arg = av[1];
 	for (std::string::iterator it = arg.begin(); it != arg.end(); it++)
 		*it = std::tolower(*it);
-	std::string	type[] = { "stack", "vector", "map", "set" };
-	for (i = 0; i < 3; i++)
+	std::string	type[] = { "stack", "vector", "map", "set", "print" };
+	for (i = 0; i < 5; i++)
 		if (type[i] == arg)
 			break;
 	switch (i)
@@ -87,6 +90,10 @@ int	main( int ac, char **av )
 				doset(c);
 			break;
 		case (4):
+			return (std::cout << c.r << "Container '" << arg << "' not found" << c.rt << std::endl, 1);
+			//printing(c);
+			break;
+		case (5):
 			return (std::cout << c.r << "Container '" << arg << "' not found" << c.rt << std::endl, 1);
 			break;
 	}
@@ -327,6 +334,12 @@ void	doset( color c )
 				std::cout << *it << "; ";
 			std::cout << std::endl << std::endl; 
 		}
+		{
+			//COPY
+			std::cout << c.g << "TEST COPY" << c.rt << std::endl;
+			NAMESPACE::set<int>	set2(set);
+			std::cout << "set2 size ? " << set2.size() << std::endl;
+		}
 
 		//INSERT WITH POSITION
 		std::cout << c.g << "TEST INSERT WITH POSITION" << c.rt << std::endl;
@@ -543,8 +556,6 @@ void	dovector( color c )
 		std::cout << std::endl << c.g << "TEST RESERVE" << c.rt << std::endl;
 		std::cout << c.b << "c1 reserve(20)" << c.rt << std::endl;
 		c1.reserve(20);
-		for (int i = 0; i < 10; i++)
-			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
 		std::cout << "c1 size = " << c1.size() << std::endl;
 		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 		std::cout << std::endl;
@@ -554,8 +565,6 @@ void	dovector( color c )
 		std::cout << "c3 capacity = " << c3.capacity() << std::endl;
 		std::cout << std::endl << c.b << "Assign avec iterators c3.begin et c3.begin+3" << c.rt << std::endl;
 		c1.assign(c3.begin(), c3.begin() + 3);
-		for (int i = 0; i < 7; i++)
-			std::cout << " --> c1[" << i << "] = " << c1[i] << std::endl;
 		std::cout << "c1 size = " << c1.size() << std::endl;
 		std::cout << "c1 capacity = " << c1.capacity() << std::endl;
 		std::cout << std::endl;
@@ -612,8 +621,6 @@ void	dovector( color c )
 		std::cout << "c5.capacity() = " << c5.capacity() << " et size = " << c5.size() << std::endl;
 		std::cout << std::endl << c.b << "Insertion a c5[1] de c2[5] a c2[20]" << c.rt << std::endl;
 		c5.insert(c5.begin() + 1, c2.begin() + 5, c2.begin() + 20);
-		std::cout << c5 << std::endl;
-		std::cout << "c5.capacity() = " << c5.capacity() << " et size = " << c5.size() << std::endl;
 		std::cout << std::endl;
 
 		std::cout << c.b << "c2.insert(c2.end() - 3, 10, -2): " << c.rt << c2 << std::endl;
@@ -777,9 +784,9 @@ void	dovector( color c )
 		std::cout << c2 << " et c2.capacity() = " << c2.capacity() << " et size = " << c2.size() << std::endl;
 
 		NAMESPACE::reverse_iterator<NAMESPACE::vector<int>::iterator>	rev_ite = c2.rbegin();
-		NAMESPACE::reverse_iterator<NAMESPACE::vector<int>::iterator>	rev_it = c2.rend();
+		NAMESPACE::reverse_iterator<NAMESPACE::vector<int>::iterator>	rev_it = c2.rend() - 1;
 		std::cout << c.m << "creation reverse iterator rbegin = " << c.rt << *rev_ite << std::endl;
-		std::cout << c.m << "creation reverse iterator rend = " << c.rt << *rev_it << std::endl;
+		std::cout << c.m << "creation reverse iterator rend - 1 = " << c.rt << *rev_it << std::endl;
 		std::cout << c.b << std::endl << "comparaison de rev_ite et rev_it" << c.rt << std::endl;
 		compare(rev_ite, rev_it);
 	}

@@ -6,21 +6,21 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/03 12:39:53 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 11:22:47 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SET_HPP
 #define SET_HPP
 
-#include <set>
+#include <iterator>
 #include "rbtree.hpp"
 #include "rbiterator.hpp"
 
 namespace ft
 {
 	template < class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
-	struct set
+	class set
 	{
 		public:
 			typedef Key															key_type;

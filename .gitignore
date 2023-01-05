@@ -4,3 +4,5 @@ bench/
 bdetune_42ftcontainers_tester/
 42TESTERS-CONTAINERS/
 ft_containers_monkey_tester/
+main.cpp
+tags

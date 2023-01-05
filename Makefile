@@ -6,7 +6,7 @@
 #    By: nflan <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/09 10:58:36 by nflan             #+#    #+#              #
-#    Updated: 2023/01/03 17:08:16 by nflan            ###   ########.fr        #
+#    Updated: 2023/01/05 12:05:54 by nflan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@ NAME = Container
 
 INC_DIR =		incs/
 OBJ_DIR =		obj
-OBJ_DIR_STD =		obj_std
+OBJ_DIR_STD =	obj_std
 SRC_DIR =		srcs
 
 INC =			$(addsuffix .hpp, $(addprefix $(INC_DIR), iterator rbiterator viterator vector stack tools rbtree map color))
 SRC =			$(SRC_FT:%=$(SRC_DIR)/%.cpp)
 OBJ =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR)%.o)
-OBJ_STD =			$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR_STD)%.o)
+OBJ_STD =		$(SRC:$(SRC_DIR)%.cpp=$(OBJ_DIR_STD)%.o)
 
 CXX = c++ $(CXXFLAGS)
 
@@ -34,7 +34,7 @@ CXXFLAGS = -Wall -Wextra -Werror -g -std=c++98
 #HOW TO LIST .c 
 #	ls -l | awk '{print $9}' | grep -E ".cpp$"| sed "s/\.cpp/ \\\/g" | sed '$s/\\$//g'
 
-SRC_FT = main
+SRC_FT = main #tree
 
 all: $(NAME)
 

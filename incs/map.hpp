@@ -6,14 +6,14 @@
 /*   By: nflan <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:58:38 by nflan             #+#    #+#             */
-/*   Updated: 2023/01/03 12:45:12 by nflan            ###   ########.fr       */
+/*   Updated: 2023/01/05 12:05:33 by nflan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <map>
+#include <iterator>
 #include "tools.hpp"
 #include "rbtree.hpp"
 #include "rbiterator.hpp"
@@ -117,8 +117,8 @@ namespace ft
 			key_compare		key_comp() const { return (Compare()); }
 			value_compare	value_comp() const { return (this->_tree.value_comp()); }
 
-			void	print() { this->_tree.print(); }
-			rbtree&	getTree( void ) { return (_tree); }
+//			void	print() { this->_tree.print(); }
+//			rbtree&	getTree( void ) { return (_tree); }
 
 		private:
 			rbtree	_tree;
