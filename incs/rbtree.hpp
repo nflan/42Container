@@ -13,10 +13,10 @@
 #ifndef RBTREE_HPP
 #define RBTREE_HPP
 
-<<<<<<< HEAD
 #include <iterator>
 #include "tools.hpp"
 #include "rbiterator.hpp"
+#include "iterator.hpp"
 // 0 = red / 1 = black
 
 namespace ft
@@ -44,11 +44,10 @@ namespace ft
 			typedef typename ft::rbiterator<const value_type, rbtree>	const_iterator;
 			typedef typename ft::reverse_iterator<iterator>				reverse_iterator;
 			typedef typename ft::reverse_iterator<const_iterator>		const_reverse_iterator;
-=======
-#include <set>
 
-namespace ft
-<<<<<<< HEAD
+			struct node
+			{
+				public:
 					node( void ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
 					{}
 					node( value_type k ): col(0), key(NULL), left(NULL), right(NULL), parent(NULL)
@@ -923,28 +922,5 @@ namespace ft
 			}
 	};
 }
-=======
-				private:
-					bool		_col;
-					value_type	_key;
-					pointer		_lChild;
-					pointer		_rChild;
-					pointer		_parent;
-			};
-			typedef std::allocator<node>					NAllocator;
-
-			void	insert(const node & n)
-			{
-				if (!this->_root)
-					this->_root = n;
-
-			}
-		private:
-			node		_root;
-			NAllocator	_allocnode;
-			Allocator	_alloctree;
-	};
-};
->>>>>>> a903954 (Clean)
 
 #endif

@@ -91,10 +91,7 @@ namespace ft
 	typename viterator<T>::difference_type	operator-(const viterator<T>& lhs, const viterator<U>& rhs) { return (lhs.base() - rhs.base()); }
 	template<typename T>
 	viterator<T>	operator+(typename viterator<T>::difference_type n, const viterator<T>& lhs) { return (viterator<T>(lhs.base() + n)); }
-<<<<<<< HEAD
 
-=======
->>>>>>> a903954 (Clean)
 }
 
 #endif

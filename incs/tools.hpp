@@ -111,23 +111,15 @@ namespace ft
 			typedef T1	first_type;
 			typedef T2	second_type;
 
-<<<<<<< HEAD
 			pair( void ): first(), second() {}
 			pair( const T1& x, const T2& y ): first(x), second(y) {}
 			template< class U1, class U2 >
 			pair( const pair<U1, U2>& p ): first(p.first), second(p.second) {}
-=======
-			pair( void ) {}
-			pair( const T1& x, const T2& y ): _first(x), _second(y) {}
-			template< class U1, class U2 >
-			pair( const pair<U1, U2>& p ): _first(p._first), _second(p._second) {}
->>>>>>> a903954 (Clean)
 
 			pair& operator=( const pair& other )
 			{
 				if (this == &other)
 					return (*this);
-<<<<<<< HEAD
 				this->first = other.first;
 				this->second = other.second;
 				return (*this);
@@ -135,34 +127,17 @@ namespace ft
 
 			first_type	first;
 			second_type	second;
-=======
-				this->_first = other._first;
-				this->_second = other._second;
-				return (*this);
-			}
-
-			first_type	_first;
-			second_type	_second;
->>>>>>> a903954 (Clean)
 	};
 
 	//MAKE_PAIR
 	template < class T1, class T2 >
-<<<<<<< HEAD
 	ft::pair<T1, T2> make_pair( T1 t, T2 u ) { return (pair<T1, T2>(t, u)); }
-=======
-	ft::pair<T1, T2> make_pair( T1 t, T2 u ) { return (ft::pair<T1, T2>(t, u)); }
->>>>>>> a903954 (Clean)
 
 	//PAIR COMPARE
 	template< class T1, class T2 >
 	bool operator==( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )
 	{
-<<<<<<< HEAD
 		return (lhs.first == rhs.first && lhs.second == rhs.second);
-=======
-		return (lhs._first == rhs._first && lhs._second == rhs._second);
->>>>>>> a903954 (Clean)
 	}
 	template< class T1, class T2 >
 	bool operator!=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )
@@ -170,7 +145,6 @@ namespace ft
 		return (!(lhs == rhs));
 	}
 	template< class T1, class T2 >
-<<<<<<< HEAD
 	bool operator<( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second)); }
 	template< class T1, class T2 >
 	bool operator<=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (!(rhs < lhs)); }
@@ -187,15 +161,6 @@ namespace ft
 		l = r;
 		r = tmp;
 	}
-=======
-	bool operator<( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (lhs._first < rhs._first || (!(rhs._first < lhs._first) && lhs._second < rhs._second)); }
-	template< class T1, class T2 >
-	bool operator<=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (!(rhs < lhs)); }
-	template< class T1, class T2 >
-	bool operator>( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (rhs<lhs); }
-	template< class T1, class T2 >
-	bool operator>=( const pair<T1,T2>& lhs, const pair<T1,T2>& rhs )	{ return (!(lhs<rhs)); }
->>>>>>> a903954 (Clean)
 }
 
 #endif
